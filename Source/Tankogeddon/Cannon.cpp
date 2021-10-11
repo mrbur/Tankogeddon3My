@@ -22,13 +22,42 @@ ACannon::ACannon()
     ProjectileSpawnPoint->SetupAttachment(Mesh);
 }
 
-void ACannon::Fire()
+bool ACannon::checkAmmo() {
+    if (!bIsReadyToFire) {
+        return false;
+    }
+    if (currentAmmo == 0) {
+        bIsReadyToFire = false;
+        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("Reloading..."));
+        GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 3.f / FireRate, false);
+        return false;
+    }
+    return true;
+}
+
+void ACannon::Reload()
 {
-    if (!bIsReadyToFire)
+    bIsReadyToFire = true;
+    currentAmmo = 5;
+}
+
+void ACannon::FireSpecial() {
+    if (!checkAmmo())
     {
         return;
     }
-    bIsReadyToFire = false;
+    currentAmmo--;
+    
+    GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Special fire"));
+}
+
+void ACannon::Fire()
+{
+    if (!checkAmmo())
+    {
+        return;
+    }
+    currentAmmo--;
 
     if (Type == ECannonType::FireProjectile)
     {
@@ -38,8 +67,6 @@ void ACannon::Fire()
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - trace"));
     }
-
-    GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1.f / FireRate, false);
 }
 
 bool ACannon::IsReadyToFire()
@@ -60,9 +87,4 @@ void ACannon::EndPlay(EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 
     GetWorld()->GetTimerManager().ClearTimer(ReloadTimerHandle);
-}
-
-void ACannon::Reload()
-{
-    bIsReadyToFire = true;
 }

@@ -20,12 +20,7 @@ void ATankPlayerController::SetupInputComponent()
     InputComponent->BindAxis("MoveForward", this, &ATankPlayerController::MoveForward);
     InputComponent->BindAxis("RotateRight", this, &ATankPlayerController::RotateRight);
     InputComponent->BindAction("Fire", IE_Pressed, this, &ATankPlayerController::Fire);
-    InputComponent->BindAction("MoveRight", IE_Pressed, this, &ATankPlayerController::MoveRight);
-    InputComponent->BindAction("MoveLeft", IE_Pressed, this, &ATankPlayerController::MoveLeft);
-    InputComponent->BindAction("MoveRight", IE_Released, this, &ATankPlayerController::MoveRightStop);
-    InputComponent->BindAction("MoveLeft", IE_Released, this, &ATankPlayerController::MoveRightStop);
-
-    //InputComponent->BindKey(EKeys::A, IE_Pressed, this, &ATankPlayerController::MoveRight);
+    InputComponent->BindAction("FireSpecial", IE_Pressed, this, &ATankPlayerController::FireSpecial);
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
@@ -56,30 +51,6 @@ void ATankPlayerController::MoveForward(float InAxisValue)
     }
 }
 
-void ATankPlayerController::MoveRight()
-{
-    if (TankPawn)
-    {
-        TankPawn->MoveRight();
-    }
-}
-
-void ATankPlayerController::MoveLeft()
-{
-    if (TankPawn)
-    {
-        TankPawn->MoveLeft();
-    }
-}
-
-void ATankPlayerController::MoveRightStop()
-{
-    if (TankPawn)
-    {
-        TankPawn->MoveRightStop();
-    }
-}
-
 void ATankPlayerController::RotateRight(float InAxisValue)
 {
     if (TankPawn)
@@ -93,6 +64,14 @@ void ATankPlayerController::Fire()
     if (TankPawn)
     {
         TankPawn->Fire();
+    }
+}
+
+void ATankPlayerController::FireSpecial()
+{
+    if (TankPawn)
+    {
+        TankPawn->FireSpecial();
     }
 }
 

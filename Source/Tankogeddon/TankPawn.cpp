@@ -79,26 +79,17 @@ void ATankPawn::RotateRight(float InAxisValue)
     TargetRotateRightAxis = InAxisValue;
 }
 
-void ATankPawn::MoveRight()
-{
-    moveRight = 1;
-}
-
-void ATankPawn::MoveLeft()
-{
-    moveRight = -1;
-}
-
-void ATankPawn::MoveRightStop()
-{
-    moveRight = 0;
-}
-
 void ATankPawn::SetTurretTargetPosition(const FVector& TargetPosition)
 {
     TurretTargetPosition = TargetPosition;
 }
 
+void ATankPawn::FireSpecial() {
+    if (Cannon)
+    {
+        Cannon->FireSpecial();
+    }
+}
 void ATankPawn::Fire()
 {
     if (Cannon)

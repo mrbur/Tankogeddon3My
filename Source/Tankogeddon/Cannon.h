@@ -29,6 +29,9 @@ protected:
     float FireDamage = 1.f;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    int currentAmmo = 5;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     ECannonType Type = ECannonType::FireProjectile;
 
 private:
@@ -38,6 +41,7 @@ private:
 public:
     ACannon();
 
+    void FireSpecial();
     void Fire();
 
     bool IsReadyToFire();
@@ -45,7 +49,7 @@ public:
 protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
-
+    bool checkAmmo();
     void Reload();
 
 };

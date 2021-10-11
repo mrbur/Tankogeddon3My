@@ -24,9 +24,7 @@ public:
 private:
 	void MoveForward(float InAxisValue);
 	void RotateRight(float InAxisValue);
-	void MoveRight();
-	void MoveLeft();
-	void MoveRightStop();
+	void FireSpecial();
 	void Fire();
 
 	UPROPERTY()
