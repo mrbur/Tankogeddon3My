@@ -29,6 +29,12 @@ protected:
     float FireDamage = 1.f;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    float AlterFiredelay = 0.3f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    int AlterFireCount = 3;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     int currentAmmo = 5;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
@@ -36,12 +42,15 @@ protected:
 
 private:
     FTimerHandle ReloadTimerHandle;
-    bool bIsReadyToFire = false;
+    FTimerHandle FireHandle;
+    bool bIsDuringFire = false;
+    bool bIsReloading = false;
 
 public:
     ACannon();
 
     void FireSpecial();
+    void Shoot();
     void Fire();
 
     bool IsReadyToFire();
@@ -50,6 +59,6 @@ protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
     bool checkAmmo();
-    void Reload();
+    void ReloadEnd();
 
 };

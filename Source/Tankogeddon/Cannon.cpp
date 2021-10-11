@@ -23,35 +23,33 @@ ACannon::ACannon()
 }
 
 bool ACannon::checkAmmo() {
-    if (!bIsReadyToFire) {
-        return false;
-    }
     if (currentAmmo == 0) {
-        bIsReadyToFire = false;
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("Reloading..."));
-        GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 3.f / FireRate, false);
+        bIsReloading = true;
+        GetWorld()->GetTimerManager().ClearTimer(FireHandle);
+        bIsDuringFire = false;
+        GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::ReloadEnd, 3.f / FireRate, false);
         return false;
     }
     return true;
 }
 
-void ACannon::Reload()
+void ACannon::ReloadEnd()
 {
-    bIsReadyToFire = true;
+    bIsReloading = false;
     currentAmmo = 5;
 }
 
 void ACannon::FireSpecial() {
-    if (!checkAmmo())
-    {
+    if (!IsReadyToFire()) {
         return;
     }
+    if (!checkAmmo())return;
+    GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Yellow, TEXT("Special fire"));
     currentAmmo--;
-    
-    GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Special fire"));
 }
 
-void ACannon::Fire()
+void ACannon::Shoot()
 {
     if (!checkAmmo())
     {
@@ -69,17 +67,24 @@ void ACannon::Fire()
     }
 }
 
+void ACannon::Fire()
+{
+    if (!IsReadyToFire()) {
+        return;
+    }
+    GetWorld()->GetTimerManager().SetTimer(FireHandle, this, &ACannon::Shoot, AlterFiredelay, true);
+    bIsDuringFire = true;
+}
+
 bool ACannon::IsReadyToFire()
 {
-    return bIsReadyToFire;
+    return !bIsReloading && !bIsDuringFire;
 }
 
 // Called when the game starts or when spawned
 void ACannon::BeginPlay()
 {
 	Super::BeginPlay();
-	
-    bIsReadyToFire = true;
 }
 
 void ACannon::EndPlay(EEndPlayReason::Type EndPlayReason)
