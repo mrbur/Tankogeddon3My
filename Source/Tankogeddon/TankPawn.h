@@ -72,6 +72,8 @@ public:
     void FireSpecial();
     UFUNCTION(BlueprintCallable, Category = "Turret")
     void Fire();
+    UFUNCTION(BlueprintCallable, Category = "Turret")
+    void SmoothMove();
 
 private:
     void SetupCannon();

@@ -45,6 +45,10 @@ void ATankPawn::BeginPlay()
     SetupCannon();
 }
 
+void ATankPawn::SmoothMove() {
+    CurrentRotateRightAxis = FMath::Lerp(CurrentRotateRightAxis, TargetRotateRightAxis, RotationSmootheness);
+}
+
 // Called every frame
 void ATankPawn::Tick(float DeltaTime)
 {
@@ -56,7 +60,6 @@ void ATankPawn::Tick(float DeltaTime)
     NewActorLocation += this->GetActorRightVector() * moveRight * MoveSpeedRight;
     SetActorLocation(NewActorLocation);
     
-    CurrentRotateRightAxis = FMath::Lerp(CurrentRotateRightAxis, TargetRotateRightAxis, RotationSmootheness);
     float Rotation = GetActorRotation().Yaw + CurrentRotateRightAxis * RotationSpeed * DeltaTime;
     SetActorRotation(FRotator(0.f, Rotation, 0.f));
 
@@ -77,6 +80,7 @@ void ATankPawn::MoveForward(float InAxisValue)
 void ATankPawn::RotateRight(float InAxisValue)
 {
     TargetRotateRightAxis = InAxisValue;
+    SmoothMove();
 }
 
 void ATankPawn::SetTurretTargetPosition(const FVector& TargetPosition)
