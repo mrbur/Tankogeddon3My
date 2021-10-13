@@ -55,7 +55,6 @@ public:
     void FireSpecial();
     void Shoot();
     void Fire();
-
     bool IsReadyToFire();
 
 protected:

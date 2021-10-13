@@ -80,7 +80,6 @@ void ATankPawn::MoveForward(float InAxisValue)
 void ATankPawn::RotateRight(float InAxisValue)
 {
     TargetRotateRightAxis = InAxisValue;
-    SmoothMove();
 }
 
 void ATankPawn::SetTurretTargetPosition(const FVector& TargetPosition)
@@ -112,6 +111,6 @@ void ATankPawn::SetupCannon()
     FActorSpawnParameters Params;
     Params.Instigator = this;
     Params.Owner = this;
-    Cannon = GetWorld()->SpawnActor<ACannon>(DefaultCannonClass, Params);
+    Cannon = GetWorld()->SpawnActor<ACannon>(AlterCannonClass, Params);
     Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }

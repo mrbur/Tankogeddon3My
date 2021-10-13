@@ -52,6 +52,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
     TSubclassOf<class ACannon> DefaultCannonClass;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
+    TSubclassOf<class ACannon> AlterCannonClass;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
