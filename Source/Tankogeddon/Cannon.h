@@ -40,6 +40,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     ECannonType Type = ECannonType::FireProjectile;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
+    TSubclassOf<class AProjectile> ProjectileClass;
+
 private:
     FTimerHandle ReloadTimerHandle;
     FTimerHandle FireHandle;
