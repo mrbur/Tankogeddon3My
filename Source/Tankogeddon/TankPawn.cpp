@@ -54,7 +54,6 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    CurrentMoveForwardAxis = FMath::Lerp(CurrentMoveForwardAxis, TargetMoveForwardAxis, MovementSmootheness);
     FVector MoveVector = GetActorForwardVector() * CurrentMoveForwardAxis;
     FVector NewActorLocation = GetActorLocation() + MoveVector * MoveSpeed * DeltaTime;
     NewActorLocation += this->GetActorRightVector() * moveRight * MoveSpeedRight;
@@ -69,7 +68,7 @@ void ATankPawn::Tick(float DeltaTime)
     FRotator CurrentRotation = TurretMesh->GetComponentRotation();
     TargetRotation.Roll = CurrentRotation.Roll;
     TargetRotation.Pitch = CurrentRotation.Pitch;
-    TurretMesh->SetWorldRotation(FMath::Lerp(CurrentRotation, TargetRotation, TurretRotationSmootheness));
+    TurretMesh->SetWorldRotation(FMath::RInterpConstantTo(CurrentRotation, TargetRotation, MoveSpeed * DeltaTime, TurretRotationSmootheness));
 }
 
 void ATankPawn::MoveForward(float InAxisValue)
