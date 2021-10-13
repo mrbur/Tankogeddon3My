@@ -54,6 +54,7 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+    CurrentMoveForwardAxis = FMath::FInterpTo(CurrentMoveForwardAxis, TargetMoveForwardAxis, DeltaTime, MovementSmootheness);
     FVector MoveVector = GetActorForwardVector() * CurrentMoveForwardAxis;
     FVector NewActorLocation = GetActorLocation() + MoveVector * MoveSpeed * DeltaTime;
     NewActorLocation += this->GetActorRightVector() * moveRight * MoveSpeedRight;
