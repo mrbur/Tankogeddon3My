@@ -29,11 +29,11 @@ void AProjectile::OnMeshHit(UPrimitiveComponent* HittedComp, AActor* OtherActor,
 {
 	UE_LOG(LogTankogeddon, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
 
-	if (OtherActor && OtherComp && OtherComp->GetCollisionObjectType() == ECC_WorldDynamic)
+	/*if (OtherActor && OtherComp && OtherComp->GetCollisionObjectType() == ECC_WorldDynamic)
 	{
 		OtherActor->Destroy();
 	}
-	Destroy();
+	Destroy();*/
 }
 
 // Called when the game starts or when spawned

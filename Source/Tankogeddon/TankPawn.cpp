@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "Cannon.h"
+#include "AlterCannon.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -45,21 +46,18 @@ void ATankPawn::BeginPlay()
     SetupCannon();
 }
 
-void ATankPawn::SmoothMove() {
-    CurrentRotateRightAxis = FMath::Lerp(CurrentRotateRightAxis, TargetRotateRightAxis, RotationSmootheness);
-}
-
 // Called every frame
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    CurrentMoveForwardAxis = FMath::FInterpTo(CurrentMoveForwardAxis, TargetMoveForwardAxis, DeltaTime, MovementSmootheness);
+    CurrentMoveForwardAxis = FMath::FInterpTo(CurrentMoveForwardAxis, TargetMoveForwardAxis, DeltaTime * MoveSpeed, MovementSmootheness);
     FVector MoveVector = GetActorForwardVector() * CurrentMoveForwardAxis;
     FVector NewActorLocation = GetActorLocation() + MoveVector * MoveSpeed * DeltaTime;
     NewActorLocation += this->GetActorRightVector() * moveRight * MoveSpeedRight;
     SetActorLocation(NewActorLocation);
     
+    CurrentRotateRightAxis = FMath::FInterpTo(CurrentRotateRightAxis, TargetRotateRightAxis, DeltaTime * MoveSpeed, RotationSmootheness);
     float Rotation = GetActorRotation().Yaw + CurrentRotateRightAxis * RotationSpeed * DeltaTime;
     SetActorRotation(FRotator(0.f, Rotation, 0.f));
 
@@ -101,6 +99,28 @@ void ATankPawn::Fire()
     }
 }
 
+void ATankPawn::ChangeCannon()
+{
+    if (Cannon)
+    {
+        Cannon->DetachRootComponentFromParent(true);
+        
+        if (bIsDefaultCannon) {
+            AltCannon->SetActorHiddenInGame(false);
+            DefaultCannon->SetActorHiddenInGame(true);
+            bIsDefaultCannon = false;
+            Cannon = AltCannon;
+        }
+        else {
+            DefaultCannon->SetActorHiddenInGame(false);
+            AltCannon->SetActorHiddenInGame(true);
+            bIsDefaultCannon = true;
+            Cannon = DefaultCannon;
+        }
+        Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    }
+}
+
 void ATankPawn::SetupCannon()
 {
     if (Cannon)
@@ -111,6 +131,9 @@ void ATankPawn::SetupCannon()
     FActorSpawnParameters Params;
     Params.Instigator = this;
     Params.Owner = this;
-    Cannon = GetWorld()->SpawnActor<ACannon>(AlterCannonClass, Params);
+
+    AltCannon = GetWorld()->SpawnActor<AAlterCannon>(AlterCannonClass, Params);
+    DefaultCannon = GetWorld()->SpawnActor<ACannon>(DefaultCannonClass, Params);
+    Cannon = DefaultCannon;
     Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
