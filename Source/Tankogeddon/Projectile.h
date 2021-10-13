@@ -25,7 +25,7 @@ protected:
 	float MoveSpeed = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "range")
-	float FireRange = 1000.f;
+	float FireRange = 2000.f;
 
 	UFUNCTION()
 	void OnMeshHit(class UPrimitiveComponent* HittedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);
