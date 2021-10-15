@@ -25,7 +25,13 @@ ACannon::ACannon()
 }
 
 bool ACannon::checkAmmo() {
-    if (currentAmmo == 0) {
+    if (CurrentAmmo == 0) {
+        if (AmmoPool == 0) {
+            GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("NO AMMO"));
+            GetWorld()->GetTimerManager().ClearTimer(FireHandle);
+            bIsDuringFire = false;
+            return false;
+        }
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("Reloading..."));
         bIsReloading = true;
         GetWorld()->GetTimerManager().ClearTimer(FireHandle);
@@ -39,7 +45,18 @@ bool ACannon::checkAmmo() {
 void ACannon::ReloadEnd()
 {
     bIsReloading = false;
-    currentAmmo = 5;
+    if (AmmoPool == 0) {
+        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("No ammo in pool"));
+        return;
+    }
+    if (AmmoPool >= MaxAmmoInSet) {
+        AmmoPool -= MaxAmmoInSet;
+        CurrentAmmo = MaxAmmoInSet;
+    }
+    else {
+        CurrentAmmo = AmmoPool;
+        AmmoPool = 0;
+    }
 }
 
 void ACannon::FireSpecial() {
@@ -48,7 +65,7 @@ void ACannon::FireSpecial() {
     }
     if (!checkAmmo())return;
     GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Yellow, TEXT("Special fire"));
-    currentAmmo--;
+    CurrentAmmo--;
 }
 
 void ACannon::Shoot()
@@ -57,7 +74,7 @@ void ACannon::Shoot()
     {
         return;
     }
-    currentAmmo--;
+    CurrentAmmo--;
 
     if (Type == ECannonType::FireProjectile)
     {
@@ -87,6 +104,16 @@ void ACannon::Fire()
 bool ACannon::IsReadyToFire()
 {
     return !bIsReloading && !bIsDuringFire;
+}
+
+int ACannon::GetMaxAmmo() const
+{
+    return MaxAmmoInSet;
+}
+
+void ACannon::AddAmmoToPool(int ammoCount)
+{
+    AmmoPool += ammoCount;
 }
 
 // Called when the game starts or when spawned

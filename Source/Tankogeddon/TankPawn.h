@@ -77,6 +77,10 @@ public:
     void Fire();
     UFUNCTION(BlueprintCallable, Category = "Turret")
     void ChangeCannon();
+    UFUNCTION(BlueprintCallable, Category = "Turret")
+    void AddAmmoToPool(int ammoCount);
+    UFUNCTION(BlueprintCallable, Category = "Turret")
+    int getMaxAmmo() const;
 
 private:
     void SetupCannon();

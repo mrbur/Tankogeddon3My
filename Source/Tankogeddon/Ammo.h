@@ -17,7 +17,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	class UStaticMeshComponent* Mesh1;
+	class UStaticMeshComponent* Mesh;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

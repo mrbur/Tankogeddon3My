@@ -121,6 +121,16 @@ void ATankPawn::ChangeCannon()
     }
 }
 
+void ATankPawn::AddAmmoToPool(int ammoCount)
+{
+    Cannon->AddAmmoToPool(ammoCount);
+}
+
+int ATankPawn::getMaxAmmo() const
+{
+    return Cannon->GetMaxAmmo();
+}
+
 void ATankPawn::SetupCannon()
 {
     if (Cannon)
