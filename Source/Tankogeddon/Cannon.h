@@ -34,10 +34,13 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     int AlterFireCount = 3;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int ammoPool = 15;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
     int currentAmmo = 5;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
     ECannonType Type = ECannonType::FireProjectile;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
