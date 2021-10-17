@@ -89,6 +89,17 @@ void ACannon::Shoot()
     else if (Type == ECannonType::FireTrace)
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - trace"));
+      
+        FHitResult HitResult;
+        FVector TraceStart = ProjectileSpawnPoint->GetComponentLocation();
+        FVector TraceEnd = ProjectileSpawnPoint->GetComponentLocation() + ProjectileSpawnPoint->GetForwardVector() * FireRange;
+        FCollisionQueryParams TraceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
+        TraceParams.bReturnPhysicalMaterial = false;
+        if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, TraceParams))
+        {
+            TraceEnd = HitResult.Location;
+        }
+        DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 0.5f, 0, 5.f);
     }
 }
 

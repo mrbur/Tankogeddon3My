@@ -23,7 +23,7 @@ protected:
     float FireRate = 1.f;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
-    float FireRange = 1000.f;
+    float FireRange = 10000.f;
     
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     float FireDamage = 1.f;
@@ -44,7 +44,7 @@ protected:
     int CurrentAmmo = 5;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-    ECannonType Type = ECannonType::FireProjectile;
+    ECannonType Type = ECannonType::FireTrace;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
     TSubclassOf<class AProjectile> ProjectileClass;
