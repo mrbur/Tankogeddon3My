@@ -34,10 +34,16 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     int AlterFireCount = 3;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
-    int currentAmmo = 5;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int AmmoPool = 15;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int MaxAmmoInSet = 5;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int CurrentAmmo = 5;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
     ECannonType Type = ECannonType::FireProjectile;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
@@ -55,8 +61,9 @@ public:
     void FireSpecial();
     void Shoot();
     void Fire();
-
     bool IsReadyToFire();
+    int GetMaxAmmo() const;
+    void AddAmmoToPool(int ammoCount);
 
 protected:
     virtual void BeginPlay() override;
