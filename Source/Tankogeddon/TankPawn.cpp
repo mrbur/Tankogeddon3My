@@ -45,18 +45,21 @@ void ATankPawn::BeginPlay()
     SetupCannon();
 }
 
+void ATankPawn::SmoothMove() {
+    CurrentRotateRightAxis = FMath::Lerp(CurrentRotateRightAxis, TargetRotateRightAxis, RotationSmootheness);
+}
+
 // Called every frame
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    CurrentMoveForwardAxis = FMath::Lerp(CurrentMoveForwardAxis, TargetMoveForwardAxis, MovementSmootheness);
+    CurrentMoveForwardAxis = FMath::FInterpTo(CurrentMoveForwardAxis, TargetMoveForwardAxis, DeltaTime, MovementSmootheness);
     FVector MoveVector = GetActorForwardVector() * CurrentMoveForwardAxis;
     FVector NewActorLocation = GetActorLocation() + MoveVector * MoveSpeed * DeltaTime;
     NewActorLocation += this->GetActorRightVector() * moveRight * MoveSpeedRight;
     SetActorLocation(NewActorLocation);
     
-    CurrentRotateRightAxis = FMath::Lerp(CurrentRotateRightAxis, TargetRotateRightAxis, RotationSmootheness);
     float Rotation = GetActorRotation().Yaw + CurrentRotateRightAxis * RotationSpeed * DeltaTime;
     SetActorRotation(FRotator(0.f, Rotation, 0.f));
 
@@ -66,7 +69,7 @@ void ATankPawn::Tick(float DeltaTime)
     FRotator CurrentRotation = TurretMesh->GetComponentRotation();
     TargetRotation.Roll = CurrentRotation.Roll;
     TargetRotation.Pitch = CurrentRotation.Pitch;
-    TurretMesh->SetWorldRotation(FMath::Lerp(CurrentRotation, TargetRotation, TurretRotationSmootheness));
+    TurretMesh->SetWorldRotation(FMath::RInterpConstantTo(CurrentRotation, TargetRotation, MoveSpeed * DeltaTime, TurretRotationSmootheness));
 }
 
 void ATankPawn::MoveForward(float InAxisValue)
@@ -77,21 +80,7 @@ void ATankPawn::MoveForward(float InAxisValue)
 void ATankPawn::RotateRight(float InAxisValue)
 {
     TargetRotateRightAxis = InAxisValue;
-}
-
-void ATankPawn::MoveRight()
-{
-    moveRight = 1;
-}
-
-void ATankPawn::MoveLeft()
-{
-    moveRight = -1;
-}
-
-void ATankPawn::MoveRightStop()
-{
-    moveRight = 0;
+    SmoothMove();
 }
 
 void ATankPawn::SetTurretTargetPosition(const FVector& TargetPosition)
@@ -99,6 +88,12 @@ void ATankPawn::SetTurretTargetPosition(const FVector& TargetPosition)
     TurretTargetPosition = TargetPosition;
 }
 
+void ATankPawn::FireSpecial() {
+    if (Cannon)
+    {
+        Cannon->FireSpecial();
+    }
+}
 void ATankPawn::Fire()
 {
     if (Cannon)

@@ -65,20 +65,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Movement")
     void RotateRight(float InAxisValue);
 
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    void MoveRight();
-
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    void MoveLeft();
-
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    void MoveRightStop();
-
     UFUNCTION(BlueprintCallable, Category = "Turret")
     void SetTurretTargetPosition(const FVector& TargetPosition);
     
     UFUNCTION(BlueprintCallable, Category = "Turret")
+    void FireSpecial();
+    UFUNCTION(BlueprintCallable, Category = "Turret")
     void Fire();
+    UFUNCTION(BlueprintCallable, Category = "Turret")
+    void SmoothMove();
 
 private:
     void SetupCannon();

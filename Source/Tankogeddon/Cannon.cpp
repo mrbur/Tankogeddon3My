@@ -22,13 +22,40 @@ ACannon::ACannon()
     ProjectileSpawnPoint->SetupAttachment(Mesh);
 }
 
-void ACannon::Fire()
+bool ACannon::checkAmmo() {
+    if (currentAmmo == 0) {
+        GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Red, TEXT("Reloading..."));
+        bIsReloading = true;
+        GetWorld()->GetTimerManager().ClearTimer(FireHandle);
+        bIsDuringFire = false;
+        GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::ReloadEnd, 3.f / FireRate, false);
+        return false;
+    }
+    return true;
+}
+
+void ACannon::ReloadEnd()
 {
-    if (!bIsReadyToFire)
+    bIsReloading = false;
+    currentAmmo = 5;
+}
+
+void ACannon::FireSpecial() {
+    if (!IsReadyToFire()) {
+        return;
+    }
+    if (!checkAmmo())return;
+    GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Yellow, TEXT("Special fire"));
+    currentAmmo--;
+}
+
+void ACannon::Shoot()
+{
+    if (!checkAmmo())
     {
         return;
     }
-    bIsReadyToFire = false;
+    currentAmmo--;
 
     if (Type == ECannonType::FireProjectile)
     {
@@ -38,21 +65,26 @@ void ACannon::Fire()
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - trace"));
     }
+}
 
-    GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1.f / FireRate, false);
+void ACannon::Fire()
+{
+    if (!IsReadyToFire()) {
+        return;
+    }
+    GetWorld()->GetTimerManager().SetTimer(FireHandle, this, &ACannon::Shoot, AlterFiredelay, true);
+    bIsDuringFire = true;
 }
 
 bool ACannon::IsReadyToFire()
 {
-    return bIsReadyToFire;
+    return !bIsReloading && !bIsDuringFire;
 }
 
 // Called when the game starts or when spawned
 void ACannon::BeginPlay()
 {
 	Super::BeginPlay();
-	
-    bIsReadyToFire = true;
 }
 
 void ACannon::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -60,9 +92,4 @@ void ACannon::EndPlay(EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
 
     GetWorld()->GetTimerManager().ClearTimer(ReloadTimerHandle);
-}
-
-void ACannon::Reload()
-{
-    bIsReadyToFire = true;
 }
