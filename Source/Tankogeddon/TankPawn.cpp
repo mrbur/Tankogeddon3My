@@ -11,6 +11,8 @@
 #include "Components/ArrowComponent.h"
 #include "Cannon.h"
 #include "AlterCannon.h"
+#include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -36,6 +38,9 @@ ATankPawn::ATankPawn()
 
     CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn point"));
     CannonSpawnPoint->SetupAttachment(TurretMesh);
+
+    HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
+    HitCollider->SetupAttachment(BodyMesh);
 }
 
 void ATankPawn::TakeDamage(const FDamageData& DamageData)

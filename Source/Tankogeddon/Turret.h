@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Damageable.h"
+#include "Components/ArrowComponent.h"
 #include "Turret.generated.h"
 
 UCLASS()

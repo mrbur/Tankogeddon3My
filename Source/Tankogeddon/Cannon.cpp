@@ -83,6 +83,7 @@ void ACannon::Shoot()
         AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
         if (Projectile)
         {
+            Projectile->SetInstigator(GetInstigator());
             Projectile->Start();
         }
     }
