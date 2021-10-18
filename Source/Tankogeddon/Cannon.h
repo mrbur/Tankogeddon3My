@@ -44,7 +44,7 @@ protected:
     int CurrentAmmo = 5;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-    ECannonType Type = ECannonType::FireTrace;
+    ECannonType Type = ECannonType::FireProjectile;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
     TSubclassOf<class AProjectile> ProjectileClass;
