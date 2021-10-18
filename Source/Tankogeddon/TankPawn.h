@@ -37,6 +37,9 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UBoxComponent* HitCollider;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UHealthComponent* HealthComponent;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
     float MoveSpeed = 100.f;
 
@@ -87,6 +90,12 @@ public:
     void AddAmmoToPool(int ammoCount);
     UFUNCTION(BlueprintCallable, Category = "Turret")
     int getMaxAmmo() const;
+
+    UFUNCTION(BlueprintNativeEvent, Category = "Health")
+    void OnHealthChanged(float Damage);
+
+    UFUNCTION(BlueprintNativeEvent, Category = "Health")
+    void OnDie();
 
 private:
     void SetupCannon();

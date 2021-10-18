@@ -13,6 +13,7 @@
 #include "AlterCannon.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "HealthComponent.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -41,11 +42,15 @@ ATankPawn::ATankPawn()
 
     HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
     HitCollider->SetupAttachment(BodyMesh);
+
+    HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+    HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
+    HealthComponent->OnDie.AddDynamic(this, &ATankPawn::OnDie);
 }
 
 void ATankPawn::TakeDamage(const FDamageData& DamageData)
 {
-    //TO DO
+    HealthComponent->TakeDamage(DamageData);
 }
 
 // Called when the game starts or when spawned
@@ -129,6 +134,16 @@ void ATankPawn::ChangeCannon()
         }
         Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
     }
+}
+
+void ATankPawn::OnHealthChanged_Implementation(float Damage)
+{
+    UE_LOG(LogTankogeddon, Log, TEXT("Tank %s taked damage:%f "), *GetName(), Damage);
+}
+
+void ATankPawn::OnDie_Implementation()
+{
+    Destroy();
 }
 
 void ATankPawn::AddAmmoToPool(int ammoCount)
