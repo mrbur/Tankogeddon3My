@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UBoxComponent* HitCollider;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	class UHealthComponent* HealthComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 	TSubclassOf<class ACannon> CannonClass;
 
@@ -60,6 +63,12 @@ protected:
 	bool IsPlayerInRange();
 	bool CanFire();
 	void Fire();
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Health")
+	void OnHealthChanged(float Damage);
+
+	UFUNCTION(BlueprintNativeEvent, Category = "Health")
+	void OnDie();
 
 private:
 	UPROPERTY()

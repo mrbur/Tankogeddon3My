@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "UObject/NoExportTypes.h"
 #include "Tankogeddon.h"
+#include "HealthComponent.h"
 
 // Sets default values
 ATurret::ATurret()
@@ -41,6 +42,10 @@ ATurret::ATurret()
     {
         BodyMesh->SetStaticMesh(BodyMeshTemp);
     }
+
+    HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+    HealthComponent->OnHealthChanged.AddDynamic(this, &ATurret::OnHealthChanged);
+    HealthComponent->OnDie.AddDynamic(this, &ATurret::OnDie);
 
 }
 
@@ -93,6 +98,16 @@ void ATurret::Fire()
     {
         Cannon->Fire();
     }
+}
+
+void ATurret::OnHealthChanged_Implementation(float Damage)
+{
+    UE_LOG(LogTankogeddon, Log, TEXT("Turret %s taked damage:%f "), *GetName(), Damage);
+}
+
+void ATurret::OnDie_Implementation()
+{
+    Destroy();
 }
 
 
