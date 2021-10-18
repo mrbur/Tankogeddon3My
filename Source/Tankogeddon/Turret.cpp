@@ -75,7 +75,7 @@ void ATurret::Tick(float DeltaTime)
 
 void ATurret::TakeDamage(const FDamageData& DamageData)
 {
-    //TODO REALIZE METHOD
+    HealthComponent->TakeDamage(DamageData);
 }
 
 bool ATurret::IsPlayerInRange()
