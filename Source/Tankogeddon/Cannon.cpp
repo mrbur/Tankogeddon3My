@@ -7,6 +7,7 @@
 #include "Components/ArrowComponent.h"
 #include "Projectile.h"
 #include "DrawDebugHelpers.h"
+#include "Damageable.h"
 
 // Sets default values
 ACannon::ACannon()
@@ -91,7 +92,7 @@ void ACannon::Shoot()
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - trace"));
       
-        FHitResult HitResult;
+        FHitResult HitResult; 
         FVector TraceStart = ProjectileSpawnPoint->GetComponentLocation();
         FVector TraceEnd = ProjectileSpawnPoint->GetComponentLocation() + ProjectileSpawnPoint->GetForwardVector() * FireRange;
         FCollisionQueryParams TraceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
@@ -99,8 +100,19 @@ void ACannon::Shoot()
         if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, TraceParams))
         {
             TraceEnd = HitResult.Location;
+
+            if (IDamageable* Damageable = Cast<IDamageable>(HitResult.GetActor()))
+            {
+                FDamageData DamageData;
+                DamageData.DamageValue = 1;
+                DamageData.Instigator = GetInstigator();
+                DamageData.DamageMaker = this;
+                Damageable->TakeDamage(DamageData);
+            }
         }
         DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 0.5f, 0, 5.f);
+
+        
     }
 }
 
