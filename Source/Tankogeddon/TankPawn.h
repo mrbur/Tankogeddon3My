@@ -4,16 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Damageable.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
-class TANKOGEDDON_API ATankPawn : public APawn
+class TANKOGEDDON_API ATankPawn : public APawn, public IDamageable
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
+
+    virtual void TakeDamage(const FDamageData& DamageData) override;
 
 protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")

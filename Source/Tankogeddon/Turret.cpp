@@ -68,6 +68,11 @@ void ATurret::Tick(float DeltaTime)
     }
 }
 
+void ATurret::TakeDamage(const FDamageData& DamageData)
+{
+    //TODO REALIZE METHOD
+}
+
 bool ATurret::IsPlayerInRange()
 {
     return FVector::DistSquared(PlayerPawn->GetActorLocation(), GetActorLocation()) <= FMath::Square(TargetingRange);

@@ -38,6 +38,11 @@ ATankPawn::ATankPawn()
     CannonSpawnPoint->SetupAttachment(TurretMesh);
 }
 
+void ATankPawn::TakeDamage(const FDamageData& DamageData)
+{
+    //TO DO
+}
+
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {

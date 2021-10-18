@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Damageable.h"
 #include "Turret.generated.h"
 
 UCLASS()
-class TANKOGEDDON_API ATurret : public AActor
+class TANKOGEDDON_API ATurret : public AActor, public IDamageable
 {
 	GENERATED_BODY()
 	
@@ -17,6 +18,8 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void TakeDamage(const FDamageData& DamageData) override;
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -59,9 +62,9 @@ protected:
 
 private:
 	UPROPERTY()
-		class ACannon* Cannon;
+	class ACannon* Cannon;
 
 	UPROPERTY()
-		class APawn* PlayerPawn;
+	class APawn* PlayerPawn;
 
 };
