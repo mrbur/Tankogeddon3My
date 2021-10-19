@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Damageable.h"
+#include "ScoreComponent.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -97,6 +98,9 @@ public:
     UFUNCTION(BlueprintNativeEvent, Category = "Health")
     void OnDie();
 
+    UFUNCTION(BlueprintNativeEvent, Category = "Score")
+    void AddScore();
+
 private:
     void SetupCannon();
 
@@ -111,6 +115,8 @@ private:
     float CurrentRotateRightAxis = 0.f;
     float TargetRotateRightAxis = 0.f;
     float moveRight = 0.f;
+
+    int score = 0;
 
     FVector TurretTargetPosition;
 };

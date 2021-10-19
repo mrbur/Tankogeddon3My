@@ -36,6 +36,9 @@ protected:
 public:	
 	AProjectile();
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	class UScoreComponent* ScoreComponent;
+
 	void Start();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

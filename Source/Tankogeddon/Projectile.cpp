@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Tankogeddon.h"
 #include "Damageable.h"
+#include "ScoreComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -18,7 +19,6 @@ AProjectile::AProjectile()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->OnComponentHit.AddDynamic(this, &AProjectile::OnMeshHit);
-
 }
 
 void AProjectile::Start()
@@ -47,6 +47,10 @@ void AProjectile::OnMeshHit(UPrimitiveComponent* HittedComp, AActor* OtherActor,
 		DamageData.Instigator = GetInstigator();
 		DamageData.DamageMaker = this;
 		Damageable->TakeDamage(DamageData);
+
+		if (OtherActor->IsActorBeingDestroyed()) {
+			ScoreComponent->OnDestroySomeone.Broadcast();
+		}
 	}
 	Destroy();
 }

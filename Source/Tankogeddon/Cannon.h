@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameStructs.h"
+#include "ScoreComponent.h"
 #include "Cannon.generated.h"
 
 UCLASS()
@@ -44,7 +45,7 @@ protected:
     int CurrentAmmo = 5;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-    ECannonType Type = ECannonType::FireTrace;
+    ECannonType Type = ECannonType::FireProjectile;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
     TSubclassOf<class AProjectile> ProjectileClass;
@@ -57,6 +58,9 @@ private:
 
 public:
     ACannon();
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    UScoreComponent* ScoreComponent;
 
     void FireSpecial();
     void Shoot();

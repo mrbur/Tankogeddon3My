@@ -146,6 +146,11 @@ void ATankPawn::OnDie_Implementation()
     Destroy();
 }
 
+void ATankPawn::AddScore_Implementation()
+{
+    score++;
+}
+
 void ATankPawn::AddAmmoToPool(int ammoCount)
 {
     Cannon->AddAmmoToPool(ammoCount);
@@ -169,6 +174,9 @@ void ATankPawn::SetupCannon()
 
     AltCannon = GetWorld()->SpawnActor<AAlterCannon>(AlterCannonClass, Params);
     DefaultCannon = GetWorld()->SpawnActor<ACannon>(DefaultCannonClass, Params);
+
+    DefaultCannon->ScoreComponent->OnDestroySomeone.AddDynamic(this, &ATankPawn::AddScore);
+
     Cannon = DefaultCannon;
     Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
