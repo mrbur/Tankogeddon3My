@@ -161,6 +161,11 @@ int ATankPawn::getMaxAmmo() const
     return Cannon->GetMaxAmmo();
 }
 
+FVector ATankPawn::GetTurretForwardVector()
+{
+    return TurretMesh->GetForwardVector();
+}
+
 void ATankPawn::SetupCannon()
 {
     if (Cannon)

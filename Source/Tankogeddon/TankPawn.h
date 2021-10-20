@@ -59,6 +59,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
     float TurretRotationSmootheness = 0.5f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params", Meta = (MakeEditWidget = true))
+    TArray<FVector> PatrollingPoints;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params")
+    float MovementAccuracy = 50.f;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
     TSubclassOf<class ACannon> DefaultCannonClass;
 
@@ -92,6 +98,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Turret")
     int getMaxAmmo() const;
 
+    UFUNCTION(BlueprintPure, Category = "Turret")
+    FVector GetTurretForwardVector();
+
     UFUNCTION(BlueprintNativeEvent, Category = "Health")
     void OnHealthChanged(float Damage);
 
@@ -100,6 +109,18 @@ public:
 
     UFUNCTION(BlueprintNativeEvent, Category = "Score")
     void AddScore();
+
+    UFUNCTION(BlueprintPure, Category = "AI|Move params")
+    const TArray<FVector>& GetPatrollingPoints()
+    {
+        return PatrollingPoints;
+    }
+
+    UFUNCTION(BlueprintPure, Category = "AI|Move params")
+    float GetMovementAccuracy()
+    {
+        return MovementAccuracy;
+    }
 
 private:
     void SetupCannon();
