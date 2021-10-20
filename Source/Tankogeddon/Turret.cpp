@@ -11,6 +11,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Tankogeddon.h"
 #include "HealthComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ATurret::ATurret()
@@ -89,6 +90,7 @@ bool ATurret::CanFire()
     FVector DirToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
     DirToPlayer.Normalize();
     float AimAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(TargetingDir, DirToPlayer)));
+
     return AimAngle <= Accuracy;
 }
 
@@ -98,6 +100,24 @@ void ATurret::Fire()
     {
         Cannon->Fire();
     }
+}
+
+bool ATurret::IsTargetHiddenBehind()
+{
+    FHitResult HitResult;
+    FVector TraceStart = GetActorLocation();
+    FVector TraceEnd = PlayerPawn->GetActorLocation();
+    FCollisionQueryParams TraceParams = FCollisionQueryParams(FName(TEXT("AI Vission Trace")), true, this);
+    TraceParams.bReturnPhysicalMaterial = false;
+    if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, TraceParams))
+    {
+        DrawDebugLine(GetWorld(), TraceStart, HitResult.Location, FColor::Red, false, 0.1f, 0, 5);
+        if (HitResult.Actor != PlayerPawn)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void ATurret::OnHealthChanged_Implementation(float Damage)
@@ -117,8 +137,14 @@ void ATurret::Targeting()
     {
         RotateToPlayer();
     }
+    if (!CanFire()) {
+        return;
+    }
+    if (IsTargetHiddenBehind()) {
+        return;
+    }
 
-    if (CanFire() && Cannon && Cannon->IsReadyToFire())
+    if (Cannon && Cannon->IsReadyToFire())
     {
         Fire();
     }
@@ -127,10 +153,10 @@ void ATurret::Targeting()
 void ATurret::RotateToPlayer()
 {
     FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerPawn->GetActorLocation());
-    FRotator CurrRotation = TurretMesh->GetComponentRotation();
-    TargetRotation.Pitch = CurrRotation.Pitch;
-    TargetRotation.Roll = CurrRotation.Roll;
-    TurretMesh->SetWorldRotation(FMath::RInterpConstantTo(CurrRotation, TargetRotation, GetWorld()->GetDeltaSeconds(), TargetingSpeed));
+    FRotator CurrentRotation = TurretMesh->GetComponentRotation();
+    TargetRotation.Roll = CurrentRotation.Roll;
+    TargetRotation.Pitch = CurrentRotation.Pitch;
+    TurretMesh->SetWorldRotation(FMath::RInterpConstantTo(CurrentRotation, TargetRotation, RotateSpeed * GetWorld()->GetDeltaSeconds(), TurretRotationSmootheness));
 }
 
 void ATurret::Destroyed()

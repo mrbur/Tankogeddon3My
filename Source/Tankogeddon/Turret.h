@@ -42,7 +42,7 @@ protected:
 	TSubclassOf<class ACannon> CannonClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
-	float TargetingRange = 1000.f;
+	float TargetingRange = 50.f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
 	float TargetingSpeed = 0.1f;
@@ -63,6 +63,7 @@ protected:
 	bool IsPlayerInRange();
 	bool CanFire();
 	void Fire();
+	bool IsTargetHiddenBehind();
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Health")
 	void OnHealthChanged(float Damage);
@@ -76,5 +77,9 @@ private:
 
 	UPROPERTY()
 	class APawn* PlayerPawn;
+
+	float TargetRotateRightAxis = 45.f;
+	float TurretRotationSmootheness = 0.5f;
+	float RotateSpeed = 30.f;
 
 };
