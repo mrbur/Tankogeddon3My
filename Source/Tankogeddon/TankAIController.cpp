@@ -72,7 +72,7 @@ void ATankAIController::MoveToNextPoint()
 void ATankAIController::Targeting()
 {
     APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-    if (FVector::DistSquared(PlayerPawn->GetActorLocation(), TankPawn->GetActorLocation()) > FMath::Square(TargetingRange))
+    if (!PlayerPawn || FVector::DistSquared(PlayerPawn->GetActorLocation(), TankPawn->GetActorLocation()) > FMath::Square(TargetingRange))
     {
         return;
     }

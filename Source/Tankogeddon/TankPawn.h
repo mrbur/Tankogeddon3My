@@ -41,6 +41,18 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UHealthComponent* HealthComponent;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UParticleSystemComponent* DieEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UParticleSystemComponent* HitEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UAudioComponent* AudioHitEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UAudioComponent* AudioDieEffect;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
     float MoveSpeed = 100.f;
 

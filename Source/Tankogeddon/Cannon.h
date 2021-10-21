@@ -20,6 +20,18 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UArrowComponent* ProjectileSpawnPoint;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UParticleSystemComponent* ShootEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UAudioComponent* AudioEffect;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+    class UForceFeedbackEffect* ShootForceEffect;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Effects")
+    TSubclassOf<class UCameraShakeBase> ShootShake;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     float FireRate = 1.f;
 

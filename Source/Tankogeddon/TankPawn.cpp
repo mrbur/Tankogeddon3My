@@ -14,6 +14,10 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "HealthComponent.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
+#include "Camera/CameraShakeBase.h"
+#include "GameFramework/ForceFeedbackEffect.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -46,6 +50,18 @@ ATankPawn::ATankPawn()
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
     HealthComponent->OnDie.AddDynamic(this, &ATankPawn::OnDie);
+
+    HitEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Hit Effect"));
+    HitEffect->SetupAttachment(CannonSpawnPoint);
+
+    DieEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Die Effect"));
+    DieEffect->SetupAttachment(CannonSpawnPoint);
+
+    AudioHitEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Hit Effect"));
+    AudioHitEffect->SetupAttachment(CannonSpawnPoint);
+
+    AudioDieEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die Effect"));
+    AudioDieEffect->SetupAttachment(CannonSpawnPoint);
 }
 
 void ATankPawn::TakeDamage(const FDamageData& DamageData)
@@ -138,11 +154,15 @@ void ATankPawn::ChangeCannon()
 
 void ATankPawn::OnHealthChanged_Implementation(float Damage)
 {
+    HitEffect->ActivateSystem();
+    AudioHitEffect->Play();
     UE_LOG(LogTankogeddon, Log, TEXT("Tank %s taked damage:%f "), *GetName(), Damage);
 }
 
 void ATankPawn::OnDie_Implementation()
 {
+    DieEffect->ActivateSystem();
+    AudioDieEffect->Play();
     Destroy();
 }
 

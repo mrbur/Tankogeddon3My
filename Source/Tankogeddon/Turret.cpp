@@ -12,6 +12,10 @@
 #include "Tankogeddon.h"
 #include "HealthComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
+#include "Camera/CameraShakeBase.h"
+#include "GameFramework/ForceFeedbackEffect.h"
 
 // Sets default values
 ATurret::ATurret()
@@ -48,6 +52,18 @@ ATurret::ATurret()
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATurret::OnHealthChanged);
     HealthComponent->OnDie.AddDynamic(this, &ATurret::OnDie);
 
+
+    HitEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Hit Effect"));
+    HitEffect->SetupAttachment(CannonSetupPoint);
+
+    DieEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Die Effect"));
+    DieEffect->SetupAttachment(CannonSetupPoint);
+
+    AudioHitEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Hit Effect"));
+    AudioHitEffect->SetupAttachment(CannonSetupPoint);
+
+    AudioDieEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die Effect"));
+    AudioDieEffect->SetupAttachment(CannonSetupPoint);
 }
 
 // Called when the game starts or when spawned
@@ -122,11 +138,15 @@ bool ATurret::IsTargetHiddenBehind()
 
 void ATurret::OnHealthChanged_Implementation(float Damage)
 {
+    HitEffect->ActivateSystem();
+    AudioHitEffect->Play();
     UE_LOG(LogTankogeddon, Log, TEXT("Turret %s taked damage:%f "), *GetName(), Damage);
 }
 
 void ATurret::OnDie_Implementation()
 {
+    DieEffect->ActivateSystem();
+    AudioDieEffect->Play();
     Destroy();
 }
 
