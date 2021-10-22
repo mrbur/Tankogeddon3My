@@ -23,6 +23,8 @@ public:
 	
 private:
 	void MoveForward(float InAxisValue);
+	void RotateLeft();
+	void RotateRight();
 	void RotateRight(float InAxisValue);
 	void FireSpecial();
 	void Fire();
