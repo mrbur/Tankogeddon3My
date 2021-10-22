@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Damageable.h"
 #include "ScoreComponent.h"
+#include "Ammo.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -82,6 +83,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
     TSubclassOf<class AAlterCannon> AlterCannonClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
+    TSubclassOf<class AAmmo> AAmmoClass;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

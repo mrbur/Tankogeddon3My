@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "Cannon.h"
+#include "Ammo.h"
 #include "AlterCannon.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -163,6 +164,7 @@ void ATankPawn::OnDie_Implementation()
 {
     DieEffect->ActivateSystem();
     AudioDieEffect->Play();
+    GetWorld()->SpawnActor<AAmmo>(AAmmoClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation());
     Destroy();
 }
 
