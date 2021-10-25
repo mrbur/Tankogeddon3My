@@ -3,26 +3,19 @@
 
 #include "TankAIController.h"
 #include "TankPawn.h"
+#include "Engine/TargetPoint.h"
 #include "DrawDebugHelpers.h"
 
 void ATankAIController::BeginPlay()
 {
     Super::BeginPlay();
-
-    TankPawn = Cast<ATankPawn>(GetPawn());
-    if (TankPawn)
-    {
-        for (const FVector& Point : TankPawn->GetPatrollingPoints())
-        {
-            PatrollingPoints.Add(TankPawn->GetActorLocation() + Point);
-        }
-    }
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+    TankPawn = Cast<ATankPawn>(GetPawn());
     if (TankPawn)
     {
         MoveToNextPoint();
@@ -32,6 +25,7 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::MoveToNextPoint()
 {
+    auto PatrollingPoints = TankPawn->GetPatrollingPoints();
     if (PatrollingPoints.Num() == 0)
     {
         return;
@@ -39,7 +33,7 @@ void ATankAIController::MoveToNextPoint()
 
     TankPawn->MoveForward(1.f);
     FVector PawnLocation = TankPawn->GetActorLocation();
-    FVector CurrentPoint = PatrollingPoints[CurrentPatrolPointIndex];
+    FVector CurrentPoint = PatrollingPoints[CurrentPatrolPointIndex]->GetActorLocation();
     if (FVector::DistSquared(PawnLocation, CurrentPoint) <= FMath::Square(TankPawn->GetMovementAccuracy()))
     {
         CurrentPatrolPointIndex++;

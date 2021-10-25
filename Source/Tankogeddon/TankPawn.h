@@ -73,7 +73,7 @@ protected:
     float TurretRotationSmootheness = 0.5f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params", Meta = (MakeEditWidget = true))
-    TArray<FVector> PatrollingPoints;
+    TArray<class ATargetPoint*> PatrollingPoints;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params")
     float MovementAccuracy = 50.f;
@@ -127,9 +127,15 @@ public:
     void AddScore();
 
     UFUNCTION(BlueprintPure, Category = "AI|Move params")
-    const TArray<FVector>& GetPatrollingPoints()
+    const TArray<class ATargetPoint*>& GetPatrollingPoints()
     {
         return PatrollingPoints;
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "AI|Move params")
+        void SetPatrollingPoints(const TArray<class ATargetPoint*>& InPoints)
+    {
+        PatrollingPoints = InPoints;
     }
 
     UFUNCTION(BlueprintPure, Category = "AI|Move params")
