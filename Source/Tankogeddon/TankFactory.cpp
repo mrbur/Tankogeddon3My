@@ -13,6 +13,10 @@
 #include "Kismet/GameplayStatics.h"
 //#include "MapLoader.h"
 #include "Serialization/Archive.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
+#include "Camera/CameraShakeBase.h"
+#include "GameFramework/ForceFeedbackEffect.h"
 
 // Sets default values
 ATankFactory::ATankFactory()
@@ -35,6 +39,12 @@ ATankFactory::ATankFactory()
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
     HealthComponent->OnDie.AddDynamic(this, &ATankFactory::Die);
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankFactory::DamageTaked);
+
+    TankCreationEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Tank Creation Effect"));
+    TankCreationEffect->SetupAttachment(SceneComp);
+    
+    TankCreationAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Tank Creation Audio Effect"));
+    TankCreationAudioEffect->SetupAttachment(SceneComp);
 }
 
 void ATankFactory::TakeDamage(const FDamageData& DamageData)
@@ -63,6 +73,9 @@ void ATankFactory::SpawnNewTank()
     ATankPawn* NewTank = GetWorld()->SpawnActorDeferred<ATankPawn>(SpawnTankClass, SpawnTransform, this, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
     NewTank->SetPatrollingPoints(TankWayPoints);
     NewTank->FinishSpawning(SpawnTransform);
+
+    TankCreationEffect->ActivateSystem();
+    TankCreationAudioEffect->Play();
 }
 
 void ATankFactory::Die()

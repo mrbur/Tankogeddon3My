@@ -38,6 +38,12 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
     TArray<class ATargetPoint*> TankWayPoints;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UParticleSystemComponent* TankCreationEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UAudioComponent* TankCreationAudioEffect;
+
     /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal Params")
     class AMapLoader* MapLoader;*/
 
