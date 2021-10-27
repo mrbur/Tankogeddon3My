@@ -110,8 +110,6 @@ void ACannon::Shoot()
         }
     }
 
-
-
     if (Type == ECannonType::FireProjectile)
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - projectile"));
@@ -147,8 +145,6 @@ void ACannon::Shoot()
             }
         }
         DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 0.5f, 0, 5.f);
-
-        
     }
 }
 

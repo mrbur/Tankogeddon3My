@@ -27,8 +27,14 @@ ATankFactory::ATankFactory()
     USceneComponent* SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
     RootComponent = SceneComp;
 
+    BuildingDestroyedMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Building Destroyed Mesh"));
     BuildingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Building Mesh"));
+    
+    BuildingMesh->SetVisibility(bIsFactoryActive);
+    BuildingDestroyedMesh->SetVisibility(!bIsFactoryActive);
     BuildingMesh->SetupAttachment(SceneComp);
+    BuildingDestroyedMesh->SetupAttachment(SceneComp);
+    
 
     TankSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
     TankSpawnPoint->SetupAttachment(SceneComp);
@@ -84,8 +90,9 @@ void ATankFactory::Die()
     {
         MapLoader->SetIsActivated(true);
     }
-
-    Destroy();
+    bIsFactoryActive = false;
+    BuildingMesh->SetVisibility(false);
+    BuildingDestroyedMesh->SetVisibility(true);
 }
 
 void ATankFactory::DamageTaked(float DamageValue)

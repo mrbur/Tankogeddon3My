@@ -21,6 +21,9 @@ protected:
     class UStaticMeshComponent* BuildingMesh;
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UStaticMeshComponent* BuildingDestroyedMesh;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UArrowComponent* TankSpawnPoint;
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -46,6 +49,9 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal Params")
     class AMapLoader* MapLoader;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Work Params")
+    bool bIsFactoryActive = true;
 
 public:
 
