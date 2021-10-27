@@ -93,6 +93,8 @@ void ATankFactory::Die()
     bIsFactoryActive = false;
     BuildingMesh->SetVisibility(false);
     BuildingDestroyedMesh->SetVisibility(true);
+
+    GetWorld()->GetTimerManager().ClearTimer(SpawnTankTimerHandle);
 }
 
 void ATankFactory::DamageTaked(float DamageValue)
