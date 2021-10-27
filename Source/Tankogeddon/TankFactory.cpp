@@ -11,7 +11,7 @@
 #include "Tankogeddon.h"
 #include "TankPawn.h"
 #include "Kismet/GameplayStatics.h"
-//#include "MapLoader.h"
+#include "MapLoader.h"
 #include "Serialization/Archive.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/AudioComponent.h"
@@ -44,7 +44,7 @@ ATankFactory::ATankFactory()
     TankCreationEffect->SetupAttachment(SceneComp);
     
     TankCreationAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Tank Creation Audio Effect"));
-    TankCreationAudioEffect->SetupAttachment(SceneComp);
+    TankCreationAudioEffect->SetupAttachment(TankSpawnPoint);
 }
 
 void ATankFactory::TakeDamage(const FDamageData& DamageData)
@@ -80,10 +80,10 @@ void ATankFactory::SpawnNewTank()
 
 void ATankFactory::Die()
 {
-    /*if (MapLoader)
+    if (MapLoader)
     {
         MapLoader->SetIsActivated(true);
-    }*/
+    }
 
     Destroy();
 }

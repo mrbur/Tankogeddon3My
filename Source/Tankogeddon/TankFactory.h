@@ -44,8 +44,8 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UAudioComponent* TankCreationAudioEffect;
 
-    /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal Params")
-    class AMapLoader* MapLoader;*/
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal Params")
+    class AMapLoader* MapLoader;
 
 public:
 
