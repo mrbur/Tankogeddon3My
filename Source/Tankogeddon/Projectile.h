@@ -30,6 +30,9 @@ protected:
 	UFUNCTION()
 	void OnMeshHit(class UPrimitiveComponent* HittedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Physics")
+	float Mass = 1.f;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
