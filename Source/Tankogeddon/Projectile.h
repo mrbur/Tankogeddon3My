@@ -28,7 +28,7 @@ protected:
 	float FireRange = 2000.f;
 
 	UFUNCTION()
-	void OnMeshHit(class UPrimitiveComponent* HittedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);
+	virtual void OnMeshHit(class UPrimitiveComponent* HittedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Physics")
 	float Mass = 1.f;
@@ -42,7 +42,8 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UScoreComponent* ScoreComponent;
 
-	void Start();
+	virtual void Start();
+	virtual void Stop();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

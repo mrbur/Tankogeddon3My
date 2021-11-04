@@ -26,6 +26,10 @@ void AProjectile::Start()
 	StartPosition = GetActorLocation();
 }
 
+void AProjectile::Stop()
+{
+}
+
 void AProjectile::OnMeshHit(UPrimitiveComponent* HittedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTankogeddon, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
