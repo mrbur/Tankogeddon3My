@@ -1,10 +1,12 @@
 #include "PhysicsProjectile.h"
 #include "PhysicsMovementComponent.h"
+#include "WindComponent.h"
 #include "Damageable.h"
 
 APhysicsProjectile::APhysicsProjectile()
 {
     MovementComponent = CreateDefaultSubobject<UPhysicsMovementComponent>(TEXT("Movement Component"));
+    WindComponent = CreateDefaultSubobject<UWindComponent>(TEXT("Wind Component"));
 }
 
 void APhysicsProjectile::Start()
@@ -13,6 +15,7 @@ void APhysicsProjectile::Start()
 
     MovementComponent->Velocity = GetActorForwardVector() * MoveSpeed;
     MovementComponent->SetComponentTickEnabled(true);
+    WindComponent->SetComponentTickEnabled(true);
 }
 
 void APhysicsProjectile::Stop()
