@@ -72,6 +72,77 @@ void AProjectile::BeginPlay()
 	
 }
 
+void AProjectile::Explode()
+{
+    FVector StartPos = GetActorLocation();
+    FVector EndPos = StartPos + FVector(0.1f);
+
+    FCollisionShape Shape = FCollisionShape::MakeSphere(ExplosionRange);
+    FCollisionQueryParams Params = FCollisionQueryParams::DefaultQueryParam;
+    Params.AddIgnoredActor(this);
+    Params.bTraceComplex = true;
+    Params.TraceTag = "Explode Trace";
+    TArray<FHitResult> AttackHit;
+
+    FQuat Rotation = FQuat::Identity;
+
+    GetWorld()->DebugDrawTraceTag = "Explode Trace";
+
+    bool bSweepResult = GetWorld()->SweepMultiByChannel
+    (
+        AttackHit,
+        StartPos,
+        EndPos,
+        Rotation,
+        ECollisionChannel::ECC_Visibility,
+        Shape,
+        Params
+    );
+
+    if (bSweepResult)
+    {
+        for (FHitResult HitResult : AttackHit)
+        {
+            AActor* HitActor = HitResult.GetActor();
+            if (!HitActor)
+                continue;
+
+            MakeDamage(HitActor);
+            MakeImpulse(HitActor);
+        }
+    }
+
+    Stop();
+}
+
+void AProjectile::MakeImpulse(AActor* HitActor)
+{
+    UPrimitiveComponent* HitMesh = Cast<UPrimitiveComponent>(HitActor->GetRootComponent());
+    if (HitMesh)
+    {
+        if (HitMesh->IsSimulatingPhysics())
+        {
+            FVector ForceVector = HitActor->GetActorLocation() - GetActorLocation();
+            ForceVector.Normalize();
+            HitMesh->AddImpulse(ForceVector * ExplosionImpulse, NAME_None, true);
+        }
+    }
+}
+
+void AProjectile::MakeDamage(AActor* HitActor)
+{
+    IDamageable* DamageableActor = Cast<IDamageable>(HitActor);
+    if (DamageableActor)
+    {
+        FDamageData DamageData;
+        DamageData.DamageValue = Damage;
+        DamageData.Instigator = GetOwner();
+        DamageData.DamageMaker = this;
+
+        DamageableActor->TakeDamage(DamageData);
+    }
+}
+
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
 {

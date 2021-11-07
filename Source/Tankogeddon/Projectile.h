@@ -33,8 +33,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Physics")
 	float Mass = 1.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Explosives")
+	float ExplosionRange = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Explosives")
+	float ExplosionImpulse = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Explosives")
+	bool isExplosive = false;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void Explode();
+	void MakeImpulse(AActor* HitActor);
+	void MakeDamage(AActor* HitActor);
 
 public:	
 	AProjectile();
