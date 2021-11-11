@@ -204,6 +204,6 @@ void ATankPawn::SetupCannon()
 
     DefaultCannon->ScoreComponent->OnDestroySomeone.AddDynamic(this, &ATankPawn::AddScore);
 
-    Cannon = DefaultCannon;
+    Cannon = AltCannon;
     Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
