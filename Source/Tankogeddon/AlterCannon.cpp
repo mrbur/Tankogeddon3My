@@ -15,7 +15,7 @@ void AAlterCannon::Tick(float DeltaTime)
     FVector Velocity = ProjectileMoveSpeed * ProjectileSpawnPoint->GetForwardVector();
     float vy = Velocity.Z;
 
-    float t = 2 * vy / 98;
+    float t = 2 * vy / GravityConst;
 
     float s = vx * t;
     FVector endp = GetActorForwardVector();

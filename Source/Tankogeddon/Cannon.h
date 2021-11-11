@@ -65,6 +65,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
     TSubclassOf<class AProjectile> ProjectileClass;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
+    float GravityConst = 98;
+
 private:
     FTimerHandle ReloadTimerHandle;
     FTimerHandle FireHandle;
