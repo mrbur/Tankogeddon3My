@@ -41,6 +41,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     float FireDamage = 1.f;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|speed")
+    float ProjectileMoveSpeed = 400.f;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
     float AlterFiredelay = 0.3f;
 
@@ -86,5 +89,4 @@ protected:
     virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
     bool checkAmmo();
     void ReloadEnd();
-
 };

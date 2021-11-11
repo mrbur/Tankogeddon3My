@@ -14,4 +14,8 @@ class TANKOGEDDON_API AAlterCannon : public ACannon
 {
 	GENERATED_BODY()
 
+public:
+	AAlterCannon();
+	virtual void Tick(float DeltaTime) override;
+
 };

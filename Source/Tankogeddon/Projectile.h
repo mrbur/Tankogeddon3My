@@ -21,9 +21,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
 	float Damage = 1.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|speed")
-	float MoveSpeed = 100.f;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "range")
 	float FireRange = 2000.f;
 
@@ -51,6 +48,8 @@ protected:
 
 public:	
 	AProjectile();
+
+	float MoveSpeed = 100.f;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UScoreComponent* ScoreComponent;

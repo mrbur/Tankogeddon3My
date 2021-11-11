@@ -30,7 +30,6 @@ ACannon::ACannon()
 
     ScoreComponent = CreateDefaultSubobject<UScoreComponent>(TEXT("Score component"));
 
-
     ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Shoot Effect"));
     ShootEffect->SetupAttachment(ProjectileSpawnPoint);
 
@@ -115,6 +114,7 @@ void ACannon::Shoot()
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - projectile"));
 
         AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(), ProjectileSpawnPoint->GetComponentRotation());
+        Projectile->MoveSpeed = ProjectileMoveSpeed;
         Projectile->ScoreComponent = ScoreComponent;
         if (Projectile)
         {
