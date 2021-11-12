@@ -17,19 +17,6 @@ void APhysicsProjectile::Start()
     MovementComponent->Velocity = GetActorForwardVector() * MoveSpeed;
     MovementComponent->SetComponentTickEnabled(true);
     WindComponent->SetComponentTickEnabled(true);
-
-    float vx = 0.5 * MoveSpeed;
-    float vy = MovementComponent->Velocity.Z;
-
-    float t = 2 * vy / (MovementComponent->Gravity.Z * -1);
-
-    float s = vx * t;
-    endp = GetActorForwardVector();
-
-    endp.Z = 0;
-    endp.Normalize();
-    endp = s * endp;
-    endp = endp + GetActorLocation();
 }
 
 void APhysicsProjectile::Stop()
@@ -42,7 +29,6 @@ void APhysicsProjectile::Stop()
 
 void APhysicsProjectile::Tick(float DeltaSeconds)
 {
-    DrawDebugLine(GetWorld(), GetActorLocation(), endp, FColor::Green, false, 0.5f, 0, 5.f);
 
     if (GetActorLocation().Z < -10000.f)
     {

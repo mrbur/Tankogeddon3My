@@ -27,6 +27,4 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UWindComponent* WindComponent;
-
-	FVector endp;
 };
