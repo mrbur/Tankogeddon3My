@@ -11,6 +11,8 @@ void ATankPlayerController::BeginPlay()
 
     TankPawn = Cast<ATankPawn>(GetPawn());
     bShowMouseCursor = true;
+
+    TankPawn->isPlayer = 1;
 }
 
 void ATankPlayerController::SetupInputComponent()
