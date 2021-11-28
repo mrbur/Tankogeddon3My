@@ -18,6 +18,9 @@ public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+    int isPlayer = 0;
+
     virtual void TakeDamage(const FDamageData& DamageData) override;
 
 protected:
@@ -143,6 +146,9 @@ public:
     {
         return MovementAccuracy;
     }
+
+    UFUNCTION(BlueprintPure, Category = "AI|Move params")
+    int IsPlayer();
 
 private:
     void SetupCannon();

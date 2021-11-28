@@ -188,6 +188,11 @@ FVector ATankPawn::GetTurretForwardVector()
     return TurretMesh->GetForwardVector();
 }
 
+int ATankPawn::IsPlayer()
+{
+    return isPlayer;
+}
+
 void ATankPawn::SetupCannon()
 {
     if (Cannon)
