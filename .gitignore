@@ -4,3 +4,4 @@ Binaries
 DerivedDataCach
 .vs
 *.sln
+*.log
