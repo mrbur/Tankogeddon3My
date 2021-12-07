@@ -16,7 +16,7 @@ void APhysicsProjectile::Start()
 
     MovementComponent->Velocity = GetActorForwardVector() * MoveSpeed;
     MovementComponent->SetComponentTickEnabled(true);
-    WindComponent->SetComponentTickEnabled(true);
+    //WindComponent->SetComponentTickEnabled(true);
 }
 
 void APhysicsProjectile::Stop()
