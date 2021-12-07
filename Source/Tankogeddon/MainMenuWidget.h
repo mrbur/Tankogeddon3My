@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UButton* QuitButton;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetAnim), Transient)
+	UWidgetAnimation* MenuAnimation;
+
 	UFUNCTION()
 	void OnNewGameClicked();
 

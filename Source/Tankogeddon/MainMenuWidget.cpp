@@ -14,6 +14,10 @@ void UMainMenuWidget::NativeConstruct() {
 	if (NewButton) {
 		QuitButton->OnPressed.AddDynamic(this, &ThisClass::OnQuitGameClicked);
 	}
+
+	if (MenuAnimation) {
+		PlayAnimation(MenuAnimation);
+	}
 }
 
 void UMainMenuWidget::OnNewGameClicked()
@@ -24,4 +28,9 @@ void UMainMenuWidget::OnNewGameClicked()
 void UMainMenuWidget::OnQuitGameClicked()
 {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+}
+
+void UMainMenuWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
 }
