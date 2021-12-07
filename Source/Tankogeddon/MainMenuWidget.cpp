@@ -29,8 +29,3 @@ void UMainMenuWidget::OnQuitGameClicked()
 {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
 }
-
-void UMainMenuWidget::NativeOnInitialized()
-{
-	Super::NativeOnInitialized();
-}
