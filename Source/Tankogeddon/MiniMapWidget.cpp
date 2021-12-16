@@ -7,11 +7,24 @@
 void UMiniMapWidget::NativeConstruct()
 {
     Super::NativeConstruct();
+}
+
+void UMiniMapWidget::NativePreConstruct()
+{
+    TSharedRef<SMiniMapCompoundWidget> 
+        SlateWidget = SNew(SMiniMapCompoundWidget);
+    SMiniMapCompoundWidget& f = SlateWidget.Get();
+    miniMapCompoundWidget = &f;
 
     if (MiniMap)
     {
         MiniMap->SetContent(
-            SNew(SMiniMapCompoundWidget)
+            SlateWidget
         );
     }
+}
+
+void UMiniMapWidget::SetTankPositionOnMiniMap(FVector position)
+{
+    miniMapCompoundWidget->SetTankPosition(position);
 }

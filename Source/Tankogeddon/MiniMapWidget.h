@@ -18,9 +18,14 @@ class TANKOGEDDON_API UMiniMapWidget : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
+	virtual void NativePreConstruct() override;
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void SetTankPositionOnMiniMap(FVector position);
 
 protected:
-	UPROPERTY(meta = (BindWidgetOptional))
+	SMiniMapCompoundWidget* miniMapCompoundWidget;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidgetOptional), Category = "Minimap")
 	UNativeWidgetHost* MiniMap;
-	
 };

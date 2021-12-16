@@ -12,15 +12,21 @@
 class TANKOGEDDON_API SMiniMapCompoundWidget : public SCompoundWidget
 {
 public:
+	virtual int32 OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
+
 	SLATE_BEGIN_ARGS(SMiniMapCompoundWidget)
 	{}
-	SLATE_ARGUMENT(EHorizontalAlignment, HAlign)
-	SLATE_ARGUMENT(FSlateBrush*, Background)
+	SLATE_ATTRIBUTE(FSlateColor, MyRadioButtons)
 	SLATE_END_ARGS()
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
+	void SetTankPosition(FVector TankPosition);
 
-private:
-	UPROPERTY()
-	UUserWidget minimap;
+protected:
+	TArray<FVector2D> LinePoints;
+	FLinearColor LineColor = FLinearColor::Black;
+	float LineThickness = 2.0f;
+	bool bUseAntialias = true;
+
+	FVector TankCurrentPosition;
 };
