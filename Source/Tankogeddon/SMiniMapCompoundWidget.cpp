@@ -15,9 +15,20 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
         OutDrawElements,
         LayerId,
         AllottedGeometry.ToPaintGeometry(),
-        LinePoints,
+        BorderLinePoints,
         ESlateDrawEffect::None,
-        LineColor,
+        BorderLineColor,
+        bUseAntialias,
+        LineThickness
+    );
+
+    FSlateDrawElement::MakeLines(
+        OutDrawElements,
+        LayerId,
+        AllottedGeometry.ToPaintGeometry(),
+        TankLinePoints,
+        ESlateDrawEffect::None,
+        TankColor,
         bUseAntialias,
         LineThickness
     );
@@ -26,11 +37,11 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
 
 void SMiniMapCompoundWidget::Construct(const FArguments& InArgs)
 {
-    LinePoints.Add(FVector2D(0.0f, 0.0f));
-    LinePoints.Add(FVector2D(0.0f, 300.0f));
-    LinePoints.Add(FVector2D(300.0f, 300.0f));
-    LinePoints.Add(FVector2D(300.0f, 0.0f));
-    LinePoints.Add(FVector2D(0.0f, 0.0f));
+    BorderLinePoints.Add(FVector2D(0.0f, 0.0f));
+    BorderLinePoints.Add(FVector2D(500.0f, 0.0f));
+    BorderLinePoints.Add(FVector2D(500.0f, 500.0f));
+    BorderLinePoints.Add(FVector2D(0.0f, 500.0f));
+    BorderLinePoints.Add(FVector2D(0.0f, 0.0f));
 
     ChildSlot
         [
@@ -40,6 +51,15 @@ void SMiniMapCompoundWidget::Construct(const FArguments& InArgs)
 
 void SMiniMapCompoundWidget::SetTankPosition(FVector TankPosition)
 {
-    TankCurrentPosition = TankPosition;
+    TankLinePoints.Empty();
+
+    FVector2D Tank2DPosition(TankPosition.X + MapXShift, TankPosition.Y + MapYShift);
+    Tank2DPosition.X = (Tank2DPosition.X / MapXSize) * MiniMapXSize;
+    Tank2DPosition.Y = (Tank2DPosition.Y / MapYSize) * MiniMapYSize;
+    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X + 4));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.Y - 4, MiniMapYSize - Tank2DPosition.X + 4));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.Y - 4, MiniMapYSize - Tank2DPosition.X));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X));
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

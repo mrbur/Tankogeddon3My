@@ -23,10 +23,20 @@ public:
 	void SetTankPosition(FVector TankPosition);
 
 protected:
-	TArray<FVector2D> LinePoints;
-	FLinearColor LineColor = FLinearColor::Black;
-	float LineThickness = 2.0f;
+	TArray<FVector2D> BorderLinePoints;
+	TArray<FVector2D> TankLinePoints;
+	FLinearColor BorderLineColor = FLinearColor::Black;
+	FLinearColor TankColor = FLinearColor::Red;
+	float LineThickness = 4.0f;
 	bool bUseAntialias = true;
+
+	int MapXSize = 5000;
+	int MapYSize = 5000;
+	int MapXShift = 1500;
+	int MapYShift = 2500;
+
+	int MiniMapXSize = 500;
+	int MiniMapYSize = 500;
 
 	FVector TankCurrentPosition;
 };
