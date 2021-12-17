@@ -53,13 +53,21 @@ void SMiniMapCompoundWidget::SetTankPosition(FVector TankPosition)
 {
     TankLinePoints.Empty();
 
+    FVector2D Tank2DPosition = ConvertWorldToMiniMapPosition(TankPosition);
+
+    TankLinePoints.Add(FVector2D(Tank2DPosition.X, Tank2DPosition.Y));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.X, Tank2DPosition.Y - 4));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.X - 4, Tank2DPosition.Y - 4));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.X - 4, Tank2DPosition.Y));
+    TankLinePoints.Add(FVector2D(Tank2DPosition.X, Tank2DPosition.Y));
+}
+
+FVector2D SMiniMapCompoundWidget::ConvertWorldToMiniMapPosition(FVector TankPosition)
+{
     FVector2D Tank2DPosition(TankPosition.X + MapXShift, TankPosition.Y + MapYShift);
     Tank2DPosition.X = (Tank2DPosition.X / MapXSize) * MiniMapXSize;
     Tank2DPosition.Y = (Tank2DPosition.Y / MapYSize) * MiniMapYSize;
-    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X));
-    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X + 4));
-    TankLinePoints.Add(FVector2D(Tank2DPosition.Y - 4, MiniMapYSize - Tank2DPosition.X + 4));
-    TankLinePoints.Add(FVector2D(Tank2DPosition.Y - 4, MiniMapYSize - Tank2DPosition.X));
-    TankLinePoints.Add(FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X));
+
+    return FVector2D(Tank2DPosition.Y, MiniMapYSize - Tank2DPosition.X);
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

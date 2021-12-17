@@ -22,6 +22,8 @@ public:
 	void Construct(const FArguments& InArgs);
 	void SetTankPosition(FVector TankPosition);
 
+	FVector2D ConvertWorldToMiniMapPosition(FVector TankPosition);
+
 protected:
 	TArray<FVector2D> BorderLinePoints;
 	TArray<FVector2D> TankLinePoints;
