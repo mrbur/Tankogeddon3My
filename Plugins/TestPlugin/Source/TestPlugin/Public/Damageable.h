@@ -17,7 +17,7 @@ class UDamageable : public UInterface
 /**
  * 
  */
-class TANKOGEDDON_API IDamageable
+class TESTPLUGIN_API IDamageable
 {
 	GENERATED_BODY()
 
