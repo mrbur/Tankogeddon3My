@@ -8,7 +8,7 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TANKOGEDDON_API UWindComponent : public UActorComponent
+class TESTPLUGIN_API UWindComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

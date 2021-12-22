@@ -7,21 +7,15 @@ public class TestPlugin : ModuleRules
 	public TestPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
-		PublicIncludePaths.AddRange(
-			new string[] {
-				// ... add public include paths required here ...
-			}
-			);
-				
-		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				// ... add other private include paths required here ...
-			}
-			);
-			
-		
+
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG"});
+
+		PrivateDependencyModuleNames.AddRange(new string[] { });
+
+		// Uncomment if you are using Slate UI
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+
+
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
