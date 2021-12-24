@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include <Components/NativeWidgetHost.h>
+#include "MiniMapWidgetStyle.h"
 #include "SMiniMapCompoundWidget.h"
 #include "MiniMapWidget.generated.h"
 
@@ -19,6 +20,9 @@ class TANKOGEDDON_API UMiniMapWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativePreConstruct() override;
+
+	UPROPERTY(EditAnywhere, Category = "Appearance", meta = (DisplayName = "Style"))
+	FMiniMapStyle WidgetStyle;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void SetTankPositionOnMiniMap(FVector position);

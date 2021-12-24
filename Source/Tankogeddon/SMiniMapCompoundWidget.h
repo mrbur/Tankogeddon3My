@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MiniMapWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 
 /**
@@ -16,7 +17,7 @@ public:
 
 	SLATE_BEGIN_ARGS(SMiniMapCompoundWidget)
 	{}
-	SLATE_ATTRIBUTE(FSlateColor, MyRadioButtons)
+	SLATE_STYLE_ARGUMENT(FMiniMapStyle, style)
 	SLATE_END_ARGS()
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
@@ -41,4 +42,7 @@ protected:
 	int MiniMapYSize = 500;
 
 	FVector TankCurrentPosition;
+
+	const FTextBlockStyle* MiniMapTextStyle = nullptr;
+
 };

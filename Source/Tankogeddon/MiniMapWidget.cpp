@@ -11,10 +11,9 @@ void UMiniMapWidget::NativeConstruct()
 
 void UMiniMapWidget::NativePreConstruct()
 {
-    TSharedRef<SMiniMapCompoundWidget> 
-        SlateWidget = SNew(SMiniMapCompoundWidget);
-    SMiniMapCompoundWidget& f = SlateWidget.Get();
-    miniMapCompoundWidget = &f;
+    TSharedRef<SMiniMapCompoundWidget> SlateWidget = SNew(SMiniMapCompoundWidget).style(&WidgetStyle);
+    SMiniMapCompoundWidget& minimapSlateWidget = SlateWidget.Get();
+    miniMapCompoundWidget = &minimapSlateWidget;
 
     if (MiniMap)
     {
