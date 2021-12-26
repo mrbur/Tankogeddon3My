@@ -5,6 +5,7 @@
 
 FMiniMapStyle::FMiniMapStyle()
 {
+	
 }
 
 FMiniMapStyle::~FMiniMapStyle()

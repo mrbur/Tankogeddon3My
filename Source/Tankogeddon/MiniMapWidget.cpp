@@ -2,6 +2,7 @@
 
 
 #include "MiniMapWidget.h"
+#include "FStyleSet.h"
 
 
 void UMiniMapWidget::NativeConstruct()
@@ -11,6 +12,8 @@ void UMiniMapWidget::NativeConstruct()
 
 void UMiniMapWidget::NativePreConstruct()
 {
+    WidgetStyle = FStyleSet::Get().GetWidgetStyle<FMiniMapStyle>("MiniMapStyle");
+
     TSharedRef<SMiniMapCompoundWidget> SlateWidget = SNew(SMiniMapCompoundWidget).style(&WidgetStyle);
     SMiniMapCompoundWidget& minimapSlateWidget = SlateWidget.Get();
     miniMapCompoundWidget = &minimapSlateWidget;
