@@ -22,6 +22,12 @@ struct TANKOGEDDON_API FMiniMapStyle : public FSlateWidgetStyle
 	UPROPERTY(EditAnywhere, Category = Appearance)
 	FTextBlockStyle MiniMapTextStyle;
 
+	UPROPERTY(EditAnywhere, Category = Appearance)
+	FLinearColor BorderLineColor = FLinearColor::Black;
+
+	UPROPERTY(EditAnywhere, Category = Appearance)
+	FLinearColor TankColor = FLinearColor::Red;
+
 	// FSlateWidgetStyle
 	virtual void GetResources(TArray<const FSlateBrush*>& OutBrushes) const override;
 	static const FName TypeName;

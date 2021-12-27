@@ -19,7 +19,7 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
         AllottedGeometry.ToPaintGeometry(),
         BorderLinePoints,
         ESlateDrawEffect::None,
-        BorderLineColor,
+        *BorderLineColor,
         bUseAntialias,
         LineThickness
     );
@@ -30,7 +30,7 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
         AllottedGeometry.ToPaintGeometry(),
         TankLinePoints,
         ESlateDrawEffect::None,
-        TankColor,
+        *TankColor,
         bUseAntialias,
         LineThickness
     );
@@ -40,6 +40,8 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
 void SMiniMapCompoundWidget::Construct(const FArguments& InArgs)
 {
     MiniMapTextStyle = &InArgs._style->MiniMapTextStyle;
+    BorderLineColor = &InArgs._style->BorderLineColor;
+    TankColor = &InArgs._style->TankColor;
 
     BorderLinePoints.Add(FVector2D(0.0f, 0.0f));
     BorderLinePoints.Add(FVector2D(500.0f, 0.0f));

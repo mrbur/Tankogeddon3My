@@ -12,7 +12,7 @@ void UMiniMapWidget::NativeConstruct()
 
 void UMiniMapWidget::NativePreConstruct()
 {
-    WidgetStyle = FStyleSet::Get().GetWidgetStyle<FMiniMapStyle>("MiniMapStyle");
+    WidgetStyle = FStyleSet::Get().GetWidgetStyle<FMiniMapStyle>("WS_MiniMapTextStyle_Default");
 
     TSharedRef<SMiniMapCompoundWidget> SlateWidget = SNew(SMiniMapCompoundWidget).style(&WidgetStyle);
     SMiniMapCompoundWidget& minimapSlateWidget = SlateWidget.Get();

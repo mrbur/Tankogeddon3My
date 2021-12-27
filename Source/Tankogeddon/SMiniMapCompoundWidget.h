@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Math/Color.h"
 #include "MiniMapWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 
@@ -28,8 +29,7 @@ public:
 protected:
 	TArray<FVector2D> BorderLinePoints;
 	TArray<FVector2D> TankLinePoints;
-	FLinearColor BorderLineColor = FLinearColor::Black;
-	FLinearColor TankColor = FLinearColor::Red;
+
 	float LineThickness = 4.0f;
 	bool bUseAntialias = true;
 
@@ -44,5 +44,7 @@ protected:
 	FVector TankCurrentPosition;
 
 	const FTextBlockStyle* MiniMapTextStyle = nullptr;
+	const FLinearColor* BorderLineColor = nullptr;
+	const FLinearColor* TankColor = nullptr;
 
 };
