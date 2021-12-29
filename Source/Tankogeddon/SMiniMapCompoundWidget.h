@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Math/Color.h"
+#include "MiniMapWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 
 /**
@@ -16,7 +18,7 @@ public:
 
 	SLATE_BEGIN_ARGS(SMiniMapCompoundWidget)
 	{}
-	SLATE_ATTRIBUTE(FSlateColor, MyRadioButtons)
+	SLATE_STYLE_ARGUMENT(FMiniMapStyle, style)
 	SLATE_END_ARGS()
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
@@ -27,8 +29,7 @@ public:
 protected:
 	TArray<FVector2D> BorderLinePoints;
 	TArray<FVector2D> TankLinePoints;
-	FLinearColor BorderLineColor = FLinearColor::Black;
-	FLinearColor TankColor = FLinearColor::Red;
+
 	float LineThickness = 4.0f;
 	bool bUseAntialias = true;
 
@@ -41,4 +42,9 @@ protected:
 	int MiniMapYSize = 500;
 
 	FVector TankCurrentPosition;
+
+	const FTextBlockStyle* MiniMapTextStyle = nullptr;
+	const FLinearColor* BorderLineColor = nullptr;
+	const FLinearColor* TankColor = nullptr;
+
 };

@@ -3,6 +3,8 @@
 
 #include "SMiniMapCompoundWidget.h"
 #include "Widgets/SCanvas.h"
+#include "Widgets/Layout/SWrapBox.h"
+#include "Widgets/Text/STextBlock.h"
 #include "Rendering/DrawElements.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -17,7 +19,7 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
         AllottedGeometry.ToPaintGeometry(),
         BorderLinePoints,
         ESlateDrawEffect::None,
-        BorderLineColor,
+        *BorderLineColor,
         bUseAntialias,
         LineThickness
     );
@@ -28,15 +30,19 @@ int32 SMiniMapCompoundWidget::OnPaint(const FPaintArgs& Args, const FGeometry& A
         AllottedGeometry.ToPaintGeometry(),
         TankLinePoints,
         ESlateDrawEffect::None,
-        TankColor,
+        *TankColor,
         bUseAntialias,
         LineThickness
     );
-    return int32();
+    return SCompoundWidget::OnPaint(Args,  AllottedGeometry, MyCullingRect, OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
 }
 
 void SMiniMapCompoundWidget::Construct(const FArguments& InArgs)
 {
+    MiniMapTextStyle = &InArgs._style->MiniMapTextStyle;
+    BorderLineColor = &InArgs._style->BorderLineColor;
+    TankColor = &InArgs._style->TankColor;
+
     BorderLinePoints.Add(FVector2D(0.0f, 0.0f));
     BorderLinePoints.Add(FVector2D(500.0f, 0.0f));
     BorderLinePoints.Add(FVector2D(500.0f, 500.0f));
@@ -45,7 +51,15 @@ void SMiniMapCompoundWidget::Construct(const FArguments& InArgs)
 
     ChildSlot
         [
-            SNew(SCanvas)
+        SNew(SWrapBox)
+        .PreferredWidth(500.f)
+
+        + SWrapBox::Slot()
+            [
+                SNew(STextBlock)
+                    .Text(FText::FromString("Tankogeddon"))
+                    .TextStyle(MiniMapTextStyle)
+            ]
         ];
 }
 
