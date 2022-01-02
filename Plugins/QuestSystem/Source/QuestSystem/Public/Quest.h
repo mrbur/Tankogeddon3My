@@ -19,8 +19,6 @@ public:
 	// Sets default values for this actor's properties
 	AQuest();
 
-    void TakeQuest(AActor* Character);
-
     FOnQuestStatusUpdated OnQuestStatusUpdated;
 
     UPROPERTY(EditAnywhere)
@@ -44,6 +42,8 @@ public:
     void AddLocationObjective();
     UFUNCTION(BlueprintCallable, CallInEditor)
     void AddInteractObjective();
+    UFUNCTION(BlueprintCallable, CallInEditor)
+    void TakeQuest(AActor* Character);
 
 protected:
 

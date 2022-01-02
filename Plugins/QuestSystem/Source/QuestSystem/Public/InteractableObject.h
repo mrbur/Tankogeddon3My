@@ -25,9 +25,9 @@ class QUESTSYSTEM_API IInteractableObject
         //inherited to implement this interface.
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-        void Interact(AActor* ActorInteractedWithObject);
+    void Interact(AActor* ActorInteractedWithObject);
     UFUNCTION()
-        virtual void Interact_Implementation(AActor* ActorInteractedWithObject) {}
+    virtual void Interact_Implementation(AActor* ActorInteractedWithObject) {}
 
     virtual void NotifyInteractionFinished(AActor* InteractableObject,
         AActor* ActorInteractedWithObject)
