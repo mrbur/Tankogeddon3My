@@ -47,10 +47,14 @@ ATankPawn::ATankPawn()
 
     HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
     HitCollider->SetupAttachment(BodyMesh);
+    InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interact component"));
+    InteractionComponent->SetupAttachment(BodyMesh);
 
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
     HealthComponent->OnDie.AddDynamic(this, &ATankPawn::OnDie);
+
+    
 
     HitEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Hit Effect"));
     HitEffect->SetupAttachment(CannonSpawnPoint);

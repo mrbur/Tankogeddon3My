@@ -63,7 +63,7 @@ void ATankFactory::BeginPlay()
 {
     Super::BeginPlay();
 
-    GetWorld()->GetTimerManager().SetTimer(SpawnTankTimerHandle, this, &ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
+    //GetWorld()->GetTimerManager().SetTimer(SpawnTankTimerHandle, this, &ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
 }
 
 void ATankFactory::EndPlay(EEndPlayReason::Type EndPlayReason)

@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Damageable.h"
 #include "ScoreComponent.h"
+#include "InteractionComponent.h"
 #include "Ammo.h"
 #include "TankPawn.generated.h"
 
@@ -44,6 +45,9 @@ protected:
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UHealthComponent* HealthComponent;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UInteractionComponent* InteractionComponent;
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UParticleSystemComponent* DieEffect;
