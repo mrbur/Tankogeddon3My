@@ -62,10 +62,10 @@ void AQuest::OnObjectiveCompleted(UObjective* Objective)
         }
     }
 
-    /*if (OnQuestStatusUpdated.IsBound())
+    if (OnQuestStatusUpdated.IsBound())
     {
         OnQuestStatusUpdated.Broadcast(this);
-    }*/
+    }
 }
 
 void AQuest::AddLocationObjective()
