@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Damageable.h"
 #include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "Turret.generated.h"
 
 UCLASS()
@@ -36,6 +37,9 @@ protected:
 	class UBoxComponent* HitCollider;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	class UBoxComponent* EnemyCollider;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class UHealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -62,9 +66,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
 	float Accuracy = 10.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	class AActor* TargetActor = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	bool IsEnemy = true;
+
 	const FString BodyMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'";
 	const FString TurretMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Gun1.SM_CSC_Gun1'";
 
+	UPROPERTY()
+	class ACannon* Cannon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	class APawn* PlayerPawn;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -77,6 +92,9 @@ protected:
 	void Fire();
 	bool IsTargetHiddenBehind();
 
+	UFUNCTION()
+	void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	UFUNCTION(BlueprintNativeEvent, Category = "Health")
 	void OnHealthChanged(float Damage);
 
@@ -84,12 +102,6 @@ protected:
 	void OnDie();
 
 private:
-	UPROPERTY()
-	class ACannon* Cannon;
-
-	UPROPERTY()
-	class APawn* PlayerPawn;
-
 	float TargetRotateRightAxis = 45.f;
 	float TurretRotationSmootheness = 0.5f;
 	float RotateSpeed = 30.f;

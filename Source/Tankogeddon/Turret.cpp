@@ -36,6 +36,10 @@ ATurret::ATurret()
     HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
     HitCollider->SetupAttachment(BodyMesh);
 
+    EnemyCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Enemy Collider"));
+    EnemyCollider->SetupAttachment(BodyMesh);
+    BodyMesh->OnComponentBeginOverlap.AddDynamic(this, &ATurret::OnMeshOverlapBegin);
+
     UStaticMesh* TurretMeshTemp = LoadObject<UStaticMesh>(this, *TurretMeshPath);
     if (TurretMeshTemp)
     {
@@ -77,6 +81,10 @@ void ATurret::BeginPlay()
     Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
     PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+
+    if (IsEnemy) {
+        TargetActor = PlayerPawn;
+    }
 }
 
 // Called every frame
@@ -97,7 +105,8 @@ void ATurret::TakeDamage(const FDamageData& DamageData)
 
 bool ATurret::IsPlayerInRange()
 {
-    return FVector::DistSquared(PlayerPawn->GetActorLocation(), GetActorLocation()) <= FMath::Square(TargetingRange);
+    if (TargetActor == nullptr) return false;
+    return FVector::DistSquared(TargetActor->GetActorLocation(), GetActorLocation()) <= FMath::Square(TargetingRange);
 }
 
 bool ATurret::CanFire()
@@ -122,7 +131,7 @@ bool ATurret::IsTargetHiddenBehind()
 {
     FHitResult HitResult;
     FVector TraceStart = GetActorLocation();
-    FVector TraceEnd = PlayerPawn->GetActorLocation();
+    FVector TraceEnd = TargetActor->GetActorLocation();
     FCollisionQueryParams TraceParams = FCollisionQueryParams(FName(TEXT("AI Vission Trace")), true, this);
     TraceParams.bReturnPhysicalMaterial = false;
     if (GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, TraceParams))
@@ -134,6 +143,14 @@ bool ATurret::IsTargetHiddenBehind()
         }
     }
     return false;
+}
+
+void ATurret::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    if (IsEnemy)return;
+    if (OtherActor == PlayerPawn) return;
+
+    TargetActor = OtherActor;
 }
 
 void ATurret::OnHealthChanged_Implementation(float Damage)
@@ -160,7 +177,7 @@ void ATurret::Targeting()
     if (!CanFire()) {
         return;
     }
-    if (IsTargetHiddenBehind()) {
+    if (TargetActor != nullptr && IsTargetHiddenBehind()) {
         return;
     }
 
