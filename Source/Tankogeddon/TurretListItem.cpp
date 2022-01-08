@@ -24,11 +24,6 @@ FReply UTurretListItem::NativeOnMouseButtonDown(const FGeometry& InGeometry, con
     return FReply::Handled();
 }
 
-//FReply UTurretListItem::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-//{
-//    return FReply::Handled().EndDragDrop();
-//}
-
 void UTurretListItem::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     OutOperation = UWidgetBlueprintLibrary::CreateDragDropOperation(
@@ -48,18 +43,12 @@ void UTurretListItem::NativeOnDragDetected(const FGeometry& InGeometry, const FP
     }
 }
 
-//bool UTurretListItem::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
-//{
-//    SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
-//	return false;
-//}
-
 bool UTurretListItem::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
 	return false;
 }
 
-void UTurretListItem::OnDragCancelledHandle(UDragDropOperation* Operation)
+void UTurretListItem::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 }
