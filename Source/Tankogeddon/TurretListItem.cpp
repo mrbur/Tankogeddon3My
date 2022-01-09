@@ -3,6 +3,8 @@
 
 #include "TurretListItem.h"
 #include "TurretDragDropOperation.h"
+#include "Turret.h"
+#include "Math/UnrealMathUtility.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UTurretListItem::NativePreConstruct() {
@@ -50,5 +52,7 @@ bool UTurretListItem::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 void UTurretListItem::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
+    FVector WorldLocation(FMath::RandRange(0, 5000) - 1500, FMath::RandRange(0, 5000) - 2500, 0);
+    ATurret* SpawnedTurret = GetWorld()->SpawnActor<ATurret>(Turret, WorldLocation, FRotator(0,0,0));
     SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 }
