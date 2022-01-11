@@ -109,7 +109,7 @@ void ACannon::Shoot()
         }
     }
 
-    if (Type == ECannonType::FireProjectile)
+    if (Type == ECannonType::FireProjectile && ProjectileClass)
     {
         GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.f, FColor::Green, TEXT("Fire - projectile"));
 

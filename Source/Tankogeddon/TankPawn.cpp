@@ -49,6 +49,8 @@ ATankPawn::ATankPawn()
     HitCollider->SetupAttachment(BodyMesh);
     InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interact component"));
     InteractionComponent->SetupAttachment(BodyMesh);
+    EnemyCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Enemy Collider"));
+    EnemyCollider->SetupAttachment(BodyMesh);
 
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
