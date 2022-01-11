@@ -5,6 +5,10 @@
 #include "TurretDragDropOperation.h"
 #include "Turret.h"
 #include "Math/UnrealMathUtility.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
+#include "DrawDebugHelpers.h"
+#include "CollisionQueryParams.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UTurretListItem::NativePreConstruct() {
@@ -14,6 +18,11 @@ void UTurretListItem::NativePreConstruct() {
     {
         NameText->SetText(FText::FromString(Turret.Get()->ClassGeneratedBy->GetName()));
     }
+}
+
+void UTurretListItem::CreateTurret(FVector WhereToSpawn)
+{
+    ATurret* SpawnedTurret = GetWorld()->SpawnActor<ATurret>(Turret, WhereToSpawn, FRotator(0, 0, 0));
 }
 
 FReply UTurretListItem::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -52,7 +61,17 @@ bool UTurretListItem::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 void UTurretListItem::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    FVector WorldLocation(FMath::RandRange(0, 5000) - 1500, FMath::RandRange(0, 5000) - 2500, 0);
-    ATurret* SpawnedTurret = GetWorld()->SpawnActor<ATurret>(Turret, WorldLocation, FRotator(0,0,0));
+    const FVector2D& screenPos = InDragDropEvent.GetScreenSpacePosition();
+    FVector WorldLocation;
+    FVector WorldDirection;
+    APlayerController* controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    controller->DeprojectScreenPositionToWorld(screenPos.X - 350, screenPos.Y - 120, WorldLocation, WorldDirection);
+
+    FHitResult Hit(ForceInit);
+    
+    if (GetWorld()->LineTraceSingleByChannel(Hit, WorldLocation, WorldLocation + WorldDirection * 10000, ECC_Visibility, 1)) {
+        CreateTurret(Hit.Location);
+    }
+    
     SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 1.f));
 }

@@ -9,9 +9,9 @@
 #include <Runtime/UMG/Public/Components/TextBlock.h>
 #include "TurretListItem.generated.h"
 
-/**
- * 
- */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurretCreate, FVector, pos);
+
 UCLASS()
 class TANKOGEDDON_API UTurretListItem : public UUserWidget
 {
@@ -29,7 +29,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
     class UWidget* DragableWidget;
 
-
+    UFUNCTION(BlueprintCallable, Category = "Turret")
+    void CreateTurret(FVector WhereToSpawn);
 protected:
     FReply NativeOnMouseButtonDown(const FGeometry& InGeometry,
         const FPointerEvent& InMouseEvent) override;

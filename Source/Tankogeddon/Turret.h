@@ -7,7 +7,10 @@
 #include "Damageable.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "GameStructs.h"
 #include "Turret.generated.h"
+
+
 
 UCLASS()
 class TANKOGEDDON_API ATurret : public AActor, public IDamageable
@@ -75,6 +78,8 @@ protected:
 	const FString BodyMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'";
 	const FString TurretMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Gun1.SM_CSC_Gun1'";
 
+	
+
 	UPROPERTY()
 	class ACannon* Cannon;
 
@@ -91,6 +96,8 @@ protected:
 	bool CanFire();
 	void Fire();
 	bool IsTargetHiddenBehind();
+
+	
 
 	UFUNCTION()
 	void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
