@@ -45,10 +45,15 @@ ATankPawn::ATankPawn()
     CannonSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn point"));
     CannonSpawnPoint->SetupAttachment(TurretMesh);
 
+    QuestListComponent = CreateDefaultSubobject<UQuestListComponent>(TEXT("Quest component"));
+    //QuestListComponent->SetupAttachment(BodyMesh);
+
     HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
     HitCollider->SetupAttachment(BodyMesh);
+
     InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interact component"));
     InteractionComponent->SetupAttachment(BodyMesh);
+
     EnemyCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Enemy Collider"));
     EnemyCollider->SetupAttachment(BodyMesh);
 

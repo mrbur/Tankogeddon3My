@@ -8,6 +8,7 @@
 #include "ScoreComponent.h"
 #include "InteractionComponent.h"
 #include "Ammo.h"
+#include "QuestListComponent.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -63,6 +64,9 @@ protected:
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     class UAudioComponent* AudioDieEffect;
+
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+    class UQuestListComponent* QuestListComponent;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
     float MoveSpeed = 100.f;

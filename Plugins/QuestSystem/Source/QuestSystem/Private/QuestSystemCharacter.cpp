@@ -55,36 +55,33 @@ void AQuestSystemCharacter::Interact_Implementation(
             bool HadQuestsAvailable = false;
             for (AActor* Actor : AttachedActors)
             {
-                if (AQuest* Quest = Cast<AQuest>(Actor))
+                if (1)
+                    /*(Quest->IsAlreadyTaken() ||
+                    (Quest->GetPrerquisedQuest() &&
+                        !Quest->GetPrerquisedQuest()->IsCompleted()))*/
                 {
-                    if (1)
-                        /*(Quest->IsAlreadyTaken() ||
-                        (Quest->GetPrerquisedQuest() &&
-                            !Quest->GetPrerquisedQuest()->IsCompleted()))*/
-                    {
-                        continue;
-                    }
-
-                    if (QuestDialogClass)
-                    {
-                        UQuestDialog* QuestDialog =
-                            CreateWidget<UQuestDialog>(GetWorld(),
-                                QuestDialogClass);
-                        QuestDialog->Init(Quest);
-                        QuestDialog->OnQuestAccepted.BindUObject(
-                            ActorQuestList,
-                            &UQuestListComponent::AddQuest, Quest);
-                        QuestDialog->OnQuestQuited.BindLambda(
-                            [this, ActorInteractedWithObject]()
-                            {
-                                NotifyInteractionFinished(this,
-                                    ActorInteractedWithObject);
-                            });
-                        QuestDialog->AddToViewport();
-                    }
-
-                    HadQuestsAvailable = true;
+                    continue;
                 }
+
+                if (QuestDialogClass)
+                {
+                    UQuestDialog* QuestDialog =
+                        CreateWidget<UQuestDialog>(GetWorld(),
+                            QuestDialogClass);
+                    QuestDialog->Init(Cast<AQuest>(Actor));
+                    QuestDialog->OnQuestAccepted.BindUObject(
+                        ActorQuestList,
+                        &UQuestListComponent::AddQuest, Cast<AQuest>(Actor));
+                    QuestDialog->OnQuestQuited.BindLambda(
+                        [this, ActorInteractedWithObject]()
+                        {
+                            NotifyInteractionFinished(this,
+                                ActorInteractedWithObject);
+                        });
+                    QuestDialog->AddToViewport();
+                }
+
+                HadQuestsAvailable = true;
             }
 
             if (!HadQuestsAvailable)
