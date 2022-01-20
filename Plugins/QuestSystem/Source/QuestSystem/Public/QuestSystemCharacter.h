@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InteractableObject.h"
 #include "QuestDialog.h"
+#include "QuestList.h"
 #include "QuestSystemCharacter.generated.h"
 
 UCLASS()
@@ -13,6 +14,17 @@ class QUESTSYSTEM_API AQuestSystemCharacter : public ACharacter, public IInterac
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void ToggleQuestListVisibility();
+
+	UPROPERTY()
+	UQuestList* QuestList;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UQuestList> QuestListClass;
+
+	UPROPERTY()
+	UQuestListComponent* QuestListComp;
 	// Sets default values for this character's properties
 	AQuestSystemCharacter();
 

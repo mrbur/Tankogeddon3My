@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ScrollBox.h"
+#include "QuestListComponent.h"
+#include "QuestDescription.h"
+#include "QuestListEntry.h"
 #include "QuestList.generated.h"
 
 /**
@@ -14,4 +18,21 @@ class QUESTSYSTEM_API UQuestList : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+    void Init(UQuestListComponent* QuestList);
+
+protected:
+    UPROPERTY(meta = (BindWidgetOptional))
+    UScrollBox* StoryQuestsList;
+    UPROPERTY(meta = (BindWidgetOptional))
+    UScrollBox* SideQuestsList;
+    UPROPERTY(meta = (BindWidgetOptional))
+    UQuestDescription* ActiveQuestDescription;
+
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<UQuestListEntry> QuestEntryClass;
+    UPROPERTY()
+    TMap<AQuest*, UQuestListEntry*> QuestEntries;
+
+    void OnActiveQuestChanged(AQuest* ActiveQuest);
 };
