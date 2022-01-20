@@ -24,7 +24,7 @@ public:
     UPROPERTY(EditAnywhere)
     FText Name;
     UPROPERTY(EditAnywhere)
-    FText Descrition;
+    FText Description;
     UPROPERTY(EditAnywhere)
     TArray<UObjective*> Objectives;
     UPROPERTY(EditAnywhere)
