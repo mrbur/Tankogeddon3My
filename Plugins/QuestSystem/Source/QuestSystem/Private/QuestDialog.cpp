@@ -25,10 +25,10 @@ void UQuestDialog::NativeConstruct()
 
 void UQuestDialog::Init(AQuest* Quest)
 {
-    /*if (Description)
+    if (Description)
     {
         Description->Init(Quest);
-    }*/
+    }
 }
 
 void UQuestDialog::RejectQuest()

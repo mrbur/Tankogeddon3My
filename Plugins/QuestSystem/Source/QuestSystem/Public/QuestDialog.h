@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "QuestDescription.h"
 #include "QuestDialog.generated.h"
 
 /**
@@ -24,8 +25,8 @@ public:
     FSimpleDelegate OnQuestQuited; 
 
 protected:
-    /*UPROPERTY(meta = (BindWidgetOptional))
-    UQuestDescription* Description;*/
+    UPROPERTY(meta = (BindWidgetOptional))
+    UQuestDescription* Description;
     UPROPERTY(meta = (BindWidgetOptional))
     UButton* RejectButton;
     UPROPERTY(meta = (BindWidgetOptional))
