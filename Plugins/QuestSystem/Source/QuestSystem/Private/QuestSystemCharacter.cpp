@@ -55,13 +55,13 @@ void AQuestSystemCharacter::Interact_Implementation(
             bool HadQuestsAvailable = false;
             for (AActor* Actor : AttachedActors)
             {
-                if (1)
-                    /*(Quest->IsAlreadyTaken() ||
-                    (Quest->GetPrerquisedQuest() &&
-                        !Quest->GetPrerquisedQuest()->IsCompleted()))*/
-                {
-                    continue;
-                }
+                //if (1)
+                //    /*(Quest->IsAlreadyTaken() ||
+                //    (Quest->GetPrerquisedQuest() &&
+                //        !Quest->GetPrerquisedQuest()->IsCompleted()))*/
+                //{
+                //    continue;
+                //}
 
                 if (QuestDialogClass)
                 {
