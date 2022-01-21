@@ -38,9 +38,9 @@ void AQuestSystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 void AQuestSystemCharacter::Interact_Implementation(
     AActor* ActorInteractedWithObject)
 {
+    ActorInteractedWith = ActorInteractedWithObject;
     if (ActorInteractedWithObject)
     {
-        // check if actor has QuestList and can accept quests
         UActorComponent* ActorQuestListComp =
             ActorInteractedWithObject->GetComponentByClass(
                 UQuestListComponent::StaticClass());
@@ -70,9 +70,11 @@ void AQuestSystemCharacter::Interact_Implementation(
                         CreateWidget<UQuestDialog>(GetWorld(),
                             QuestDialogClass);
                     QuestDialog->Init(Cast<AQuest>(Actor));
+
                     QuestDialog->OnQuestAccepted.BindUObject(
-                        ActorQuestList,
-                        &UQuestListComponent::AddQuest, Cast<AQuest>(Actor));
+                        this,
+                        &AQuestSystemCharacter::OnQuestAccept, Quest, ActorQuestList);
+
                     QuestDialog->OnQuestQuited.BindLambda(
                         [this, ActorInteractedWithObject]()
                         {
@@ -93,9 +95,21 @@ void AQuestSystemCharacter::Interact_Implementation(
     }
 }
 
+void AQuestSystemCharacter::OnQuestAccept(AQuest* Quest, UQuestListComponent* ActorQuestList)
+{
+    ActorQuestList->AddQuest(Quest);
+    ToggleQuestListVisibility();
+}
+
 void AQuestSystemCharacter::ToggleQuestListVisibility()
 {
     APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    UActorComponent* ActorQuestListComp =
+        ActorInteractedWith->GetComponentByClass(
+            UQuestListComponent::StaticClass());
+    UQuestListComponent* ActorQuestList =
+        Cast<UQuestListComponent>(ActorQuestListComp);
+
 
     if (QuestList)
     {
@@ -109,7 +123,7 @@ void AQuestSystemCharacter::ToggleQuestListVisibility()
         if (QuestListClass)
         {
             QuestList = CreateWidget<UQuestList>(GetWorld(), QuestListClass);
-            QuestList->Init(QuestListComp);
+            QuestList->Init(ActorQuestList);
             QuestList->AddToViewport();
             UWidgetBlueprintLibrary::SetInputMode_GameAndUI(PC);
             PC->bShowMouseCursor = true;

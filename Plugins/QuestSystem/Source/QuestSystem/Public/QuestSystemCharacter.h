@@ -17,6 +17,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleQuestListVisibility();
 
+	UFUNCTION(BlueprintCallable)
+	void OnQuestAccept(AQuest* Quest, UQuestListComponent* ActorQuestList);
+
+	UPROPERTY()
+	AActor* ActorInteractedWith;
+
 	UPROPERTY()
 	UQuestList* QuestList;
 

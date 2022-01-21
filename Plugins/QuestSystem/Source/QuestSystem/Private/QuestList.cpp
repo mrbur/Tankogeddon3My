@@ -10,9 +10,7 @@ void UQuestList::Init(class UQuestListComponent* QuestList)
         for (AQuest* Quest : QuestList->GetQuests())
         {
             UScrollBox* Scroll = 
-                //Quest->IsStoryQuest() 
-               0 ?
-                StoryQuestsList : SideQuestsList;
+                Quest->bIsStoryQuest ? StoryQuestsList : SideQuestsList;
             if (Scroll)
             {
                 UQuestListEntry* QuestEntry =
