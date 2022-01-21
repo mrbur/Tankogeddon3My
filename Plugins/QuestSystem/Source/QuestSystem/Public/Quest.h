@@ -38,6 +38,8 @@ public:
     AQuest* PrerquisedQuest;
     UPROPERTY(VisibleAnywhere)
     bool bIsTaken;
+    UPROPERTY(VisibleAnywhere)
+    bool bIsComplete;
 
     UFUNCTION(BlueprintCallable, CallInEditor)
     void UpdateLocation(); 

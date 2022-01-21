@@ -49,19 +49,20 @@ void AQuestSystemCharacter::Interact_Implementation(
             UQuestListComponent* ActorQuestList =
                 Cast<UQuestListComponent>(ActorQuestListComp);
 
-            // past any limitations and quest choosing logic
             TArray<AActor*> AttachedActors;
             GetAttachedActors(AttachedActors);
             bool HadQuestsAvailable = false;
             for (AActor* Actor : AttachedActors)
             {
-                //if (1)
-                //    /*(Quest->IsAlreadyTaken() ||
-                //    (Quest->GetPrerquisedQuest() &&
-                //        !Quest->GetPrerquisedQuest()->IsCompleted()))*/
-                //{
-                //    continue;
-                //}
+                AQuest* Quest = Cast<AQuest>(Actor);
+                if (!Quest) continue;
+
+                if (Quest->bIsTaken ||
+                    (Quest->PrerquisedQuest &&
+                        !Quest->PrerquisedQuest->bIsComplete))
+                {
+                    continue;
+                }
 
                 if (QuestDialogClass)
                 {
