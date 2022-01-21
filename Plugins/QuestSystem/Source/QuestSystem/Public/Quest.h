@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Objective.h"
+#include "InteractionObjective.h"
+#include "LocationObjective.h"
 #include "Quest.generated.h"
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStatusUpdated, AQuest*, Quest );
 
@@ -39,9 +42,9 @@ public:
     UFUNCTION(BlueprintCallable, CallInEditor)
     void UpdateLocation(); 
     UFUNCTION(BlueprintCallable, CallInEditor)
-    void AddLocationObjective();
+    void AddLocationObjective(FText Discr);
     UFUNCTION(BlueprintCallable, CallInEditor)
-    void AddInteractObjective();
+    void AddInteractObjective(FText Discr);
     UFUNCTION(BlueprintCallable, CallInEditor)
     void TakeQuest(AActor* Character);
 

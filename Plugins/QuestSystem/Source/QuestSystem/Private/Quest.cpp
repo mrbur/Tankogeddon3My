@@ -10,21 +10,18 @@ AQuest::AQuest()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void AQuest::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AQuest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AQuest::UpdateLocation()
@@ -45,6 +42,9 @@ void AQuest::TakeQuest(AActor* Character)
             Objectives[i]->bCanBeCompleted = !bKeepObjectivesOrder || i == 0;
             Objectives[i]->OnObjectiveCompleted.AddUObject(this,
                 &AQuest::OnObjectiveCompleted);
+        }
+        else {
+            Objectives.RemoveAt(i);
         }
     }
     bIsTaken = true;
@@ -68,12 +68,16 @@ void AQuest::OnObjectiveCompleted(UObjective* Objective)
     }
 }
 
-void AQuest::AddLocationObjective()
+void AQuest::AddLocationObjective(FText Discr)
 {
-    Objectives.Add(NewObject<ULocationObjective>(this));
+    ULocationObjective* LocationObjective = NewObject<ULocationObjective>(this);
+    LocationObjective->Descrition = Discr;
+    Objectives.Add(LocationObjective);
 }
 
-void AQuest::AddInteractObjective()
+void AQuest::AddInteractObjective(FText Discr)
 {
-    Objectives.Add(NewObject<UInteractionObjective>(this));
+    UInteractionObjective* InteractionObjective = NewObject<UInteractionObjective>(this);
+    InteractionObjective->Descrition = Discr;
+    Objectives.Add(InteractionObjective);
 }

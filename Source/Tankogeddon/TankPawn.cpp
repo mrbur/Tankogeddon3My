@@ -46,7 +46,6 @@ ATankPawn::ATankPawn()
     CannonSpawnPoint->SetupAttachment(TurretMesh);
 
     QuestListComponent = CreateDefaultSubobject<UQuestListComponent>(TEXT("Quest component"));
-    //QuestListComponent->SetupAttachment(BodyMesh);
 
     HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
     HitCollider->SetupAttachment(BodyMesh);
@@ -61,7 +60,6 @@ ATankPawn::ATankPawn()
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
     HealthComponent->OnDie.AddDynamic(this, &ATankPawn::OnDie);
 
-    
 
     HitEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Hit Effect"));
     HitEffect->SetupAttachment(CannonSpawnPoint);

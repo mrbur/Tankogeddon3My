@@ -23,6 +23,7 @@ void UQuestDescription::Init(AQuest* Quest)
             ObjectivesList->ClearChildren();
             for (UObjective* Objective : Quest->Objectives)
             {
+                if (!Objective) continue;
                 UObjectiveWidget* ObjectiveWidget =
                     CreateWidget<UObjectiveWidget>(this, ObjectiveWidgetClass);
                 ObjectiveWidget->Init(Objective);
