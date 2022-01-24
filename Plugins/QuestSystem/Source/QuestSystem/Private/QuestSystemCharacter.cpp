@@ -9,23 +9,22 @@
 // Sets default values
 AQuestSystemCharacter::AQuestSystemCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    QuestMark = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Quest mark mesh"));
+    QuestMark->SetupAttachment(RootComponent);
 
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
 void AQuestSystemCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AQuestSystemCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -99,6 +98,7 @@ void AQuestSystemCharacter::OnQuestAccept(AQuest* Quest, UQuestListComponent* Ac
 {
     ActorQuestList->AddQuest(Quest);
     ToggleQuestListVisibility();
+    QuestMark->SetHiddenInGame(true);
 }
 
 void AQuestSystemCharacter::ToggleQuestListVisibility()

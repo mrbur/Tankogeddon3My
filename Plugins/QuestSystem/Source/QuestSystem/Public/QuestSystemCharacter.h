@@ -31,7 +31,10 @@ public:
 
 	UPROPERTY()
 	UQuestListComponent* QuestListComp;
-	// Sets default values for this character's properties
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Quest Mark")
+	class UStaticMeshComponent* QuestMark;
+
 	AQuestSystemCharacter();
 
 	void Interact_Implementation(AActor* ActorInteractedWithObject) override;

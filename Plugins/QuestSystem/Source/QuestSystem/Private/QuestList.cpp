@@ -30,6 +30,7 @@ void UQuestList::Init(class UQuestListComponent* QuestList)
 
 void UQuestList::OnActiveQuestChanged(AQuest* ActiveQuest)
 {
+    if (!ActiveQuest)return;
     for (const TPair<AQuest*, UQuestListEntry*>& Pair : QuestEntries)
     {
         Pair.Value->SetIsSelected(Pair.Key == ActiveQuest);
