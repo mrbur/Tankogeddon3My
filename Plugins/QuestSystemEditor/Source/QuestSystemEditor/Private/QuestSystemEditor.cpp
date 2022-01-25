@@ -7,6 +7,7 @@
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
+#include "Engine/Selection.h"
 #include "ToolMenus.h"
 
 static const FName QuestSystemEditorTabName("QuestSystemEditor");
@@ -29,11 +30,39 @@ void FQuestSystemEditorModule::StartupModule()
 		FExecuteAction::CreateRaw(this, &FQuestSystemEditorModule::PluginButtonClicked),
 		FCanExecuteAction());
 
-	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FQuestSystemEditorModule::RegisterMenus));
-	
+	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+
+	{
+		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
+		MenuExtender->AddMenuExtension("WindowLayout", EExtensionHook::After,
+			PluginCommands, FMenuExtensionDelegate::CreateRaw(this,
+				&FQuestSystemEditorModule::AddMenuExtension));
+
+		LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
+	}
+
+	{
+		TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
+		ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After,
+			PluginCommands, FToolBarExtensionDelegate::CreateRaw(this,
+				&FQuestSystemEditorModule::AddToolbarExtension));
+
+		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
+	}
+
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(QuestSystemEditorTabName, FOnSpawnTab::CreateRaw(this, &FQuestSystemEditorModule::OnSpawnPluginTab))
-		.SetDisplayName(LOCTEXT("FQuestSystemEditorTabTitle", "QuestSystemEditor"))
+		.SetDisplayName(LOCTEXT("FStandaloneWindowTestTabTitle", "StandaloneWindowTest"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
+}
+
+void FQuestSystemEditorModule::AddMenuExtension(FMenuBuilder& Builder)
+{
+	Builder.AddMenuEntry(FQuestSystemEditorCommands::Get().OpenPluginWindow);
+}
+
+void FQuestSystemEditorModule::AddToolbarExtension(FToolBarBuilder& Builder)
+{
+	Builder.AddToolBarButton(FQuestSystemEditorCommands::Get().OpenPluginWindow);
 }
 
 void FQuestSystemEditorModule::ShutdownModule()
@@ -54,23 +83,36 @@ void FQuestSystemEditorModule::ShutdownModule()
 
 TSharedRef<SDockTab> FQuestSystemEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText WidgetText = FText::Format(
-		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
-		FText::FromString(TEXT("FQuestSystemEditorModule::OnSpawnPluginTab")),
-		FText::FromString(TEXT("QuestSystemEditor.cpp"))
-		);
+	FText WidgetText = FText::FromString("Move selected actors");
 
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
-			// Put your tab content here!
 			SNew(SBox)
 			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+		.VAlign(VAlign_Center)
+		[
+			SNew(SButton)
+			.OnClicked_Lambda([]()
+				{
+					if (GEditor)
+					{
+						for (FSelectionIterator Iter((GEditor->GetSelectedActorIterator())); Iter; ++Iter)
+						{
+							AActor* Actor = Cast<AActor>(*Iter);
+							if (Actor)
+							{
+								Actor->AddActorLocalOffset(FVector(50.f));
+							}
+						}
+					}
+					return FReply::Handled();
+				})
+		[
+			SNew(STextBlock)
+			.Text(WidgetText)
+		]
+		]
 		];
 }
 
