@@ -8,7 +8,7 @@ public class Tankogeddon : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "MediaAssets", "DesktopPlatform", "TestPlugin", "QuestSystem" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "MediaAssets", "DesktopPlatform", "TestPlugin", "QuestSystem", "QuestSystemEditor" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
