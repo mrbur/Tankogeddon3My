@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Widgets/Input/SEditableTextBox.h"
+#include "Quest.h"
 #include "Modules/ModuleManager.h"
 
 class FToolBarBuilder;
@@ -29,4 +31,7 @@ private:
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+	TSharedPtr<SVerticalBox> VerticalBox;
+
+	void AddRow(AQuest* Quest);
 };

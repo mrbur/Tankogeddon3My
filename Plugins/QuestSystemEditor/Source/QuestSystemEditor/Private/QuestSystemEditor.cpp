@@ -8,6 +8,9 @@
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Engine/Selection.h"
+#include "Quest.h"
+#include "Widgets/Input/SEditableTextBox.h"
+#include "Widgets/SBoxPanel.h"
 #include "ToolMenus.h"
 
 static const FName QuestSystemEditorTabName("QuestSystemEditor");
@@ -83,36 +86,53 @@ void FQuestSystemEditorModule::ShutdownModule()
 
 TSharedRef<SDockTab> FQuestSystemEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText WidgetText = FText::FromString("Move selected actors");
-
-	return SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab)
+	FText WidgetText = FText::FromString("Show selected actors quest");
+	VerticalBox = SNew(SVerticalBox)
+		+ SVerticalBox::Slot()
 		[
 			SNew(SBox)
-			.HAlign(HAlign_Center)
-		.VAlign(VAlign_Center)
-		[
-			SNew(SButton)
-			.OnClicked_Lambda([]()
-				{
-					if (GEditor)
+			.WidthOverride(256)
+			.HeightOverride(100)
+			[
+				SNew(SButton)
+				.OnClicked_Lambda([this]()
 					{
-						for (FSelectionIterator Iter((GEditor->GetSelectedActorIterator())); Iter; ++Iter)
+						if (GEditor)
 						{
-							AActor* Actor = Cast<AActor>(*Iter);
-							if (Actor)
+							for (FSelectionIterator SelectedActorsIter((GEditor->GetSelectedActorIterator())); SelectedActorsIter; ++SelectedActorsIter)
 							{
-								Actor->AddActorLocalOffset(FVector(50.f));
+								AActor* Actor = Cast<AActor>(*SelectedActorsIter);
+
+								TArray<AActor*> AttachedActors;
+								Actor->GetAttachedActors(AttachedActors);
+						
+								AQuest* Quest = Cast<AQuest>(AttachedActors[0]);
+								if (!Quest) continue;
+								AddRow(Quest);
 							}
 						}
-					}
-					return FReply::Handled();
-				})
+						return FReply::Handled();
+					})
+					[
+						SNew(STextBlock)
+						.Text(WidgetText)
+					]
+			]
+			
+		];
+
+	TSharedRef<SDockTab> SpawnedTab = SNew(SDockTab)
+		.TabRole(ETabRole::NomadTab);
+	SpawnedTab->SetContent(VerticalBox.ToSharedRef());
+	return SpawnedTab;
+}
+
+void FQuestSystemEditorModule::AddRow(AQuest* Quest)
+{
+	VerticalBox->AddSlot()
 		[
-			SNew(STextBlock)
-			.Text(WidgetText)
-		]
-		]
+			SNew(SEditableTextBox)
+			.Text(Quest->Name)
 		];
 }
 
