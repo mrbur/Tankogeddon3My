@@ -11,6 +11,7 @@
 #include "Quest.h"
 #include "Widgets/Input/SEditableTextBox.h"
 #include "Widgets/SBoxPanel.h"
+#include "Widgets/Layout/SUniformGridPanel.h"
 #include "ToolMenus.h"
 
 static const FName QuestSystemEditorTabName("QuestSystemEditor");
@@ -89,10 +90,11 @@ TSharedRef<SDockTab> FQuestSystemEditorModule::OnSpawnPluginTab(const FSpawnTabA
 	FText WidgetText = FText::FromString("Show selected actors quest");
 	VerticalBox = SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
+		.MaxHeight(25)
 		[
-			SNew(SBox)
-			.WidthOverride(256)
-			.HeightOverride(100)
+			SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			.MaxWidth(120)
 			[
 				SNew(SButton)
 				.OnClicked_Lambda([this]()
@@ -101,24 +103,25 @@ TSharedRef<SDockTab> FQuestSystemEditorModule::OnSpawnPluginTab(const FSpawnTabA
 						{
 							for (FSelectionIterator SelectedActorsIter((GEditor->GetSelectedActorIterator())); SelectedActorsIter; ++SelectedActorsIter)
 							{
-								AActor* Actor = Cast<AActor>(*SelectedActorsIter);
+								AActor* SelectedActor = Cast<AActor>(*SelectedActorsIter);
 
 								TArray<AActor*> AttachedActors;
-								Actor->GetAttachedActors(AttachedActors);
-						
-								AQuest* Quest = Cast<AQuest>(AttachedActors[0]);
-								if (!Quest) continue;
-								AddRow(Quest);
+								SelectedActor->GetAttachedActors(AttachedActors);
+
+								for (AActor* Actor : AttachedActors)
+								{
+									AQuest* Quest = Cast<AQuest>(Actor);
+									if (Quest)AddRow(Quest);
+								}
 							}
 						}
 						return FReply::Handled();
 					})
-					[
-						SNew(STextBlock)
-						.Text(WidgetText)
-					]
+				[
+					SNew(STextBlock)
+					.Text(WidgetText)
+				]
 			]
-			
 		];
 
 	TSharedRef<SDockTab> SpawnedTab = SNew(SDockTab)
@@ -130,9 +133,19 @@ TSharedRef<SDockTab> FQuestSystemEditorModule::OnSpawnPluginTab(const FSpawnTabA
 void FQuestSystemEditorModule::AddRow(AQuest* Quest)
 {
 	VerticalBox->AddSlot()
+		.MaxHeight(50)
 		[
-			SNew(SEditableTextBox)
-			.Text(Quest->Name)
+			SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			[
+				SNew(SEditableTextBox)
+				.Text(Quest->Name)
+			]
+			+ SHorizontalBox::Slot()
+			[
+				SNew(SEditableTextBox)
+				.Text(Quest->Description)
+			]
 		];
 }
 
