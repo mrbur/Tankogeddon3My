@@ -25,7 +25,7 @@ public class QuestSystem : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "MediaAssets", "DesktopPlatform", "TestPlugin"});
 
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "Projects","UnrealEd","LevelEditor","ToolMenus","CoreUObject","Slate","SlateCore",});
 
 
 		DynamicallyLoadedModuleNames.AddRange(

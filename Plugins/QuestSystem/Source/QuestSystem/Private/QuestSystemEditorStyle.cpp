@@ -43,7 +43,7 @@ const FVector2D Icon40x40(40.0f, 40.0f);
 TSharedRef< FSlateStyleSet > FQuestSystemEditorStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("QuestSystemEditorStyle"));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("QuestSystemEditor")->GetBaseDir() / TEXT("Resources"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("QuestSystem")->GetBaseDir() / TEXT("Resources"));
 
 	Style->Set("QuestSystemEditor.OpenPluginWindow", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
 

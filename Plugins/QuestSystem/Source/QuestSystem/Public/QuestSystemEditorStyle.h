@@ -1,11 +1,8 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Styling/SlateStyle.h"
 
-/**  */
 class FQuestSystemEditorStyle
 {
 public:
