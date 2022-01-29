@@ -24,4 +24,6 @@ public:
 
     UFUNCTION()
     void OnInteractionObjectiveComplete(AActor* InteractableObject, AActor* ActorInteractedWithObject);
+
+    AActor* Character;
 };
