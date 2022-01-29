@@ -34,6 +34,18 @@ void AQuestSystemCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 }
 
+bool AQuestSystemCharacter::HasQuests()
+{
+    TArray<AActor*> AttachedActors;
+    GetAttachedActors(AttachedActors);
+    for (AActor* Actor : AttachedActors)
+    {
+        AQuest* Quest = Cast<AQuest>(Actor);
+        if(Quest)return true;
+    }
+    return false;
+}
+
 void AQuestSystemCharacter::Interact_Implementation(
     AActor* ActorInteractedWithObject)
 {
