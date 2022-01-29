@@ -75,9 +75,10 @@ void AQuest::AddLocationObjective(FText Discr)
     Objectives.Add(LocationObjective);
 }
 
-void AQuest::AddInteractObjective(FText Discr)
+void AQuest::AddInteractObjective(FText Discr, AActor* TargetActor)
 {
     UInteractionObjective* InteractionObjective = NewObject<UInteractionObjective>(this);
     InteractionObjective->Descrition = Discr;
+    InteractionObjective->Target = TargetActor;
     Objectives.Add(InteractionObjective);
 }

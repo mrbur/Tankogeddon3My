@@ -11,8 +11,8 @@ class UInteractableObject : public UInterface
     GENERATED_BODY()
 };
 
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnInteractionFinished,
-AActor* /*InteractableObject*/, AActor* /*ActorInteractedWithObject*/);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInteractionFinished,
+AActor*, InteractableObject, AActor*, ActorInteractedWithObject);
 
 /**
  *

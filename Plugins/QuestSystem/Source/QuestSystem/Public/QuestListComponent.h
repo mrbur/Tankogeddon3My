@@ -22,6 +22,8 @@ public:
 
 	AQuest* GetActiveQuest() const;
 	void SetActiveQuest(AQuest* Quest);
+
+	UFUNCTION()
 	void OnQuestAdd(AQuest* Quest);
 
 	FOnQuestAction OnActiveQuestChanged;

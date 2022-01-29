@@ -46,7 +46,7 @@ public:
     UFUNCTION(BlueprintCallable, CallInEditor)
     void AddLocationObjective(FText Discr);
     UFUNCTION(BlueprintCallable, CallInEditor)
-    void AddInteractObjective(FText Discr);
+    void AddInteractObjective(FText Discr, AActor* TargetActor);
     UFUNCTION(BlueprintCallable, CallInEditor)
     void TakeQuest(AActor* Character);
 

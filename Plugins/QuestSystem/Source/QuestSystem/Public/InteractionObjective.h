@@ -21,4 +21,7 @@ public:
 
     UPROPERTY(EditAnywhere, meta = (AllowedClasses = "InteractableObject"))
     AActor* Target;
+
+    UFUNCTION()
+    void OnInteractionObjectiveComplete(AActor* InteractableObject, AActor* ActorInteractedWithObject);
 };
