@@ -20,12 +20,9 @@ void UInteractionObjective::ActivateObjective(AActor* Char)
 
 void UInteractionObjective::OnInteractionObjectiveComplete(AActor* InteractableObject, AActor* ActorInteractedWithObject)
 {
-    if (bCanBeCompleted && Character == ActorInteractedWithObject)
+    bIsCompleted = true;
+    if (OnObjectiveCompleted.IsBound())
     {
-        bIsCompleted = true;
-        if (OnObjectiveCompleted.IsBound())
-        {
-            OnObjectiveCompleted.Broadcast(this);
-        }
+        OnObjectiveCompleted.Broadcast(this);
     }
 }
