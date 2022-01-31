@@ -12,6 +12,7 @@
 #include "Widgets/Input/SEditableTextBox.h"
 #include "Widgets/SBoxPanel.h"
 #include "Widgets/Layout/SUniformGridPanel.h"
+#include "QuestSystemEditorModeEdMode.h"
 #include "ToolMenus.h"
 
 static const FName QuestSystemEditorTabName("QuestSystemEditor");
@@ -55,6 +56,9 @@ void FQuestSystemModule::StartupModule()
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(QuestSystemEditorTabName, FOnSpawnTab::CreateRaw(this, &FQuestSystemModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FStandaloneWindowTestTabTitle", "StandaloneWindowTest"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
+
+
+	FEditorModeRegistry::Get().RegisterMode<FQuestSystemEditorModeEdMode>(FQuestSystemEditorModeEdMode::EM_QuestSystemEditorModeEdModeId, LOCTEXT("QuestSystemEditorModeEdModeName", "QuestSystemEditorModeEdMode"), FSlateIcon(), true);
 }
 
 void FQuestSystemModule::AddMenuExtension(FMenuBuilder& Builder)
