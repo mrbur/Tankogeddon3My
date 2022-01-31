@@ -53,7 +53,7 @@ void FQuestSystemEditorModeEdMode::Render(const FSceneView* View, FViewport* Vie
 		DrawWireBox(
 			PDI,
 			BoundedActor->GetComponentsBoundingBox(true),
-			FColor::Red,
+			FColor::Cyan,
 			1);
 	}
 
@@ -62,7 +62,7 @@ void FQuestSystemEditorModeEdMode::Render(const FSceneView* View, FViewport* Vie
 		DrawWireBox(
 			PDI,
 			ObjActor->GetComponentsBoundingBox(true),
-			FColor::Cyan,
+			FColor::Blue,
 			1);
 	}
 	
