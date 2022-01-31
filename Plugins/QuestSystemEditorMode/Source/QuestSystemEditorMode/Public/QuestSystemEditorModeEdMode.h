@@ -25,6 +25,7 @@ public:
 
 private:
 	TArray<AActor*> SelectedActors;
+	TArray<AActor*> ObjectiveActors;
 
 	bool checkActorForQuest(AActor* Actor);
 };

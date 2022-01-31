@@ -7,6 +7,8 @@
 #include "QuestSystemCharacter.h"
 #include "Quest.h"
 #include "EditorModeManager.h"
+#include "InteractionObjective.h"
+#include "LocationObjective.h"
 #include <Engine.h>
 
 const FEditorModeID FQuestSystemEditorModeEdMode::EM_QuestSystemEditorModeEdModeId = TEXT("EM_QuestSystemEditorModeEdMode");
@@ -51,10 +53,19 @@ void FQuestSystemEditorModeEdMode::Render(const FSceneView* View, FViewport* Vie
 		DrawWireBox(
 			PDI,
 			BoundedActor->GetComponentsBoundingBox(true),
-			FColor::Cyan,
+			FColor::Red,
 			1);
 	}
 
+	for (AActor* ObjActor : ObjectiveActors)
+	{
+		DrawWireBox(
+			PDI,
+			ObjActor->GetComponentsBoundingBox(true),
+			FColor::Cyan,
+			1);
+	}
+	
 	FEdMode::Render(View, Viewport, PDI);
 }
 
@@ -80,12 +91,41 @@ void FQuestSystemEditorModeEdMode::UpdateSelectedActors()
 			NoQuestSelected = !checkActorForQuest(LevelActor);
 		}
 	}
+
 	if (NoQuestSelected) {
 		TArray<AActor*> FoundActors;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AQuestSystemCharacter::StaticClass(), FoundActors);
 		for (AActor* Actor : FoundActors)
 		{
 			checkActorForQuest(Actor);
+		}
+	}
+	else {
+		for (AActor* SelectedActor: SelectedActors) {
+			TArray<AActor*> AttachedActors;
+			ObjectiveActors.Reset();
+			SelectedActor->GetAttachedActors(AttachedActors);
+			for (AActor* Actor : AttachedActors)
+			{
+				AQuest* Quest = Cast<AQuest>(Actor);
+				if (!Quest)continue;
+
+				for (UObjective* Objective : Quest->Objectives)
+				{
+					if (!Objective)continue;
+
+					UInteractionObjective* InterObjective = Cast<UInteractionObjective>(Objective);
+					if (InterObjective && InterObjective->Target) {
+						ObjectiveActors.Add(InterObjective->Target);
+						continue;
+					}
+
+					ULocationObjective* LocObjective = Cast<ULocationObjective>(Objective);
+					if (LocObjective && LocObjective->Marker) {
+						ObjectiveActors.Add(LocObjective->Marker);
+					}
+				}
+			}
 		}
 	}
 }
@@ -99,10 +139,14 @@ bool FQuestSystemEditorModeEdMode::checkActorForQuest(AActor* Actor)
 {
 	TArray<AActor*> AttachedActors;
 	Actor->GetAttachedActors(AttachedActors);
-	for (AActor* Actor : AttachedActors)
+	for (AActor* AttachedQuest : AttachedActors)
 	{
-		AQuest* Quest = Cast<AQuest>(Actor);
-		if (Quest)SelectedActors.Add(Actor);
+		AQuest* Quest = Cast<AQuest>(AttachedQuest);
+		if (!Quest)continue;
+
+		SelectedActors.Add(Actor);
+
+		if (Quest->Objectives.Num() == 0)continue;
 	}
 	return AttachedActors.Num() > 0;
 }

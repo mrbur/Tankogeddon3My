@@ -68,7 +68,7 @@ void AQuest::OnObjectiveCompleted(UObjective* Objective)
     }
 }
 
-void AQuest::AddLocationObjective(FText Discr)
+void AQuest::AddLocationObjective(FText Discr, AActor* MarkActor)
 {
     ULocationObjective* LocationObjective = NewObject<ULocationObjective>(this);
     LocationObjective->Descrition = Discr;

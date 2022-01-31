@@ -18,7 +18,9 @@ class QUESTSYSTEM_API ULocationObjective : public UObjective
 
 	void ActivateObjective(AActor* Character) override;
 
-	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "LocationMarker"))
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* Marker;
 	
 };

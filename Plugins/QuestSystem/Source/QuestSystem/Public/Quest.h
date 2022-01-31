@@ -44,7 +44,7 @@ public:
     UFUNCTION(BlueprintCallable, CallInEditor)
     void UpdateLocation(); 
     UFUNCTION(BlueprintCallable, CallInEditor)
-    void AddLocationObjective(FText Discr);
+    void AddLocationObjective(FText Discr, AActor* MarkActor);
     UFUNCTION(BlueprintCallable, CallInEditor)
     void AddInteractObjective(FText Discr, AActor* TargetActor);
     UFUNCTION(BlueprintCallable, CallInEditor)
