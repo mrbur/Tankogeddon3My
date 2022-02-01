@@ -53,7 +53,7 @@ void FQuestSystemEditorModeEdMode::Render(const FSceneView* View, FViewport* Vie
 		DrawWireBox(
 			PDI,
 			BoundedActor->GetComponentsBoundingBox(true),
-			FColor::Cyan,
+			FColor::Red,
 			1);
 	}
 
@@ -62,7 +62,7 @@ void FQuestSystemEditorModeEdMode::Render(const FSceneView* View, FViewport* Vie
 		DrawWireBox(
 			PDI,
 			ObjActor->GetComponentsBoundingBox(true),
-			FColor::Blue,
+			FColor::Cyan,
 			1);
 	}
 	
@@ -79,6 +79,7 @@ void FQuestSystemEditorModeEdMode::ActorSelectionChangeNotify()
 void FQuestSystemEditorModeEdMode::UpdateSelectedActors()
 {
 	SelectedActors.Empty();
+	ObjectiveActors.Empty();
 
 	USelection* ActorsSelection = GEditor->GetSelectedActors();
 	bool NoQuestSelected = true;
