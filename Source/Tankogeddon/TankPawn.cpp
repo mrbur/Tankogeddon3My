@@ -72,18 +72,21 @@ ATankPawn::ATankPawn()
 
     AudioDieEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die Effect"));
     AudioDieEffect->SetupAttachment(CannonSpawnPoint);
-}
 
-void ATankPawn::TakeDamage(const FDamageData& DamageData)
-{
-    HealthComponent->TakeDamage(DamageData);
+
+    InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory");
+    InventoryManagerComponent =
+        CreateDefaultSubobject<UInventoryManagerComponent>("InventoryManager");
+
 }
 
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+    InventoryManagerComponent->Init(InventoryComponent);
+
     SetupCannon();
 }
 
@@ -109,6 +112,11 @@ void ATankPawn::Tick(float DeltaTime)
     TargetRotation.Roll = CurrentRotation.Roll;
     TargetRotation.Pitch = CurrentRotation.Pitch;
     TurretMesh->SetWorldRotation(FMath::RInterpConstantTo(CurrentRotation, TargetRotation, MoveSpeed * DeltaTime, TurretRotationSmootheness));
+}
+
+void ATankPawn::TakeDamage(const FDamageData& DamageData)
+{
+    HealthComponent->TakeDamage(DamageData);
 }
 
 void ATankPawn::MoveForward(float InAxisValue)

@@ -17,10 +17,14 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<int32, FInventorySlotInfo> Items;
 
+public:
 	UPROPERTY(EditAnywhere)
 	UDataTable* InventorySlotsTable;
 
-public:
+	UDataTable* GetInventorySlotsTable() const {
+		return InventorySlotsTable;
+	}
+
 	FInventorySlotInfo* GetItem(int32 SlotIndex);
 	void SetItem(int32 SlotIndex, const FInventorySlotInfo& Item);
 	void ClearItem(int32 SlotIndex);

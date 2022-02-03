@@ -11,17 +11,12 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 
     if (LocalInventoryComponent && InventoryItemsData)
     {
-        for (auto& Item : LocalInventoryComponent->GetItems())
+        FString ContextString;
+        for (auto& Item : LocalInventoryComponent->GetInventorySlotsTable()->GetRowNames())
         {
-            FInventoryItemInfo* ItemData = GetItemData(Item.Value.ID);
-            if (ItemData)
-            {
-                // TODO manage item 
-                FString ItemDataStr = ItemData->Name.ToString() + ": " +
-                    FString::FromInt(Item.Value.Count);
-                GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald,
-                    ItemDataStr);
-            }
+            FInventorySlotInfo* ffg = LocalInventoryComponent->GetInventorySlotsTable()->FindRow<FInventorySlotInfo>(Item, ContextString);
+            GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald,
+                ffg->Name.ToString());
         }
     }
 }
