@@ -6,7 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.h"
 #include "InventoryItemInfo.h"
+#include <Tankogeddon/InventoryWidget.h>
 #include "InventoryManagerComponent.generated.h"
+
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -26,4 +28,12 @@ protected:
 
     UPROPERTY(EditAnywhere)
     UDataTable* InventoryItemsData;
+
+    UPROPERTY()
+    UInventoryWidget* InventoryWidget;
+
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<UInventoryWidget> InventoryWidgetClass;
+    UPROPERTY(EditAnywhere)
+    int32 MinInventorySize = 2;
 };

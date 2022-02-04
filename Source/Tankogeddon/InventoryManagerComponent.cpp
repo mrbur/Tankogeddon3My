@@ -11,12 +11,31 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 
     if (LocalInventoryComponent && InventoryItemsData)
     {
+        ensure(InventoryWidgetClass);
+        InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),
+            InventoryWidgetClass);
+        InventoryWidget->AddToViewport();
+
+        InventoryWidget->Init(
+            FMath::Max(LocalInventoryComponent->GetItemsNum(), MinInventorySize));
+
+
         FString ContextString;
         for (auto& Item : LocalInventoryComponent->GetInventorySlotsTable()->GetRowNames())
         {
-            FInventorySlotInfo* ffg = LocalInventoryComponent->GetInventorySlotsTable()->FindRow<FInventorySlotInfo>(Item, ContextString);
-            GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald,
-                ffg->Name.ToString());
+            FInventorySlotInfo* InventorySlotInfo = LocalInventoryComponent->GetInventorySlotsTable()->FindRow<FInventorySlotInfo>(Item, ContextString);
+            GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald, InventorySlotInfo->Name.ToString());
+        }
+        int i = 0;
+        for (auto& Item : LocalInventoryComponent->GetInventorySlotsTable()->GetRowNames())
+        {
+            FInventorySlotInfo* InventorySlotInfo = LocalInventoryComponent->GetInventorySlotsTable()->FindRow<FInventorySlotInfo>(Item, ContextString);
+            FInventoryItemInfo* ItemData = GetItemData(InventorySlotInfo->ID);
+            if (ItemData)
+            {
+                ItemData->Icon.LoadSynchronous();
+                InventoryWidget->AddItem(*InventorySlotInfo, *ItemData, i++);
+            }
         }
     }
 }
