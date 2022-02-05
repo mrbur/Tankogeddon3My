@@ -22,6 +22,9 @@ public:
 
     FInventoryItemInfo* GetItemData(FName ItemID);
 
+    UFUNCTION(BlueprintCallable)
+    void LoadInventoryFromCSV();
+
 protected:
     UPROPERTY()
     UInventoryComponent* LocalInventoryComponent;

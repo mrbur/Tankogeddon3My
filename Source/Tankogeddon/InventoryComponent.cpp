@@ -5,28 +5,18 @@
 #include "InventorySlotInfo.h"
 
 
-FInventorySlotInfo* UInventoryComponent::GetItem(int32 SlotIndex)
+FInventorySlotInfo* UInventoryComponent::GetItem(FName RowName)
 {
-    return Items.Find(SlotIndex);
+    FString ContextString;
+    return InventorySlotsTable->FindRow<FInventorySlotInfo>(RowName, ContextString);
 }
 
-void UInventoryComponent::SetItem(int32 SlotIndex, const FInventorySlotInfo& Item)
+const TMap<FName, uint8*>& UInventoryComponent::GetItems()
 {
-    ClearItem(SlotIndex);
-    Items.Add(SlotIndex, Item);
-}
-
-void UInventoryComponent::ClearItem(int32 SlotIndex)
-{
-    Items.Remove(SlotIndex);
-}
-
-const TMap<int32, FInventorySlotInfo>& UInventoryComponent::GetItems()
-{
-    return Items;
+    return InventorySlotsTable->GetRowMap();
 }
 
 int32 UInventoryComponent::GetItemsNum()
 {
-    return Items.Num();
+    return InventorySlotsTable->GetRowMap().Num();
 }

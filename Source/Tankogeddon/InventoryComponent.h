@@ -13,11 +13,9 @@ class TANKOGEDDON_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-protected:
-	UPROPERTY(EditAnywhere)
-	TMap<int32, FInventorySlotInfo> Items;
-
 public:
+	
+
 	UPROPERTY(EditAnywhere)
 	UDataTable* InventorySlotsTable;
 
@@ -25,10 +23,8 @@ public:
 		return InventorySlotsTable;
 	}
 
-	FInventorySlotInfo* GetItem(int32 SlotIndex);
-	void SetItem(int32 SlotIndex, const FInventorySlotInfo& Item);
-	void ClearItem(int32 SlotIndex);
-	const TMap<int32, FInventorySlotInfo>& GetItems();
+	FInventorySlotInfo* GetItem(FName RowName);
+	const TMap<FName, uint8*>& GetItems();
 	int32 GetItemsNum();
 		
 };

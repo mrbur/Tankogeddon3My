@@ -5,9 +5,28 @@
 #include "InventoryComponent.h"
 #include "DrawDebugHelpers.h"
 
+void UInventoryManagerComponent::LoadInventoryFromCSV()
+{
+    FString csvFile = FPaths::ProjectContentDir() + "default_items.csv";
+
+    if (FPaths::FileExists(csvFile)) {
+        FString FileContent;
+
+        FFileHelper::LoadFileToString(FileContent, *csvFile);
+
+        LocalInventoryComponent->InventorySlotsTable->EmptyTable();
+        TArray<FString> problems = LocalInventoryComponent->InventorySlotsTable->CreateTableFromCSVString(FileContent);
+        Init(LocalInventoryComponent);
+    }
+}
+
 void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 {
     LocalInventoryComponent = InInventoryComponent;
+
+    if (InventoryWidget) {
+        InventoryWidget->Destruct();
+    }
 
     if (LocalInventoryComponent && InventoryItemsData)
     {

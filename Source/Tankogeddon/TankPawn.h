@@ -25,6 +25,12 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
     int isPlayer = 0;
 
+    //INVENTORY
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UInventoryComponent* InventoryComponent;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UInventoryManagerComponent* InventoryManagerComponent;
+
     virtual void TakeDamage(const FDamageData& DamageData) override;
 
 protected:
@@ -104,11 +110,7 @@ protected:
     TSubclassOf<class AAmmo> AAmmoClass;
 
 
-    //INVENTORY
-    UPROPERTY(EditDefaultsOnly)
-    UInventoryComponent* InventoryComponent;
-    UPROPERTY(EditDefaultsOnly)
-    UInventoryManagerComponent* InventoryManagerComponent;
+    
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
