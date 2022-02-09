@@ -16,6 +16,15 @@ void UInventoryManagerComponent::LoadInventoryFromCSV()
 
         LocalInventoryComponent->InventorySlotsTable->EmptyTable();
         TArray<FString> problems = LocalInventoryComponent->InventorySlotsTable->CreateTableFromCSVString(FileContent);
+
+        if (InventoryWidget) {
+            InventoryWidget->GoldCell->Clear();
+            InventoryWidget->CellWidgets.Empty();
+            if (InventoryWidget->ItemCellsGrid) {
+                InventoryWidget->ItemCellsGrid->ClearChildren();
+            }
+        }
+
         Init(LocalInventoryComponent);
     }
 }
@@ -25,7 +34,11 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
     LocalInventoryComponent = InInventoryComponent;
 
     if (InventoryWidget) {
-        InventoryWidget->Destruct();
+        InventoryWidget->GoldCell->Clear();
+        InventoryWidget->CellWidgets.Empty();
+        if (InventoryWidget->ItemCellsGrid) {
+            InventoryWidget->ItemCellsGrid->ClearChildren();
+        }
     }
 
     if (LocalInventoryComponent && InventoryItemsData)
@@ -40,11 +53,6 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 
 
         FString ContextString;
-        for (auto& Item : LocalInventoryComponent->GetInventorySlotsTable()->GetRowNames())
-        {
-            FInventorySlotInfo* InventorySlotInfo = LocalInventoryComponent->GetInventorySlotsTable()->FindRow<FInventorySlotInfo>(Item, ContextString);
-            GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald, InventorySlotInfo->Name.ToString());
-        }
         int i = 0;
         for (auto& Item : LocalInventoryComponent->GetInventorySlotsTable()->GetRowNames())
         {
@@ -63,4 +71,14 @@ FInventoryItemInfo* UInventoryManagerComponent::GetItemData(FName ItemID)
 {
     return InventoryItemsData ?
         InventoryItemsData->FindRow<FInventoryItemInfo>(ItemID, "") : nullptr;
+}
+
+void UInventoryManagerComponent::InitEquipment(UInventoryComponent* InInventoryComponent)
+{
+    ensure(EquipInventoryWidgetClass);
+    EquipInventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),
+        EquipInventoryWidgetClass);
+    /*EquipInventoryWidget->OnItemDrop.AddUObject(this,
+        &UInventoryManagerComponent::OnItemDropped);*/
+    EquipInventoryWidget->AddToViewport();
 }

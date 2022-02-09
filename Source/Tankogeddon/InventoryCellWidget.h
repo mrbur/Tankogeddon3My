@@ -10,9 +10,9 @@
 #include "Components/Image.h"
 #include "InventoryCellWidget.generated.h"
 
-/**
- * 
- */
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnItemDrop,
+UInventoryCellWidget* /*DraggedFrom*/, UInventoryCellWidget* /*DroppedTo*/);
+
 UCLASS()
 class TANKOGEDDON_API UInventoryCellWidget : public UUserWidget
 {
@@ -39,5 +39,20 @@ protected:
 
     UPROPERTY()
     FInventorySlotInfo StoredItem;
+
+
+    void OnItemDropped(UInventoryCellWidget* DraggedFrom,
+        UInventoryCellWidget* DroppedTo);
+
+    FReply NativeOnMouseButtonDown(const FGeometry& InGeometry,
+        const FPointerEvent& InMouseEvent) override;
+    void NativeOnDragDetected(const FGeometry& InGeometry,
+        const FPointerEvent& InMouseEvent,
+        UDragDropOperation*& OutOperation) override;
+    bool NativeOnDrop(const FGeometry& InGeometry,
+        const FDragDropEvent& InDragDropEvent,
+        UDragDropOperation* InOperation) override;
 	
+    UPROPERTY(EditDefaultsOnly)
+    bool bIsDraggable = true;
 };

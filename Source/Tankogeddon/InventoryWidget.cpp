@@ -3,6 +3,7 @@
 
 #include "InventoryWidget.h"
 #include "InventoryCellWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UInventoryWidget::Init(int32 ItemsNum)
 {
@@ -23,13 +24,10 @@ UInventoryCellWidget* UInventoryWidget::CreateCellWidget()
 {
     if (CellWidgetClass)
     {
-        UInventoryCellWidget* CellWidget = CreateWidget<UInventoryCellWidget>(this,
-            CellWidgetClass);
+        UInventoryCellWidget* CellWidget = CreateWidget<UInventoryCellWidget>(this, CellWidgetClass);
+        CellWidget->Clear();
         CellWidgets.Add(CellWidget);
         return CellWidget;
-        if (ItemCellsGrid) {
-            ItemCellsGrid->ClearChildren();
-        }
     }
     return nullptr;
 }
@@ -77,4 +75,13 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item,
         }
     }
     return false;
+}
+
+void UInventoryWidget::OnItemDropped(UInventoryCellWidget* DraggedFrom,
+    UInventoryCellWidget* DroppedTo)
+{
+    if (OnItemDrop.IsBound())
+    {
+        OnItemDrop.Broadcast(DraggedFrom, DroppedTo);
+    }
 }

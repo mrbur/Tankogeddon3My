@@ -11,15 +11,15 @@
 #include "InventoryCellWidget.h"
 #include "InventoryWidget.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class TANKOGEDDON_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
+    FOnItemDrop OnItemDrop;
 
     //virtual void NativeConstruct() override;
 
@@ -27,10 +27,16 @@ public:
     bool AddItem(const FInventorySlotInfo& Item, const FInventoryItemInfo& ItemInfo,
         int32 SlotPosition = -1);
 
-protected:
+    UPROPERTY()
+    TArray<UInventoryCellWidget*> CellWidgets;
+
+    UPROPERTY(meta = (BindWidgetOptional))
+    UInventoryCellWidget* GoldCell;
 
     UPROPERTY(meta = (BindWidgetOptional))
     UUniformGridPanel* ItemCellsGrid;
+
+protected:
 
     UPROPERTY(EditDefaultsOnly)
     int32 ItemsInPow = 5;
@@ -38,12 +44,9 @@ protected:
     UPROPERTY(EditDefaultsOnly)
     TSubclassOf<UInventoryCellWidget> CellWidgetClass;
 
-    UPROPERTY()
-    TArray<UInventoryCellWidget*> CellWidgets;
-
-    UPROPERTY(meta = (BindWidgetOptional))
-    UInventoryCellWidget* GoldCell;
-
     UInventoryCellWidget* CreateCellWidget();
+
+    void OnItemDropped(UInventoryCellWidget* DraggedFrom,
+        UInventoryCellWidget* DroppedTo);
 
 };

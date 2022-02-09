@@ -25,6 +25,8 @@ public:
     UFUNCTION(BlueprintCallable)
     void LoadInventoryFromCSV();
 
+    void InitEquipment(UInventoryComponent* InInventoryComponent);
+
 protected:
     UPROPERTY()
     UInventoryComponent* LocalInventoryComponent;
@@ -38,5 +40,10 @@ protected:
     UPROPERTY(EditAnywhere)
     TSubclassOf<UInventoryWidget> InventoryWidgetClass;
     UPROPERTY(EditAnywhere)
-    int32 MinInventorySize = 2;
+    int32 MinInventorySize = 10;
+
+    UPROPERTY()
+    UInventoryWidget* EquipInventoryWidget;
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<UInventoryWidget> EquipInventoryWidgetClass;
 };
