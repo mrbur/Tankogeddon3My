@@ -27,6 +27,7 @@ UInventoryCellWidget* UInventoryWidget::CreateCellWidget()
         UInventoryCellWidget* CellWidget = CreateWidget<UInventoryCellWidget>(this, CellWidgetClass);
         CellWidget->Clear();
         CellWidgets.Add(CellWidget);
+        CellWidget->OnItemDrop.AddUObject(this, &UInventoryWidget::OnItemDropped);
         return CellWidget;
     }
     return nullptr;

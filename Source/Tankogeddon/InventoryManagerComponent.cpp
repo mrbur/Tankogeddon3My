@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "CoreMinimal.h"
 #include "InventoryManagerComponent.h"
 #include "InventoryComponent.h"
 #include "DrawDebugHelpers.h"
@@ -46,6 +46,9 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
         ensure(InventoryWidgetClass);
         InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),
             InventoryWidgetClass);
+        InventoryWidget->OnItemDrop.AddUObject(this,
+            &UInventoryManagerComponent::SwapItemDropped);
+
         InventoryWidget->AddToViewport();
 
         InventoryWidget->Init(
@@ -78,7 +81,20 @@ void UInventoryManagerComponent::InitEquipment(UInventoryComponent* InInventoryC
     ensure(EquipInventoryWidgetClass);
     EquipInventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),
         EquipInventoryWidgetClass);
-    /*EquipInventoryWidget->OnItemDrop.AddUObject(this,
-        &UInventoryManagerComponent::OnItemDropped);*/
+    EquipInventoryWidget->OnItemDrop.AddUObject(InventoryWidget,
+        &UInventoryWidget::OnItemDropped);
     EquipInventoryWidget->AddToViewport();
+}
+
+void UInventoryManagerComponent::SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo)
+{
+    FString ContextString;
+    FInventoryItemInfo* InventoryItemInfo = GetItemData(DraggedFrom->StoredItem.ID);
+    FText FromCount = DraggedFrom->CountText->GetText();
+    DraggedFrom->CountText->SetText(DroppedTo->CountText->GetText());
+    DroppedTo->CountText->SetText(FromCount);
+    
+    FSlateBrush SlateBrush = DraggedFrom->ItemImage->Brush;
+    DraggedFrom->ItemImage->SetBrush(DroppedTo->ItemImage->Brush);
+    DroppedTo->ItemImage->SetBrush(SlateBrush);
 }

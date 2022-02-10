@@ -27,6 +27,9 @@ public:
     bool AddItem(const FInventorySlotInfo& Item, const FInventoryItemInfo& ItemInfo,
         int32 SlotPosition = -1);
 
+    void OnItemDropped(UInventoryCellWidget* DraggedFrom,
+        UInventoryCellWidget* DroppedTo);
+
     UPROPERTY()
     TArray<UInventoryCellWidget*> CellWidgets;
 
@@ -46,7 +49,6 @@ protected:
 
     UInventoryCellWidget* CreateCellWidget();
 
-    void OnItemDropped(UInventoryCellWidget* DraggedFrom,
-        UInventoryCellWidget* DroppedTo);
+    
 
 };

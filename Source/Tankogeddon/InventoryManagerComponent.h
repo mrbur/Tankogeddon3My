@@ -27,6 +27,8 @@ public:
 
     void InitEquipment(UInventoryComponent* InInventoryComponent);
 
+    void SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo);
+
 protected:
     UPROPERTY()
     UInventoryComponent* LocalInventoryComponent;

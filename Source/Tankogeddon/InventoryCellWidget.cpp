@@ -2,6 +2,8 @@
 
 
 #include "InventoryCellWidget.h"
+#include "InventoryDragDropOperation.h"
+#include <Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h>
 
 bool UInventoryCellWidget::AddItem(const FInventorySlotInfo& Item,
     const FInventoryItemInfo& ItemInfo)
@@ -53,19 +55,19 @@ const FInventorySlotInfo& UInventoryCellWidget::GetItem()
 FReply UInventoryCellWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry,
     const FPointerEvent& InMouseEvent)
 {
-    /*if (bIsDraggable && bHasItem &&
+    if (bIsDraggable && bHasItem &&
         InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
     {
         return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this,
             EKeys::LeftMouseButton).NativeReply;
-    }*/
+    }
     return FReply::Handled();
 }
 
 void UInventoryCellWidget::NativeOnDragDetected(const FGeometry& InGeometry,
     const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-    /*OutOperation = UWidgetBlueprintLibrary::CreateDragDropOperation(
+    OutOperation = UWidgetBlueprintLibrary::CreateDragDropOperation(
         UInventoryDragDropOperation::StaticClass());
     if (OutOperation)
     {
@@ -78,13 +80,13 @@ void UInventoryCellWidget::NativeOnDragDetected(const FGeometry& InGeometry,
     else
     {
         Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
-    }*/
+    }
 }
 
 bool UInventoryCellWidget::NativeOnDrop(const FGeometry& InGeometry,
     const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    /*UInventoryDragDropOperation* InventoryDragDropOperation =
+    UInventoryDragDropOperation* InventoryDragDropOperation =
         Cast<UInventoryDragDropOperation>(InOperation);
     if (InventoryDragDropOperation && InventoryDragDropOperation->SourceCell != this)
     {
@@ -92,7 +94,7 @@ bool UInventoryCellWidget::NativeOnDrop(const FGeometry& InGeometry,
         {
             OnItemDrop.Broadcast(InventoryDragDropOperation->SourceCell, this);
         }
-    }*/
+    }
 
     return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 }

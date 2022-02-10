@@ -27,7 +27,6 @@ public:
 
     int32 IndexInInventory = -1;
 
-protected:
 
     bool bHasItem;
 
@@ -40,6 +39,9 @@ protected:
     UPROPERTY()
     FInventorySlotInfo StoredItem;
 
+    FOnItemDrop OnItemDrop;
+
+protected:
 
     void OnItemDropped(UInventoryCellWidget* DraggedFrom,
         UInventoryCellWidget* DroppedTo);
