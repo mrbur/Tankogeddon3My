@@ -11,6 +11,7 @@
 #include "QuestListComponent.h"
 #include "InventoryComponent.h"
 #include "InventoryManagerComponent.h"
+#include "EquipInventoryComponent.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -30,6 +31,8 @@ public:
     UInventoryComponent* InventoryComponent;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UInventoryManagerComponent* InventoryManagerComponent;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UEquipInventoryComponent* EquipmentInventoryComponent;
 
     virtual void TakeDamage(const FDamageData& DamageData) override;
 
@@ -109,8 +112,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
     TSubclassOf<class AAmmo> AAmmoClass;
 
-
-    
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

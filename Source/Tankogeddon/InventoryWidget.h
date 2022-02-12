@@ -21,7 +21,7 @@ class TANKOGEDDON_API UInventoryWidget : public UUserWidget
 public:
     FOnItemDrop OnItemDrop;
 
-    //virtual void NativeConstruct() override;
+    virtual void NativeConstruct() override;
 
     void Init(int32 ItemsNum);
     bool AddItem(const FInventorySlotInfo& Item, const FInventoryItemInfo& ItemInfo,
@@ -49,6 +49,6 @@ protected:
 
     UInventoryCellWidget* CreateCellWidget();
 
-    
+    void InitCellWidget(UInventoryCellWidget* Widget);
 
 };

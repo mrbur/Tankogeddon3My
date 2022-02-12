@@ -73,11 +73,11 @@ ATankPawn::ATankPawn()
     AudioDieEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die Effect"));
     AudioDieEffect->SetupAttachment(CannonSpawnPoint);
 
-
     InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory");
-    InventoryManagerComponent =
-        CreateDefaultSubobject<UInventoryManagerComponent>("InventoryManager");
+    InventoryManagerComponent = CreateDefaultSubobject<UInventoryManagerComponent>("InventoryManager");
 
+    EquipmentInventoryComponent =
+        CreateDefaultSubobject<UEquipInventoryComponent>("EquipInventory");
 }
 
 // Called when the game starts or when spawned
@@ -86,6 +86,7 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 
     InventoryManagerComponent->Init(InventoryComponent);
+    InventoryManagerComponent->InitEquipment(EquipmentInventoryComponent);
 
     SetupCannon();
 }

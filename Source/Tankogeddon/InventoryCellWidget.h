@@ -26,7 +26,8 @@ public:
     const FInventorySlotInfo& GetItem();
 
     int32 IndexInInventory = -1;
-
+    UPROPERTY()
+    class UInventoryWidget* ParentInventoryWidget;
 
     bool bHasItem;
 

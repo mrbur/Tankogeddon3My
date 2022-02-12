@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "CoreMinimal.h"
 #include "InventoryManagerComponent.h"
+#include "CoreMinimal.h"
 #include "InventoryComponent.h"
 #include "DrawDebugHelpers.h"
 
@@ -88,8 +88,6 @@ void UInventoryManagerComponent::InitEquipment(UInventoryComponent* InInventoryC
 
 void UInventoryManagerComponent::SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo)
 {
-    FString ContextString;
-    FInventoryItemInfo* InventoryItemInfo = GetItemData(DraggedFrom->StoredItem.ID);
     FText FromCount = DraggedFrom->CountText->GetText();
     DraggedFrom->CountText->SetText(DroppedTo->CountText->GetText());
     DroppedTo->CountText->SetText(FromCount);
