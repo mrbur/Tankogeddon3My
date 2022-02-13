@@ -34,7 +34,7 @@ void UInventoryCellWidget::Clear()
 {
     if (ItemImage)
     {
-        ItemImage->SetBrush(FSlateBrush());
+        ItemImage->SetBrush(FSlateBrush()); 
         ItemImage->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f, 0.f));
     }
 

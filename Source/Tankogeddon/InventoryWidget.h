@@ -30,7 +30,7 @@ public:
     void OnItemDropped(UInventoryCellWidget* DraggedFrom,
         UInventoryCellWidget* DroppedTo);
 
-    UPROPERTY()
+    UPROPERTY(BlueprintReadWrite)
     TArray<UInventoryCellWidget*> CellWidgets;
 
     UPROPERTY(meta = (BindWidgetOptional))
