@@ -30,6 +30,12 @@ public:
     void SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo);
     void ItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo);
 
+    UFUNCTION(BlueprintCallable)
+    void ShowHideInventory();
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    ESlateVisibility ShowInventoryWidget = ESlateVisibility::Hidden;
+
 protected:
     UPROPERTY()
     UInventoryComponent* LocalInventoryComponent;
@@ -37,16 +43,18 @@ protected:
     UPROPERTY(EditAnywhere)
     UDataTable* InventoryItemsData;
 
-    UPROPERTY()
-    UInventoryWidget* InventoryWidget;
-
     UPROPERTY(EditAnywhere)
     TSubclassOf<UInventoryWidget> InventoryWidgetClass;
     UPROPERTY(EditAnywhere)
     int32 MinInventorySize = 10;
 
-    UPROPERTY()
-    UInventoryWidget* EquipInventoryWidget;
     UPROPERTY(EditAnywhere)
     TSubclassOf<UInventoryWidget> EquipInventoryWidgetClass;
+
+
+    UPROPERTY()
+    UInventoryWidget* InventoryWidget;
+
+    UPROPERTY()
+    UInventoryWidget* EquipInventoryWidget;
 };
