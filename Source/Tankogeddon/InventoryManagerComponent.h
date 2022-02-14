@@ -17,8 +17,11 @@ class TANKOGEDDON_API UInventoryManagerComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-
+    UFUNCTION(BlueprintCallable)
     void Init(UInventoryComponent* InInventoryComponent);
+
+    UFUNCTION(BlueprintCallable)
+    void HideInventory();
 
     FInventoryItemInfo* GetItemData(FName ItemID);
 
@@ -29,12 +32,6 @@ public:
 
     void SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo);
     void ItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo);
-
-    UFUNCTION(BlueprintCallable)
-    void ShowHideInventory();
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    ESlateVisibility ShowInventoryWidget = ESlateVisibility::Hidden;
 
 protected:
     UPROPERTY()
@@ -50,7 +47,6 @@ protected:
 
     UPROPERTY(EditAnywhere)
     TSubclassOf<UInventoryWidget> EquipInventoryWidgetClass;
-
 
     UPROPERTY()
     UInventoryWidget* InventoryWidget;

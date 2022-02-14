@@ -51,7 +51,6 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
         InventoryWidget->OnItemDrop.AddUObject(this, &UInventoryManagerComponent::ItemDropped);
 
         InventoryWidget->AddToViewport();
-        InventoryWidget->SetVisibility(ShowInventoryWidget);
 
         InventoryWidget->Init(FMath::Max(LocalInventoryComponent->GetItemsNum(), MinInventorySize));
 
@@ -85,7 +84,6 @@ void UInventoryManagerComponent::InitEquipment(UInventoryComponent* InInventoryC
         &UInventoryWidget::OnItemDropped);
 
     EquipInventoryWidget->AddToViewport();
-    EquipInventoryWidget->SetVisibility(ShowInventoryWidget);
 }
 
 void UInventoryManagerComponent::SwapItemDropped(UInventoryCellWidget* DraggedFrom, UInventoryCellWidget* DroppedTo)
@@ -132,19 +130,12 @@ void UInventoryManagerComponent::ItemDropped(UInventoryCellWidget* DraggedFrom, 
     }
 }
 
-void UInventoryManagerComponent::ShowHideInventory()
+void UInventoryManagerComponent::HideInventory()
 {
-    if (ShowInventoryWidget == ESlateVisibility::Hidden) {
-        ShowInventoryWidget = ESlateVisibility::Visible;
-    }
-    else {
-        ShowInventoryWidget = ESlateVisibility::Hidden;
-    }
-
     if (InventoryWidget) {
-        InventoryWidget->SetVisibility(ShowInventoryWidget);
+        InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
     }
     if (EquipInventoryWidget) {
-        EquipInventoryWidget->SetVisibility(ShowInventoryWidget);
+        EquipInventoryWidget->SetVisibility(ESlateVisibility::Hidden);
     }
 }
