@@ -173,11 +173,11 @@ public:
     UFUNCTION(BlueprintPure, Category = "AI|Move params")
     int IsPlayer();
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    class ACannon* Cannon = nullptr;
 private:
     void SetupCannon();
 
-    UPROPERTY()
-    class ACannon* Cannon = nullptr;
     class ACannon* DefaultCannon = nullptr;
     class ACannon* AltCannon = nullptr;
     bool bIsDefaultCannon = true;

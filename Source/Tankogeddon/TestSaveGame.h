@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "Engine/DataTable.h"
 #include "TestSaveGame.generated.h"
 
 /**
@@ -15,11 +16,13 @@ class TANKOGEDDON_API UTestSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite)
-	float TestFloat;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int CurrentAmmo = 5;
 
-	UFUNCTION(BlueprintCallable)
-	void SetTestFloat(float Float);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float CurrentHealth = 0.f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	UDataTable* InventorySlotsTable;
 	
 };
