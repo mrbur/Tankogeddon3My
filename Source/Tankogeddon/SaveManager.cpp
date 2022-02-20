@@ -3,28 +3,22 @@
 
 #include "SaveManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include "TankPawn.h"
 
 void USaveManager::Init()
 {
     CurrentGameObject = Cast<UTestSaveGame>(UGameplayStatics::CreateSaveGameObject(
         UTestSaveGame::StaticClass()));
+
+    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    ATankPawn* TankPawn = Cast<ATankPawn>(PlayerPawn);
+    OnGameLoadedFromSlot.AddDynamic(TankPawn, &ATankPawn::OnGameLoaded);
 }
 
 bool USaveManager::DoesSaveGameExist(const FString& SlotName)
 {
     return UGameplayStatics::DoesSaveGameExist(SlotName, 0);
 }
-
-//void USaveManager::LoadGame(const FString& SlotName)
-//{
-//    CurrentGameObject = UGameplayStatics::LoadGameFromSlot(SlotName, 0);
-//}
-//
-//void USaveManager::SaveCurrentGame(const FString& SlotName)
-//{
-//    UGameplayStatics::SaveGameToSlot(CurrentGameObject, SlotName, 0);
-//}
-
 
 void USaveManager::LoadGame(const FString& SlotName)
 {
@@ -50,7 +44,7 @@ void USaveManager::OnGameLoadedFromSlotHandle(const FString& SlotName,
     CurrentGameObject = Cast<UTestSaveGame>(SaveGame);
     if (OnGameLoadedFromSlot.IsBound())
     {
-        OnGameLoadedFromSlot.Broadcast(SlotName);
+        OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable);
     }
 }
 
@@ -58,6 +52,6 @@ void USaveManager::OnGameSavedToSlotHandle(const FString& SlotName, const int32 
 {
     if (OnGameSavedToSlot.IsBound())
     {
-        OnGameSavedToSlot.Broadcast(SlotName);
+        //OnGameSavedToSlot.Broadcast(SlotName);
     }
 }

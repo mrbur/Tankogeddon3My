@@ -2,6 +2,8 @@
 
 
 #include "TankogedonGameInstance.h"
+#include "TankPawn.h"
+#include "Kismet/GameplayStatics.h"
 
 void UTankogedonGameInstance::Init()
 {
@@ -10,5 +12,6 @@ void UTankogedonGameInstance::Init()
     UE_LOG(LogTemp, Warning, TEXT("UTankogedonGameInstance::Init()"));
 
     SaveManager = NewObject<USaveManager>(this);
-    SaveManager->Init();
+    
+    //SaveManager->Init();
 }

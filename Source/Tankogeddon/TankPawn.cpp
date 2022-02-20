@@ -211,6 +211,12 @@ int ATankPawn::IsPlayer()
     return isPlayer;
 }
 
+void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable)
+{
+    InventoryComponent->InventorySlotsTable = InventorySlotsTable;
+    InventoryManagerComponent->Init(InventoryComponent);
+}
+
 void ATankPawn::SetupCannon()
 {
     if (Cannon)

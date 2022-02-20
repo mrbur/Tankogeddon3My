@@ -175,6 +175,10 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     class ACannon* Cannon = nullptr;
+
+    UFUNCTION(BlueprintCallable)
+    void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable);
+
 private:
     void SetupCannon();
 

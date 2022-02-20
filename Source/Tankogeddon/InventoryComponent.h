@@ -15,6 +15,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UDataTable* InventorySlotsTable;
 
+	UFUNCTION(BlueprintCallable)
 	UDataTable* GetInventorySlotsTable() const {
 		return InventorySlotsTable;
 	}

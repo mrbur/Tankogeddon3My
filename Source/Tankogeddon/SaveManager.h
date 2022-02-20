@@ -9,7 +9,7 @@
 #include "SaveManager.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameFromSlotAction, const FString&, SlotName);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameFromSlotAction, const FString&, SlotName, UDataTable*, InventorySlotsTable);
 
 /**
  * 
@@ -20,6 +20,7 @@ class TANKOGEDDON_API USaveManager : public UObject
 	GENERATED_BODY()
 	
 public:
+    UFUNCTION(BlueprintCallable)
     void Init();
     UFUNCTION(BlueprintCallable)
     bool DoesSaveGameExist(const FString& SlotName);
