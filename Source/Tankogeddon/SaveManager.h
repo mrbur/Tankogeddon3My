@@ -9,7 +9,7 @@
 #include "SaveManager.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameFromSlotAction, const FString&, SlotName, UDataTable*, InventorySlotsTable);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnGameFromSlotAction, const FString&, SlotName, UDataTable*, InventorySlotsTable, FString, CurrentAmmo, FString, Health);
 
 /**
  * 

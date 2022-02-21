@@ -17,10 +17,10 @@ class TANKOGEDDON_API UTestSaveGame : public USaveGame
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int CurrentAmmo = 5;
+	FString CurrentAmmo;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float CurrentHealth = 0.f;
+	FString Health;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UDataTable* InventorySlotsTable;

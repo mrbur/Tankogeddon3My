@@ -44,7 +44,7 @@ void USaveManager::OnGameLoadedFromSlotHandle(const FString& SlotName,
     CurrentGameObject = Cast<UTestSaveGame>(SaveGame);
     if (OnGameLoadedFromSlot.IsBound())
     {
-        OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable);
+        OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable, CurrentGameObject->CurrentAmmo, CurrentGameObject->Health);
     }
 }
 

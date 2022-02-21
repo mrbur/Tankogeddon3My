@@ -147,6 +147,9 @@ public:
     void OnHealthChanged(float Damage);
 
     UFUNCTION(BlueprintNativeEvent, Category = "Health")
+    void OnHealthLoad();
+
+    UFUNCTION(BlueprintNativeEvent, Category = "Health")
     void OnDie();
 
     UFUNCTION(BlueprintNativeEvent, Category = "Score")
@@ -177,7 +180,7 @@ public:
     class ACannon* Cannon = nullptr;
 
     UFUNCTION(BlueprintCallable)
-    void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable);
+    void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health);
 
 private:
     void SetupCannon();

@@ -59,7 +59,7 @@ ATankPawn::ATankPawn()
     HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
     HealthComponent->OnHealthChanged.AddDynamic(this, &ATankPawn::OnHealthChanged);
     HealthComponent->OnDie.AddDynamic(this, &ATankPawn::OnDie);
-
+    HealthComponent->OnHealthRefresh.AddDynamic(this, &ATankPawn::OnHealthLoad);
 
     HitEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Hit Effect"));
     HitEffect->SetupAttachment(CannonSpawnPoint);
@@ -206,15 +206,24 @@ FVector ATankPawn::GetTurretForwardVector()
     return TurretMesh->GetForwardVector();
 }
 
+void ATankPawn::OnHealthLoad_Implementation()
+{
+}
+
 int ATankPawn::IsPlayer()
 {
     return isPlayer;
 }
 
-void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable)
+void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health)
 {
     InventoryComponent->InventorySlotsTable = InventorySlotsTable;
     InventoryManagerComponent->Init(InventoryComponent);
+
+    Cannon->CurrentAmmo = FCString::Atoi(*CurrentAmmo);
+
+    HealthComponent->CurrentHealth = FCString::Atof(*Health);
+    HealthComponent->OnHealthRefresh.Broadcast();
 }
 
 void ATankPawn::SetupCannon()

@@ -57,9 +57,6 @@ protected:
     int MaxAmmoInSet = 5;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
-    int CurrentAmmo = 5;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
     ECannonType Type = ECannonType::FireProjectile;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (EditCondition = "Type == ECannonType::FireProjectile", EditConditionHides), Category = "Fire params")
@@ -79,6 +76,9 @@ public:
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
     UScoreComponent* ScoreComponent;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ammo")
+    int CurrentAmmo = 5;
 
     void FireSpecial();
     void Shoot();

@@ -9,6 +9,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthRefresh);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, DamageValue);
 
 
@@ -29,6 +30,9 @@ public:
 
     UPROPERTY(BlueprintAssignable)
     FOnDie OnDie;
+    
+    UPROPERTY(BlueprintAssignable)
+    FOnHealthRefresh OnHealthRefresh;
 
     UFUNCTION(BlueprintCallable, Category = "Health Component")
     void TakeDamage(const FDamageData& DamageData);
@@ -42,11 +46,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Health Component")
     void AddHealth(float AddiditionalHealthValue);
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    float CurrentHealth = 0.f;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-    UPROPERTY()
-    float CurrentHealth = 0.f;
 		
 };
