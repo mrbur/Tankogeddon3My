@@ -4,6 +4,7 @@
 #include "SaveManager.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "TankPawn.h"
+#include "Engine/World.h"
 
 void USaveManager::Init()
 {
@@ -33,6 +34,17 @@ void USaveManager::LoadGame(const FString& SlotName)
 
 void USaveManager::SaveCurrentGame(const FString& SlotName)
 {
+    CurrentGameObject->TankVector.Empty();
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATankPawn::StaticClass(), FoundActors);
+
+    for (AActor* Actor : FoundActors) {
+        ATankPawn* TankPawn = Cast<ATankPawn>(Actor);
+        if (TankPawn && !TankPawn->IsPlayer()) {
+            CurrentGameObject->TankVector.Add(TankPawn->GetActorLocation());
+        }
+    }
+
     UGameplayStatics::AsyncSaveGameToSlot(CurrentGameObject, SlotName, 0,
         FAsyncSaveGameToSlotDelegate::CreateUObject(this,
             &USaveManager::OnGameSavedToSlotHandle));
@@ -41,10 +53,25 @@ void USaveManager::SaveCurrentGame(const FString& SlotName)
 void USaveManager::OnGameLoadedFromSlotHandle(const FString& SlotName,
     const int32 UserIndex, USaveGame* SaveGame)
 {
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATankPawn::StaticClass(), FoundActors);
+
+    for (AActor* Actor : FoundActors) {
+        ATankPawn* TankPawn = Cast<ATankPawn>(Actor);
+        if (TankPawn && !TankPawn->IsPlayer()) {
+            TankPawn->Destroy();
+        }
+    }
+
     CurrentGameObject = Cast<UTestSaveGame>(SaveGame);
     if (OnGameLoadedFromSlot.IsBound())
     {
         OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable, CurrentGameObject->CurrentAmmo, CurrentGameObject->Health);
+    }
+
+    for (FVector TankSpawnPoint : CurrentGameObject->TankVector) {
+        FTransform SpawnTransform(FRotator::ZeroRotator, TankSpawnPoint, FVector(1.f));
+        AActor* MySpawnedActor = GetWorld()->SpawnActor<ATankPawn>(ATankPawn::StaticClass(), TankSpawnPoint, FRotator::ZeroRotator);
     }
 }
 

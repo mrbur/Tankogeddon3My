@@ -2,8 +2,6 @@
 
 
 #include "TankFactory.h"
-
-#include "TankFactory.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -35,7 +33,6 @@ ATankFactory::ATankFactory()
     BuildingMesh->SetupAttachment(SceneComp);
     BuildingDestroyedMesh->SetupAttachment(SceneComp);
     
-
     TankSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
     TankSpawnPoint->SetupAttachment(SceneComp);
 
@@ -63,7 +60,7 @@ void ATankFactory::BeginPlay()
 {
     Super::BeginPlay();
 
-    //GetWorld()->GetTimerManager().SetTimer(SpawnTankTimerHandle, this, &ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
+    GetWorld()->GetTimerManager().SetTimer(SpawnTankTimerHandle, this, &ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
 }
 
 void ATankFactory::EndPlay(EEndPlayReason::Type EndPlayReason)

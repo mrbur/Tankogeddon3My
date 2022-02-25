@@ -100,8 +100,11 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item,
 void UInventoryWidget::OnItemDropped(UInventoryCellWidget* DraggedFrom,
     UInventoryCellWidget* DroppedTo)
 {
+    int32 Indexfrom = DraggedFrom->IndexInInventory;
+    DraggedFrom->IndexInInventory = DroppedTo->IndexInInventory;
+    DroppedTo->IndexInInventory = Indexfrom;
     if (OnItemDrop.IsBound())
     {
         OnItemDrop.Broadcast(DraggedFrom, DroppedTo);
     }
-}
+}   

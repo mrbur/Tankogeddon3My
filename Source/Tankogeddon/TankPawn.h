@@ -182,6 +182,8 @@ public:
     UFUNCTION(BlueprintCallable)
     void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health);
 
+    void Destroy();
+
 private:
     void SetupCannon();
 

@@ -77,7 +77,7 @@ FInventoryItemInfo* UInventoryManagerComponent::GetItemData(FName ItemID)
 
 void UInventoryManagerComponent::InitEquipment(UInventoryComponent* InInventoryComponent)
 {
-    ensure(EquipInventoryWidgetClass);
+    if (!EquipInventoryWidgetClass)return;
     EquipInventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),
         EquipInventoryWidgetClass);
     EquipInventoryWidget->OnItemDrop.AddUObject(InventoryWidget,

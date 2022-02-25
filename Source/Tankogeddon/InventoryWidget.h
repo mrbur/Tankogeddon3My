@@ -40,7 +40,6 @@ public:
     UUniformGridPanel* ItemCellsGrid;
 
 protected:
-
     UPROPERTY(EditDefaultsOnly)
     int32 ItemsInPow = 5;
 

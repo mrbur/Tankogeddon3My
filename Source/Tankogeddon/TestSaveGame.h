@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "Engine/DataTable.h"
+#include "TankPawn.h"
 #include "TestSaveGame.generated.h"
 
 /**
@@ -24,5 +25,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UDataTable* InventorySlotsTable;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<FVector> TankVector;
 	
 };

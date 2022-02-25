@@ -85,8 +85,10 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-    InventoryManagerComponent->Init(InventoryComponent);
-    InventoryManagerComponent->InitEquipment(EquipmentInventoryComponent);
+    if (IsPlayer()) {
+        InventoryManagerComponent->Init(InventoryComponent);
+        InventoryManagerComponent->InitEquipment(EquipmentInventoryComponent);
+    }
 
     SetupCannon();
 }
@@ -221,9 +223,20 @@ void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlots
     InventoryManagerComponent->Init(InventoryComponent);
 
     Cannon->CurrentAmmo = FCString::Atoi(*CurrentAmmo);
-
     HealthComponent->CurrentHealth = FCString::Atof(*Health);
-    HealthComponent->OnHealthRefresh.Broadcast();
+
+    if (HealthComponent->OnHealthRefresh.IsBound()) {
+        HealthComponent->OnHealthRefresh.Broadcast();
+    }
+}
+
+void ATankPawn::Destroy()
+{
+    if (Cannon)
+    {
+        Cannon->Destroy();
+    }
+    Super::Destroy();
 }
 
 void ATankPawn::SetupCannon()
@@ -240,8 +253,12 @@ void ATankPawn::SetupCannon()
     AltCannon = GetWorld()->SpawnActor<AAlterCannon>(AlterCannonClass, Params);
     DefaultCannon = GetWorld()->SpawnActor<ACannon>(DefaultCannonClass, Params);
 
-    DefaultCannon->ScoreComponent->OnDestroySomeone.AddDynamic(this, &ATankPawn::AddScore);
+    if (DefaultCannon) {
+        DefaultCannon->ScoreComponent->OnDestroySomeone.AddDynamic(this, &ATankPawn::AddScore);
+    }
 
     Cannon = AltCannon;
-    Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    if (Cannon) {
+        Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    }
 }

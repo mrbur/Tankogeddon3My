@@ -34,6 +34,9 @@ public:
     UPROPERTY(BlueprintReadWrite, BlueprintAssignable)
     FOnGameFromSlotAction OnGameSavedToSlot;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
+    TSubclassOf<class ATankPawn> SpawnTankClass;
+
 protected:
     UPROPERTY(BlueprintReadWrite)
     UTestSaveGame* CurrentGameObject;
