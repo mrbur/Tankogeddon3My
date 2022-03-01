@@ -5,6 +5,9 @@
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 #include "TankPawn.h"
 #include "Engine/World.h"
+#include "Serialization/NameAsStringProxyArchive.h"
+#include <Runtime/CoreUObject/Public/Serialization/ObjectAndNameAsStringProxyArchive.h>
+#include "Kismet/GameplayStatics.h"
 
 void USaveManager::Init()
 {
@@ -14,6 +17,19 @@ void USaveManager::Init()
     APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
     ATankPawn* TankPawn = Cast<ATankPawn>(PlayerPawn);
     OnGameLoadedFromSlot.AddDynamic(TankPawn, &ATankPawn::OnGameLoaded);
+
+
+    ExistingSavedSlots.Empty();
+    IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+    FString FilePath = FPaths::Combine(FPaths::ProjectContentDir(), ExistingSavedSlotsFilePath);
+    if (PlatformFile.FileExists(*FilePath))
+    {
+        FString ExistingSavingsArray;
+        if (FFileHelper::LoadFileToString(ExistingSavingsArray, *FilePath))
+        {
+            ExistingSavingsArray.ParseIntoArray(ExistingSavedSlots, TEXT(","));
+        }
+    }
 }
 
 bool USaveManager::DoesSaveGameExist(const FString& SlotName)
@@ -23,7 +39,8 @@ bool USaveManager::DoesSaveGameExist(const FString& SlotName)
 
 void USaveManager::LoadGame(const FString& SlotName)
 {
-    if (!DoesSaveGameExist(SlotName)) {
+
+    if (!GetExistingSavedSlots().Contains(SlotName)) {
         return;
     }
 
@@ -81,4 +98,45 @@ void USaveManager::OnGameSavedToSlotHandle(const FString& SlotName, const int32 
     {
         //OnGameSavedToSlot.Broadcast(SlotName);
     }
+    if (!ExistingSavedSlots.Contains(SlotName))
+    {
+        ExistingSavedSlots.Add(SlotName);
+        CacheExistingSavedSlotsInfo();
+    }
+}
+
+struct FWCSaveGameArchive : public FObjectAndNameAsStringProxyArchive
+{
+    FWCSaveGameArchive(FArchive& InInnerArchive)
+        : FObjectAndNameAsStringProxyArchive(InInnerArchive, true)
+    {
+        ArIsSaveGame = true;
+        ArNoDelta = true; // Optional, useful when saving/loading variables without resetting the level.
+                          // Serialize variables even if weren't modified and mantain their default values.
+    }
+};
+
+void USaveManager::CacheExistingSavedSlotsInfo()
+{
+    TArray<uint8> RawDerivedData;
+
+    FMemoryWriter MemWriter(RawDerivedData);
+
+    FObjectAndNameAsStringProxyArchive Ar(MemWriter, true);
+    Ar.ArIsSaveGame = true;
+    AQuest* Quest = NewObject<AQuest>(this);
+    Quest->Name = FText::FromString("123");
+    Quest->Serialize(Ar);
+    Ar << Quest;
+    Ar.Seek(0);
+
+    Quest = NewObject<AQuest>(this);
+
+    FMemoryReader MemReader(RawDerivedData);
+    FObjectAndNameAsStringProxyArchive Arr(MemReader, true);
+    Arr.ArIsSaveGame = true;
+    Quest->Serialize(Arr);
+    Arr << Quest;
+    Arr.Flush();
+    Arr.Flush();
 }

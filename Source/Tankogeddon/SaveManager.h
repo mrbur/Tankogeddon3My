@@ -37,10 +37,21 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
     TSubclassOf<class ATankPawn> SpawnTankClass;
 
+    UFUNCTION(BlueprintCallable)
+    const TArray<FString>& GetExistingSavedSlots() const {
+        return ExistingSavedSlots;
+    }
+
 protected:
     UPROPERTY(BlueprintReadWrite)
     UTestSaveGame* CurrentGameObject;
 
     void OnGameLoadedFromSlotHandle(const FString& SlotName, const int32 UserIndex, USaveGame* SaveGame);
     void OnGameSavedToSlotHandle(const FString& SlotName, const int32 UserIndex, bool bSuccess);
+
+    UPROPERTY()
+    TArray<FString> ExistingSavedSlots;
+    const FString ExistingSavedSlotsFilePath = "existing_slots.txt";
+
+    void CacheExistingSavedSlotsInfo();
 };

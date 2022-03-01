@@ -18,6 +18,8 @@ class QUESTSYSTEM_API UQuestListComponent : public UActorComponent
 
 public:	
 	void AddQuest(AQuest* Quest);
+
+	UFUNCTION(BlueprintCallable)
 	const TArray<AQuest*>& GetQuests();
 
 	AQuest* GetActiveQuest() const;

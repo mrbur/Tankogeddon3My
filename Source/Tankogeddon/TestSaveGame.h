@@ -28,5 +28,8 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TArray<FVector> TankVector;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<AQuest*> Quests;
 	
 };
