@@ -16,6 +16,8 @@ class QUESTSYSTEM_API AQuestSystemCharacter : public ACharacter, public IInterac
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleQuestListVisibility();
+	
+	void ToggleQuestListVisibility(AActor* ActorInteractedWith);
 
 	UFUNCTION(BlueprintCallable)
 	void OnQuestAccept(AQuest* Quest, UQuestListComponent* ActorQuestList);

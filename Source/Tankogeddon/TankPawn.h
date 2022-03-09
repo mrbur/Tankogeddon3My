@@ -12,6 +12,7 @@
 #include "InventoryComponent.h"
 #include "InventoryManagerComponent.h"
 #include "EquipInventoryComponent.h"
+#include "QuestList.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -180,9 +181,19 @@ public:
     class ACannon* Cannon = nullptr;
 
     UFUNCTION(BlueprintCallable)
-    void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health);
+    void OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health, TArray<AQuest*> Quests);
 
     void Destroy();
+
+
+    UPROPERTY()
+    UQuestList* QuestList;
+
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<UQuestList> QuestListClass;
+
+    UFUNCTION(BlueprintCallable)
+    void ToggleQuestListVisibility();
 
 private:
     void SetupCannon();

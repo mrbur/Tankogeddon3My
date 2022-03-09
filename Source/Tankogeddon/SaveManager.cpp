@@ -80,15 +80,53 @@ void USaveManager::OnGameLoadedFromSlotHandle(const FString& SlotName,
         }
     }
 
-    CurrentGameObject = Cast<UTestSaveGame>(SaveGame);
-    if (OnGameLoadedFromSlot.IsBound())
-    {
-        OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable, CurrentGameObject->CurrentAmmo, CurrentGameObject->Health);
-    }
-
     for (FVector TankSpawnPoint : CurrentGameObject->TankVector) {
         FTransform SpawnTransform(FRotator::ZeroRotator, TankSpawnPoint, FVector(1.f));
         AActor* MySpawnedActor = GetWorld()->SpawnActor<ATankPawn>(ATankPawn::StaticClass(), TankSpawnPoint, FRotator::ZeroRotator);
+    }
+
+    FString QuestFilePath = FPaths::Combine(FPaths::ProjectContentDir(),
+        QuestCacheFilePath);
+    IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+    IFileHandle* FileHandle = PlatformFile.OpenRead(*QuestFilePath);
+
+    int32 QuestCount = 0;
+
+    TArray<uint8> Contents;
+    Contents.AddUninitialized(FileHandle->Size());
+    if (FileHandle)
+    {
+        int32* IntPointer = &QuestCount;
+        uint8* ByteBuffer = reinterpret_cast<uint8*>(IntPointer);
+        FileHandle->Read(ByteBuffer, sizeof(int32));
+        
+        FileHandle->Read(Contents.GetData(), Contents.Num());
+
+        delete FileHandle;
+    }
+
+    if (QuestCount == 0)return;
+
+    CurrentGameObject->Quests.Empty();
+
+    FMemoryReader MemReader(Contents);
+    FObjectAndNameAsStringProxyArchive Arr(MemReader, true);
+
+    while (QuestCount > 0) {
+        AQuest* Quest = NewObject<AQuest>(this);
+        Arr.ArIsSaveGame = true;
+        Quest->Serialize(Arr); 
+        Arr << Quest;
+        Arr.Flush();
+
+        CurrentGameObject->Quests.Add(Quest);
+        QuestCount--;
+    }
+
+    CurrentGameObject = Cast<UTestSaveGame>(SaveGame);
+    if (OnGameLoadedFromSlot.IsBound())
+    {
+        OnGameLoadedFromSlot.Broadcast(SlotName, CurrentGameObject->InventorySlotsTable, CurrentGameObject->CurrentAmmo, CurrentGameObject->Health, CurrentGameObject->Quests);
     }
 }
 
@@ -116,27 +154,47 @@ struct FWCSaveGameArchive : public FObjectAndNameAsStringProxyArchive
     }
 };
 
-void USaveManager::CacheExistingSavedSlotsInfo()
-{
-    TArray<uint8> RawDerivedData;
+void USaveManager::SerializeSlotsInfo(TArray<uint8>* RawDerivedData) {
+    if (RawDerivedData == nullptr || CurrentGameObject->Quests.Num() == 0)return;
 
-    FMemoryWriter MemWriter(RawDerivedData);
-
+    FMemoryWriter MemWriter(*RawDerivedData);
     FObjectAndNameAsStringProxyArchive Ar(MemWriter, true);
     Ar.ArIsSaveGame = true;
-    AQuest* Quest = NewObject<AQuest>(this);
-    Quest->Name = FText::FromString("123");
-    Quest->Serialize(Ar);
-    Ar << Quest;
-    Ar.Seek(0);
 
-    Quest = NewObject<AQuest>(this);
+    int32 MyInteger = CurrentGameObject->Quests.Num();
+    for (AQuest* Quest : CurrentGameObject->Quests) {
+        Ar << MyInteger;
 
-    FMemoryReader MemReader(RawDerivedData);
-    FObjectAndNameAsStringProxyArchive Arr(MemReader, true);
-    Arr.ArIsSaveGame = true;
-    Quest->Serialize(Arr);
-    Arr << Quest;
-    Arr.Flush();
-    Arr.Flush();
+        Quest->Serialize(Ar);
+        Ar << Quest;
+    }
+}
+
+void USaveManager::CacheExistingSavedSlotsInfo()
+{
+    FString FilePath = FPaths::Combine(FPaths::ProjectContentDir(),
+        ExistingSavedSlotsFilePath);
+
+    FString ExistingSavingsArray = "";
+    for (const FString& Slot : ExistingSavedSlots)
+    {
+        ExistingSavingsArray += Slot + ",";
+    }
+
+    FFileHelper::SaveStringToFile(ExistingSavingsArray, *FilePath,
+        FFileHelper::EEncodingOptions::ForceUnicode, &IFileManager::Get(),
+        FILEWRITE_EvenIfReadOnly);
+
+    TArray<uint8> RawDerivedData;
+    SerializeSlotsInfo(&RawDerivedData);
+
+    FString QuestFilePath = FPaths::Combine(FPaths::ProjectContentDir(),
+        QuestCacheFilePath);
+    IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+    IFileHandle* FileHandle = PlatformFile.OpenWrite(*QuestFilePath);
+    if (FileHandle)
+    {
+        FileHandle->Write(RawDerivedData.GetData(), RawDerivedData.Num() * sizeof(uint8));
+        delete FileHandle;
+    }
 }

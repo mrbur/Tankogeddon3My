@@ -113,6 +113,12 @@ void AQuestSystemCharacter::OnQuestAccept(AQuest* Quest, UQuestListComponent* Ac
     QuestMark->SetHiddenInGame(true);
 }
 
+void AQuestSystemCharacter::ToggleQuestListVisibility(AActor * Actor) {
+    ActorInteractedWith = Actor;
+
+    ToggleQuestListVisibility();
+}
+
 void AQuestSystemCharacter::ToggleQuestListVisibility()
 {
     APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);

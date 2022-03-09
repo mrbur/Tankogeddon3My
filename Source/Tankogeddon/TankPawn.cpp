@@ -19,6 +19,9 @@
 #include "Components/AudioComponent.h"
 #include "Camera/CameraShakeBase.h"
 #include "GameFramework/ForceFeedbackEffect.h"
+#include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "QuestSystemCharacter.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -217,7 +220,7 @@ int ATankPawn::IsPlayer()
     return isPlayer;
 }
 
-void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health)
+void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlotsTable, FString CurrentAmmo, FString Health, TArray<AQuest*> Quests)
 {
     InventoryComponent->InventorySlotsTable = InventorySlotsTable;
     InventoryManagerComponent->Init(InventoryComponent);
@@ -228,6 +231,17 @@ void ATankPawn::OnGameLoaded(const FString& SlotName, UDataTable* InventorySlots
     if (HealthComponent->OnHealthRefresh.IsBound()) {
         HealthComponent->OnHealthRefresh.Broadcast();
     }
+
+    QuestListComponent->AcceptedQuests.Empty();
+    for (AQuest* Quest : Quests) {
+        QuestListComponent->AddQuest(Quest);
+        AActor* Tank = Quest->GetParentActor();
+        AQuestSystemCharacter* QuestSystemCharacter = Cast<AQuestSystemCharacter>(Tank);
+        if (QuestSystemCharacter) {
+            QuestSystemCharacter->ToggleQuestListVisibility(this);
+        }
+    }
+    
 }
 
 void ATankPawn::Destroy()
@@ -260,5 +274,35 @@ void ATankPawn::SetupCannon()
     Cannon = AltCannon;
     if (Cannon) {
         Cannon->AttachToComponent(CannonSpawnPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+    }
+}
+
+void ATankPawn::ToggleQuestListVisibility()
+{
+    APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    UActorComponent* ActorQuestListComp =
+        GetComponentByClass(
+            UQuestListComponent::StaticClass());
+    UQuestListComponent* ActorQuestList =
+        Cast<UQuestListComponent>(ActorQuestListComp);
+
+
+    if (QuestList)
+    {
+        QuestList->RemoveFromParent();
+        QuestList = nullptr;
+        UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+        PC->bShowMouseCursor = false;
+    }
+    else
+    {
+        if (QuestListClass)
+        {
+            QuestList = CreateWidget<UQuestList>(GetWorld(), QuestListClass);
+            QuestList->Init(ActorQuestList);
+            QuestList->AddToViewport();
+            UWidgetBlueprintLibrary::SetInputMode_GameAndUI(PC);
+            PC->bShowMouseCursor = true;
+        }
     }
 }

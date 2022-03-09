@@ -9,7 +9,7 @@
 #include "SaveManager.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnGameFromSlotAction, const FString&, SlotName, UDataTable*, InventorySlotsTable, FString, CurrentAmmo, FString, Health);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnGameFromSlotAction, const FString&, SlotName, UDataTable*, InventorySlotsTable, FString, CurrentAmmo, FString, Health, TArray<AQuest*>, Quests);
 
 /**
  * 
@@ -52,6 +52,8 @@ protected:
     UPROPERTY()
     TArray<FString> ExistingSavedSlots;
     const FString ExistingSavedSlotsFilePath = "existing_slots.txt";
+    const FString QuestCacheFilePath = "quest_cache.txt";
 
     void CacheExistingSavedSlotsInfo();
+    void SerializeSlotsInfo(TArray<uint8>* RawDerivedData);
 };

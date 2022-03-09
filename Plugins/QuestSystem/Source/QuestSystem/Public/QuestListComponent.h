@@ -30,12 +30,13 @@ public:
 
 	FOnQuestAction OnActiveQuestChanged;
 
+	UPROPERTY()
+	TArray<AQuest*> AcceptedQuests;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
-	TArray<AQuest*> AcceptedQuests;
 	UPROPERTY()
 	AQuest* ActiveQuest;
 
