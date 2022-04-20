@@ -53,9 +53,9 @@ ATankFactory::ATankFactory()
     TankCreationAudioEffect->SetupAttachment(TankSpawnPoint);
 }
 
-void ATankFactory::TakeDamage(const FDamageData& DamageData)
+void ATankFactory::TakeDamage_(const FDamageData& DamageData)
 {
-    HealthComponent->TakeDamage(DamageData);
+    HealthComponent->TakeDamage_(DamageData);
 }
 
 // Called when the game starts or when spawned

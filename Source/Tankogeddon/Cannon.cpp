@@ -141,7 +141,7 @@ void ACannon::Shoot()
                 DamageData.DamageValue = 1;
                 DamageData.Instigator = GetInstigator();
                 DamageData.DamageMaker = this;
-                Damageable->TakeDamage(DamageData);
+                Damageable->TakeDamage_(DamageData);
             }
         }
         DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 0.5f, 0, 5.f);

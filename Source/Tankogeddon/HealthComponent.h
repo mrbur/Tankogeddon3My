@@ -31,7 +31,7 @@ public:
     FOnDie OnDie;
 
     UFUNCTION(BlueprintCallable, Category = "Health Component")
-    void TakeDamage(const FDamageData& DamageData);
+    void TakeDamage_(const FDamageData& DamageData);
 
     UFUNCTION(BlueprintCallable, Category = "Health Component")
     float GetHealth() const;

@@ -74,7 +74,7 @@ void APhysicsProjectile::OnMeshHit(class UPrimitiveComponent* HittedComp, class 
                 DamageData.Instigator = GetOwner();
                 DamageData.DamageMaker = this;
 
-                DamageableActor->TakeDamage(DamageData);
+                DamageableActor->TakeDamage_(DamageData);
             }
 
             UPrimitiveComponent* HitMesh = Cast<UPrimitiveComponent>(HitActor->GetRootComponent());
