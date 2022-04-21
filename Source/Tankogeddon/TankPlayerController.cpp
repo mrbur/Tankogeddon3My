@@ -4,6 +4,7 @@
 #include "TankPlayerController.h"
 #include "TankPawn.h"
 #include "DrawDebugHelpers.h"
+#include "Misc/Paths.h"
 #include "thirdparty/pugi/pugixml.hpp"
 
 void ATankPlayerController::BeginPlay()
@@ -14,9 +15,11 @@ void ATankPlayerController::BeginPlay()
     bShowMouseCursor = true;
 
     pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load_file("tank_name.xml");
-    name.Append(doc.child("mesh").attribute("name").value());
-    name.Append(doc.child("mesh").attribute("name").value());
+    FString mn = FPaths::GameSourceDir() + "Tankogeddon/thirdparty/pugi/tank_name.xml";
+    pugi::xml_parse_result result = doc.load_file(mn.GetCharArray().GetData());
+
+    name.Append(doc.first_child().first_child().text().as_string());
+    name.Append("");
 }
 
 void ATankPlayerController::SetupInputComponent()
