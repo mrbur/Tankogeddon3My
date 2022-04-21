@@ -4,6 +4,7 @@
 #include "TankPlayerController.h"
 #include "TankPawn.h"
 #include "DrawDebugHelpers.h"
+#include "thirdparty/pugi/pugixml.hpp"
 
 void ATankPlayerController::BeginPlay()
 {
@@ -11,6 +12,11 @@ void ATankPlayerController::BeginPlay()
 
     TankPawn = Cast<ATankPawn>(GetPawn());
     bShowMouseCursor = true;
+
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file("tank_name.xml");
+    name.Append(doc.child("mesh").attribute("name").value());
+    name.Append(doc.child("mesh").attribute("name").value());
 }
 
 void ATankPlayerController::SetupInputComponent()
