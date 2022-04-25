@@ -15,11 +15,6 @@ void ATankPlayerController::BeginPlay()
     bShowMouseCursor = true;
 
     pugi::xml_document doc;
-    FString mn = FPaths::GameSourceDir() + "Tankogeddon/thirdparty/pugi/tank_name.xml";
-    pugi::xml_parse_result result = doc.load_file(mn.GetCharArray().GetData());
-
-    name.Append(doc.first_child().first_child().text().as_string());
-    name.Append("");
 }
 
 void ATankPlayerController::SetupInputComponent()
