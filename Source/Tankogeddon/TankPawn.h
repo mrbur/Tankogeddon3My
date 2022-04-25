@@ -18,7 +18,7 @@ public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
 
-    virtual void TakeDamage(const FDamageData& DamageData) override;
+    virtual void TakeDamage_(const FDamageData& DamageData) override;
 
 protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Components")

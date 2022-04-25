@@ -55,7 +55,7 @@ protected:
 
 public:
 
-    virtual void TakeDamage(const FDamageData& DamageData) override;
+    virtual void TakeDamage_(const FDamageData& DamageData) override;
 
 protected:
     // Called when the game starts or when spawned

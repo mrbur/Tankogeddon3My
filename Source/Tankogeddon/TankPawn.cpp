@@ -65,9 +65,9 @@ ATankPawn::ATankPawn()
     AudioDieEffect->SetupAttachment(CannonSpawnPoint);
 }
 
-void ATankPawn::TakeDamage(const FDamageData& DamageData)
+void ATankPawn::TakeDamage_(const FDamageData& DamageData)
 {
-    HealthComponent->TakeDamage(DamageData);
+    HealthComponent->TakeDamage_(DamageData);
 }
 
 // Called when the game starts or when spawned

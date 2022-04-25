@@ -12,9 +12,14 @@ public class Tankogeddon : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
+		if(Target.Platform == UnrealTargetPlatform.Android)
+        {
+			PublicAdditionalLibraries.Add(System.IO.Path.Combine(ModuleDirectory, "pugixml.lib "));
+		}
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

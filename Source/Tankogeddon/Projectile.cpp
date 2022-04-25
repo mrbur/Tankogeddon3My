@@ -56,7 +56,7 @@ void AProjectile::OnMeshHit(UPrimitiveComponent* HittedComp, AActor* OtherActor,
 		DamageData.DamageValue = Damage;
 		DamageData.Instigator = GetInstigator();
 		DamageData.DamageMaker = this;
-		Damageable->TakeDamage(DamageData);
+		Damageable->TakeDamage_(DamageData);
 
 		if (OtherActor->IsActorBeingDestroyed()) {
 			ScoreComponent->OnDestroySomeone.Broadcast();

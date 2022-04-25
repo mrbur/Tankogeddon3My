@@ -14,7 +14,7 @@ UHealthComponent::UHealthComponent()
 }
 
 
-void UHealthComponent::TakeDamage(const FDamageData& DamageData)
+void UHealthComponent::TakeDamage_(const FDamageData& DamageData)
 {
     float TakedDamageValue = DamageData.DamageValue;
     CurrentHealth -= TakedDamageValue;

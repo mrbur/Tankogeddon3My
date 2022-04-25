@@ -20,7 +20,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void TakeDamage(const FDamageData& DamageData) override;
+	virtual void TakeDamage_(const FDamageData& DamageData) override;
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")

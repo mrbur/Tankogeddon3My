@@ -20,6 +20,8 @@ public:
 	// Called to bind functionality to input
     virtual void SetupInputComponent() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+	FString name;
 	
 private:
 	void MoveForward(float InAxisValue);

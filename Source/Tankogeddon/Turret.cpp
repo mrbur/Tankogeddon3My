@@ -90,9 +90,9 @@ void ATurret::Tick(float DeltaTime)
     }
 }
 
-void ATurret::TakeDamage(const FDamageData& DamageData)
+void ATurret::TakeDamage_(const FDamageData& DamageData)
 {
-    HealthComponent->TakeDamage(DamageData);
+    HealthComponent->TakeDamage_(DamageData);
 }
 
 bool ATurret::IsPlayerInRange()
