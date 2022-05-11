@@ -35,9 +35,10 @@ public:
 
 
 
+#if PLATFORM_ANDROID
+public:
+	static struct _JNIEnv* ENV;
 
-
-#ifdef PLATFORM_ANDROID
 class TANKOGEDDON_API AndroidFileInput : public IFileInput
 {
 public:

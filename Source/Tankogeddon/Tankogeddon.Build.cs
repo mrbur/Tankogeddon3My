@@ -17,6 +17,18 @@ public class Tankogeddon : ModuleRules
 			PublicAdditionalLibraries.Add(System.IO.Path.Combine(ModuleDirectory, "pugixml.lib "));
 		}
 
+		if (Target.Platform == UnrealTargetPlatform.Android)
+		{
+			PrivateDependencyModuleNames.AddRange(new string[] { "Launch", "ApplicationCore" });
+			PrivateIncludePaths.AddRange(new string[] { "/Source/Runtime/Launch/Private"
+});
+			string pluginPath = Utils.MakePathRelativeTo(ModuleDirectory,
+			Target.RelativeEnginePath);
+			AdditionalPropertiesForReceipt.Add(new ReceiptProperty("PhotoLibrary",
+			System.IO.Path.Combine(pluginPath, "InputFile.xml")));
+		}
+
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 

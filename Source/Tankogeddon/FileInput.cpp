@@ -3,6 +3,29 @@
 
 #include "FileInput.h"
 
+#if PLATFORM_ANDROID
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#define DECLARE_JAVA_METHOD(name) \
+static jmethodID name = NULL;
+DECLARE_JAVA_METHOD(AndroidThunkJava_OpenGallery);
+
+#define INIT_JAVA_METHOD(name, signature) \
+if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true)) { \
+name = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID,
+#name, signature, false); \
+check(name != NULL); \
+}
+else {
+	\
+		check(0); \
+}
+
+static FOnImageSelectedFromGallery ImageSelectedFromGalleryProxy;
+
+#endif
+
 #if PLATFORM_IOS
 @interface MyViewController() // default constructor
 @end
@@ -80,8 +103,41 @@ void iOSFileInput::OpenFile() {
 }
 #endif
 
-#ifdef PLATFORM_ANDROID
-void AndroidFileInput::OpenFile() {
+#if PLATFORM_ANDROID
+extern "C"
+{
+	JNIEXPORT void Java_com_epicgames_ue4_GameActivity_onImageSelected(JNIEnv*
+		jni, jclass clazz, jbyteArray imageBytes)
+	{
+		AsyncTask(ENamedThreads::GameThread, [=]()
+			{
+				if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+				{
+					jbyte* dataPtr = Env->GetByteArrayElements(imageBytes,
+						NULL);
+					jsize len = Env->GetArrayLength(imageBytes);
+					TArray<uint8> result((uint8*)dataPtr, (int32)len);
+					ImageSelectedFromGalleryProxy.ExecuteIfBound(result);
+}
+}
+		);
+}
+}
 
+AndroidFileInput::AndroidFileInput()
+{
+#if PLATFORM_ANDROID
+	ImageSelectedFromGalleryProxy = OnImageSelected;
+	INIT_JAVA_METHOD(AndroidThunkJava_OpenGallery, "()V");
+
+	
+#endif
+}
+
+void AndroidFileInput::OpenFile() {
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis,
+			AndroidThunkJava_OpenGallery);
 }
 #endif
+
