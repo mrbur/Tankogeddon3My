@@ -13,16 +13,13 @@ DECLARE_JAVA_METHOD(AndroidThunkJava_OpenGallery);
 
 #define INIT_JAVA_METHOD(name, signature) \
 if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true)) { \
-name = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID,
-#name, signature, false); \
+name = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, #name, signature, false); \
 check(name != NULL); \
-}
-else {
-	\
+} else {\
 		check(0); \
 }
 
-static FOnImageSelectedFromGallery ImageSelectedFromGalleryProxy;
+
 
 #endif
 
@@ -104,6 +101,7 @@ void iOSFileInput::OpenFile() {
 #endif
 
 #if PLATFORM_ANDROID
+static FOnImageSelectedFromGallery ImageSelectedFromGalleryProxy;
 extern "C"
 {
 	JNIEXPORT void Java_com_epicgames_ue4_GameActivity_onImageSelected(JNIEnv*
@@ -118,7 +116,7 @@ extern "C"
 					jsize len = Env->GetArrayLength(imageBytes);
 					TArray<uint8> result((uint8*)dataPtr, (int32)len);
 					ImageSelectedFromGalleryProxy.ExecuteIfBound(result);
-}
+				}
 }
 		);
 }
@@ -127,7 +125,7 @@ extern "C"
 AndroidFileInput::AndroidFileInput()
 {
 #if PLATFORM_ANDROID
-	ImageSelectedFromGalleryProxy = OnImageSelected;
+	//ImageSelectedFromGalleryProxy = OnImageSelected;
 	INIT_JAVA_METHOD(AndroidThunkJava_OpenGallery, "()V");
 
 	

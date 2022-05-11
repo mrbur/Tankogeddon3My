@@ -34,16 +34,21 @@ public:
 
 
 
-
+DECLARE_DELEGATE_OneParam(FOnImageSelectedFromGallery, TArray<uint8>)
 #if PLATFORM_ANDROID
-public:
-	static struct _JNIEnv* ENV;
 
 class TANKOGEDDON_API AndroidFileInput : public IFileInput
 {
 public:
+	
+	static struct _JNIEnv* ENV;
+
+
+
 	virtual void OpenFile() override;
 	AndroidFileInput();
 	~AndroidFileInput();
 };
+
+
 #endif
