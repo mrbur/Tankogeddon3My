@@ -4,7 +4,21 @@
 #include "IFileInput.h"
 #include "CoreMinimal.h"
 
-#ifdef PLATFORM_IOS
+
+
+#if PLATFORM_IOS
+#import <UIKit/UIKit.h>
+// UIImagePickerControllerDelegate to respond to user interactions
+// UINavigationControllerDelegate because we want to present the photo library
+// modally
+@interface MyViewController : UIViewController <UIImagePickerControllerDelegate,
+	UINavigationControllerDelegate>
+	@property(nonatomic, retain)
+	UIImage* chosenImage;
++(void)runSelectPhoto;
+@end
+
+
 class TANKOGEDDON_API iOSFileInput : public IFileInput
 {
 public:
@@ -13,6 +27,15 @@ public:
 	~iOSFileInput();
 };
 #endif
+
+
+
+
+
+
+
+
+
 
 #ifdef PLATFORM_ANDROID
 class TANKOGEDDON_API AndroidFileInput : public IFileInput
