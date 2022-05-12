@@ -18,6 +18,7 @@
 +(void)runSelectPhoto;
 @end
 
+#endif
 
 class TANKOGEDDON_API iOSFileInput : public IFileInput
 {
@@ -26,7 +27,7 @@ public:
 	iOSFileInput();
 	~iOSFileInput();
 };
-#endif
+
 
 
 

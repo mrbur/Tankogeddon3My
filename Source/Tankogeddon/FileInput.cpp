@@ -83,11 +83,14 @@ didFinishPickingMediaWithInfo : (NSDictionary*)info
 }
 @end
 
+#endif
 
 
 
-
+iOSFileInput::iOSFileInput() {
+}
 void iOSFileInput::OpenFile() {
+#if PLATFORM_IOS
 	// assign event from interface
 	ImageSelectedFromGalleryProxy = OnImageSelected;
 	// run photo gallery in main iOS thread
@@ -96,9 +99,9 @@ void iOSFileInput::OpenFile() {
 		[MyViewController runSelectPhoto] ;
 		}
 	);
-
-}
 #endif
+}
+
 
 #if PLATFORM_ANDROID
 static FOnImageSelectedFromGallery ImageSelectedFromGalleryProxy;
