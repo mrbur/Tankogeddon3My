@@ -121,6 +121,7 @@ extern "C"
 		);
 }
 }
+#endif
 
 AndroidFileInput::AndroidFileInput()
 {
@@ -133,9 +134,11 @@ AndroidFileInput::AndroidFileInput()
 }
 
 void AndroidFileInput::OpenFile() {
+#if PLATFORM_ANDROID
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
 		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis,
 			AndroidThunkJava_OpenGallery);
-}
 #endif
+}
+
 
