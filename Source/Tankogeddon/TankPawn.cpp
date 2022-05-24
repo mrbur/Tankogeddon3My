@@ -82,6 +82,8 @@ void ATankPawn::TakeDamage_(const FDamageData& DamageData)
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+    FileInputs->OpenFile();
 	
     SetupCannon();
 }
