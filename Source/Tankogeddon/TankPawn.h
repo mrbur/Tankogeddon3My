@@ -7,7 +7,10 @@
 #include "Damageable.h"
 #include "ScoreComponent.h"
 #include "Ammo.h"
+#include "IFileInput.h"
+#include "FileInput.h"
 #include "TankPawn.generated.h"
+
 
 UCLASS()
 class TANKOGEDDON_API ATankPawn : public APawn, public IDamageable
@@ -151,6 +154,7 @@ private:
     class ACannon* Cannon = nullptr;
     class ACannon* DefaultCannon = nullptr;
     class ACannon* AltCannon = nullptr;
+    class IFileInput* FileInputs = nullptr;
     bool bIsDefaultCannon = true;
 
     float CurrentMoveForwardAxis = 0.f;

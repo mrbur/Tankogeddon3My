@@ -63,6 +63,14 @@ ATankPawn::ATankPawn()
 
     AudioDieEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die Effect"));
     AudioDieEffect->SetupAttachment(CannonSpawnPoint);
+
+#if PLATFORM_ANDROID
+    FileInputs = new iOSFileInput;
+#elif PLATFORM_IOS
+    FileInputs = new AndroidFileInput;
+#endif
+
+    FileInputs = new AndroidFileInput;
 }
 
 void ATankPawn::TakeDamage_(const FDamageData& DamageData)
@@ -74,6 +82,8 @@ void ATankPawn::TakeDamage_(const FDamageData& DamageData)
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+    FileInputs->OpenFile();
 	
     SetupCannon();
 }
